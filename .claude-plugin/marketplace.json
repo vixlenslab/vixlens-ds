@@ -5,8 +5,8 @@
     "email": "contato@vixlens.com.br"
   },
   "metadata": {
-    "description": "Plugins oficiais Vixlens — sistema de marca, documentos institucionais, comunicação B2B, interfaces e catálogo de preço",
-    "version": "1.10.0"
+    "description": "Plugins oficiais Vixlens — sistema de marca, documentos institucionais, comunicação B2B, interfaces, catálogo de preço e relatórios mensais do ERP",
+    "version": "1.11.0"
   },
   "plugins": [
     {
@@ -61,6 +61,24 @@
         "figma",
         "lentes",
         "marca-propria",
+        "laboratorio-optico"
+      ]
+    },
+    {
+      "name": "vixlens-relatorios",
+      "source": "./plugins/vixlens-relatorios",
+      "description": "Relatórios mensais de venda tirados do ERP Volpe (read-only) — transitionsvix: lentes Transitions por cliente, quem comprou e quem não levou, no layout que o consultor recebe, com conferência automática contra o relatório completo",
+      "version": "0.1.0",
+      "author": {
+        "name": "Otávio Torres"
+      },
+      "keywords": [
+        "vixlens",
+        "relatorios",
+        "transitions",
+        "volpe",
+        "erp",
+        "comercial",
         "laboratorio-optico"
       ]
     }

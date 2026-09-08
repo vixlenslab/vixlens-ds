@@ -102,6 +102,8 @@ Duas cópias de React no mesmo app quebram hooks em runtime.
 claude plugin marketplace add vixlenslab/vixlens-ds
 claude plugin install vixlens-brand
 claude plugin install vixlens-ui
+claude plugin install vixlens-catalogo
+claude plugin install vixlens-relatorios
 ```
 
 Para atualizar depois de um push novo:
@@ -128,6 +130,17 @@ Interface e código de front-end. 2 skills:
 - **vixlens-ui-architect** — interfaces web em React + Tailwind + shadcn fiéis ao DS
 - **ui-boas-praticas** — audita e corrige telas contra 80 boas práticas de UI (tipografia, cores, botões, grid, ícones, imagens, formulários)
 
+#### `vixlens-catalogo`
+Catálogo de preço. 1 skill:
+
+- **tabela-optica-figma** — monta no Figma o catálogo A4 de tabela de preço a partir do CSV por ótica (capa, índice, páginas por família, contracapa)
+
+#### `vixlens-relatorios`
+Relatórios mensais de venda tirados do ERP Volpe, somente leitura. 1 skill:
+
+- **transitionsvix** — o relatório Transitions do mês: quantas lentes Transitions cada cliente levou, quem comprou lente e não levou Transitions (o alvo de oferta) e o total geral. Sai em dois arquivos: o compacto de 3 abas que o consultor recebe (sem fone, e-mail ou R$) e o completo de 5 abas para uso interno. Dispara com "Transitions de setembro", "relatório do Fabricio", "quem não levou Transitions". Traz um conferidor de 1 comando que prova que o compacto fecha com o completo e compara com o mês anterior, e sabe o que fazer quando o login do Volpe falha (regravar o cofre, nunca digitar senha).
+  Precisa do clone de `vixlenslab/AI-Vixlens` (o script `scripts/relatorio-transitions-mes.ps1` e os docs vivem lá), do cofre `~/.volpe/ro.cred` e de IP liberado na PWI.
+
 ---
 
 ## Estrutura
@@ -145,11 +158,19 @@ site-ds/
 │   │       ├── comunicado-interno/
 │   │       ├── manual-cliente/
 │   │       └── proposta-comercial/
-│   └── vixlens-ui/
+│   ├── vixlens-ui/
+│   │   ├── .claude-plugin/plugin.json
+│   │   └── skills/
+│   │       ├── vixlens-ui-architect/
+│   │       └── ui-boas-praticas/
+│   ├── vixlens-catalogo/
+│   │   ├── .claude-plugin/plugin.json
+│   │   └── skills/
+│   │       └── tabela-optica-figma/
+│   └── vixlens-relatorios/
 │       ├── .claude-plugin/plugin.json
 │       └── skills/
-│           ├── vixlens-ui-architect/
-│           └── ui-boas-praticas/
+│           └── transitionsvix/        ← SKILL.md + confere.py
 └── .claude-plugin/marketplace.json  ← Manifesto do marketplace
 ```
 
