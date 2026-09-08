@@ -9,7 +9,7 @@ Constrói o catálogo A4 inteiro no Figma a partir do CSV de tabela de preço po
 
 **Estrutura:** capa, índice com matriz de compatibilidade, uma ou mais páginas por família de lente, contracapa. Cada página de família = cabeçalho + slot de imagem + tabela.
 
-**O número de páginas não é fixo.** Depende de quantas famílias precisam quebrar. O catálogo Vixlens de 2026 fechou em 15 páginas no formato antigo; o Native de 2026, com os separadores de índice, fechou em 20.
+**O número de páginas não é fixo.** Depende de quantas famílias precisam quebrar. O catálogo Vixlens de 2026 fecha em 20 páginas, mesmo número do Native de 2026. As 15 do formato antigo ficaram para trás: os separadores de índice custam altura e empurram famílias para uma segunda página, e o simulador passou a ter 13 famílias com a entrada da Freevix Visão Simples. A Astera não entra — é decisão, não lacuna.
 
 ## Pré-requisitos
 
@@ -27,7 +27,7 @@ Constrói o catálogo A4 inteiro no Figma a partir do CSV de tabela de preço po
 
 ## Entrada
 
-**CSV** no layout de 28 colunas do simulador: `Lente;Descrição;cod.;Diâm;Altura;Esf +;Esf -;Cilíndrico;Adição;Tabelão×4;Desconto;Custo×4;Markup Sem AR;Markup Com AR;Venda×4;Lucro×4`, separador `;`. Linhas cujo primeiro campo é vazio e o segundo começa com `cod. por cor:` são continuação da linha anterior.
+**CSV** no layout de 28 colunas do simulador: `Lente;Descrição;cod.;Diâm;Altura;Esf +;Esf -;Cilíndrico;Adição;Tabelão×4;Desconto;Custo×4;Markup Par;Markup Reflecta;Venda×4;Lucro×4`, separador `;`. Linhas cujo primeiro campo é vazio e o segundo começa com `cod. por cor:` são continuação da linha anterior.
 
 ## Perguntas antes de rodar
 
