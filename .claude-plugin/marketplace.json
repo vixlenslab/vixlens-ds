@@ -50,7 +50,7 @@
       "name": "vixlens-catalogo",
       "source": "./plugins/vixlens-catalogo",
       "description": "Geração do catálogo A4 de tabela de preço no Figma a partir do CSV por ótica — grid, contraste WCAG por família, separador de índice, bolinhas de código por cor, quebra automática de família em várias páginas e validação de contagem contra a fonte",
-      "version": "0.4.0",
+      "version": "0.4.1",
       "author": {
         "name": "Otávio Torres"
       },
