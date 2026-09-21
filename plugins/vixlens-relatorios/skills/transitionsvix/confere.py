@@ -33,13 +33,15 @@ def le_completo(path):
                 trans=sum(r[7] for r in cli), lentes_cli=sum(r[9] for r in cli), lentes_sem=sum(r[9] for r in sem))
 
 def le_compacto(path):
+    """O compacto do Fabricio tem UMA aba (CEO 21/09): todos os clientes, Transitions DESC,
+    quem nao levou no fim com 0. Antes eram 3 abas e a pessoa abria na errada."""
     wb = openpyxl.load_workbook(path, data_only=True)
-    nomeN = next((n for n in wb.sheetnames if 'compraram' in n and n != 'compraram'), None)
-    sC, sN, sT = wb['compraram'], wb[nomeN], wb['total geral']
-    fn = [r for r in sN.iter_rows(min_row=2, values_only=True) if isinstance(r[0], (int, float))]
-    fc = [r for r in sC.iter_rows(min_row=2, values_only=True) if isinstance(r[0], (int, float))]
-    tg = [r for r in sT.iter_rows(min_row=2, values_only=True) if isinstance(r[0], (int, float))]
-    return dict(nomes=wb.sheetnames, fn=fn, fc=fc, tg=tg)
+    ws = wb.worksheets[0]
+    todas = [r for r in ws.iter_rows(min_row=2, values_only=True) if isinstance(r[0], (int, float))]
+    com = [r for r in todas if r[5]]
+    sem = [r for r in todas if not r[5]]
+    return dict(nomes=wb.sheetnames, ativa=wb.active.title, todas=todas, fc=com, fn=sem)
+
 
 def main():
     ym = sys.argv[1] if len(sys.argv) > 1 else None
@@ -55,17 +57,18 @@ def main():
     def chk(cond, msg):
         nonlocal ok
         print(("OK   " if cond else "ERRO ") + msg); ok = ok and cond
-    chk(len(B['nomes']) == 3 and B['nomes'][0] == 'compraram' and B['nomes'][2] == 'total geral',
-        f"3 abas, 'compraram' primeiro (abre mostrando o numero): {B['nomes']}")
-    chk([r[1] for r in B['fc']] == [r[1] for r in A['cli']], f"compraram = Clientes Transitions ({len(B['fc'])} clientes, mesma ordem)")
+    chk(len(B['nomes']) == 1, f"1 aba so, sem aba errada para abrir: {B['nomes']}")
+    chk(len(B['todas']) == len(A['cli']) + len(A['sem']),
+        f"todos os clientes na aba ({len(B['todas'])} = {len(A['cli'])} com + {len(A['sem'])} sem)")
+    chk([r[5] for r in B['todas']] == sorted((r[5] for r in B['todas']), reverse=True),
+        "ordenado por Lentes Transitions, maior -> menor (zeros no fim)")
+    chk([r[1] for r in B['fc']] == [r[1] for r in A['cli']], f"quem levou = Clientes Transitions ({len(B['fc'])} clientes, mesma ordem)")
     chk(sum(r[5] for r in B['fc']) == A['trans'], f"lentes Transitions compacto = completo ({A['trans']})")
     chk(sum(r[6] for r in B['fc']) == A['lentes_cli'], f"lentes totais dos compradores = completo ({A['lentes_cli']})")
-    chk([r[1] for r in B['fn']] == [r[1] for r in A['sem']], f"NAO compraram = NAO levaram ({len(B['fn'])} clientes, mesma ordem)")
+    chk([r[1] for r in B['fn']] == [r[1] for r in A['sem']], f"quem nao levou = NAO levaram ({len(B['fn'])} clientes, mesma ordem)")
     chk(sum(r[6] for r in B['fn']) == A['lentes_sem'], f"lentes dos que nao levaram = completo ({A['lentes_sem']})")
-    chk(all(r[5] == 0 for r in B['fn']), "NAO compraram: Lentes Transitions = 0 em todas as linhas")
-    chk(not (set(r[1] for r in B['fc']) & set(r[1] for r in B['fn'])), "nenhum cliente nos dois lados")
-    chk([r[1] for r in B['tg']] == [r[1] for r in B['fc']] + [r[1] for r in B['fn']], f"total geral = compraram + NAO compraram ({len(B['tg'])})")
-    chk(all(abs(r[7] - (r[5] / r[6] if r[6] else 0)) < 1e-9 for r in B['fc']), "% Transitions = trans/lentes")
+    chk(len(set(r[1] for r in B['todas'])) == len(B['todas']), "nenhum cliente repetido")
+    chk(all(abs(r[7] - (r[5] / r[6] if r[6] else 0)) < 1e-9 for r in B['todas']), "% Transitions = trans/lentes")
     chk(sum(r[6] for r in A['det']) == A['trans'], f"Cliente x modelo soma {sum(r[6] for r in A['det'])} = total {A['trans']}")
     print()
     print(f"{ym}: {A['trans']:,} lentes Transitions ({A['trans']/2:,.1f} pares) | {len(A['mod'])} modelos | "

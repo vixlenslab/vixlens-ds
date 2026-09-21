@@ -68,7 +68,7 @@
       "name": "vixlens-relatorios",
       "source": "./plugins/vixlens-relatorios",
       "description": "Relatórios mensais de venda tirados do ERP Volpe (read-only) — transitionsvix: lentes Transitions por cliente, quem comprou e quem não levou, no layout que o consultor recebe, com conferência automática contra o relatório completo",
-      "version": "0.1.1",
+      "version": "0.1.2",
       "author": {
         "name": "Otávio Torres"
       },
