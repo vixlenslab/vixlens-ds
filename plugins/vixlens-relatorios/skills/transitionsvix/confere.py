@@ -34,7 +34,8 @@ def le_completo(path):
 
 def le_compacto(path):
     wb = openpyxl.load_workbook(path, data_only=True)
-    sN, sC, sT = wb.worksheets
+    nomeN = next((n for n in wb.sheetnames if 'compraram' in n and n != 'compraram'), None)
+    sC, sN, sT = wb['compraram'], wb[nomeN], wb['total geral']
     fn = [r for r in sN.iter_rows(min_row=2, values_only=True) if isinstance(r[0], (int, float))]
     fc = [r for r in sC.iter_rows(min_row=2, values_only=True) if isinstance(r[0], (int, float))]
     tg = [r for r in sT.iter_rows(min_row=2, values_only=True) if isinstance(r[0], (int, float))]
@@ -54,7 +55,8 @@ def main():
     def chk(cond, msg):
         nonlocal ok
         print(("OK   " if cond else "ERRO ") + msg); ok = ok and cond
-    chk(len(B['nomes']) == 3 and B['nomes'][1] == 'compraram' and B['nomes'][2] == 'total geral', f"3 abas: {B['nomes']}")
+    chk(len(B['nomes']) == 3 and B['nomes'][0] == 'compraram' and B['nomes'][2] == 'total geral',
+        f"3 abas, 'compraram' primeiro (abre mostrando o numero): {B['nomes']}")
     chk([r[1] for r in B['fc']] == [r[1] for r in A['cli']], f"compraram = Clientes Transitions ({len(B['fc'])} clientes, mesma ordem)")
     chk(sum(r[5] for r in B['fc']) == A['trans'], f"lentes Transitions compacto = completo ({A['trans']})")
     chk(sum(r[6] for r in B['fc']) == A['lentes_cli'], f"lentes totais dos compradores = completo ({A['lentes_cli']})")

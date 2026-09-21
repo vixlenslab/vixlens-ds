@@ -30,23 +30,28 @@ Leva ~1 min. Sai em `entregaveis\relatorios\`:
 
 | Arquivo | Para quem | O que e |
 |---|---|---|
-| `Transitions-<Mes>-<Ano> - FABRICIO.xlsx` | **Fabricio** (consultor). E o que ele recebe. | 3 abas: `NÃO compraram` · `compraram` · `total geral`. Colunas item, Cod, Cliente, Cidade, UF, Lentes Transitions, Lentes totais, `% Transitions`. **Sem** vendedor, fone, e-mail, R$. |
+| `Transitions-<Mes>-<Ano> - FABRICIO.xlsx` | **Fabricio** (consultor). E o que ele recebe. | 3 abas, nesta ordem: `compraram` · `NÃO compraram` · `total geral` — **`compraram` e a 1a aba e a aba ativa** (CEO 21/09; ver "tabela vem zerada" abaixo). Colunas item, Cod, Cliente, Cidade, UF, Lentes Transitions, Lentes totais, `% Transitions`. **Sem** vendedor, fone, e-mail, R$. |
 | `Transitions-<Mes>-<Ano>.xlsx` | interno (CEO/Mari) | 5 abas: Resumo, Clientes, Modelos, Cliente x modelo, NAO levaram (com vendedor/fone/e-mail). |
+
+**R$ so quando pedirem:** `-ComValor` acrescenta `R$ Transitions` e `R$ medio/par` (VL_PRETOT da NF) no fim das abas e grava com sufixo `" - com valor"` (CEO 14/09, excecao a regra "so quantidade"). Sem o switch = quantidade, que e o padrao — e o do Fabricio **nunca** leva R$.
 
 Regras embutidas no script (nao reescreva): so PJ · rede agrupada pela matriz (`docs/volpe/definicao-cliente.md`) · `DS_MODELO LIKE '%TRANSITIONS%'` · fotossensivel proprio (OptFacil GO Foto, LP Foto AR, Biovis) **fora** · unidade = lente unitaria, par = 2 · quantidade, nunca valor (CEO 10/08/2026).
 
 **Se falhar:**
 - `Login failed for user 'Read_Only'` (18456) → o cofre `~/.volpe/ro.cred` desta maquina esta velho. **Nao digite senha, nao tente outra.** Peca a quem pediu regravar no PowerShell dele: `Read-Host "Senha do Read_Only" -AsSecureString | ConvertFrom-SecureString | Set-Content "$env:USERPROFILE\.volpe\ro.cred"`. Doppler **nao** esta instalado nas maquinas da casa. Se a senha vigente tambem falhar, e rotacao/bloqueio na PWI (chamado).
+- **"a tabela vem zerada" / "sem o numero de Transitions"** (CEO, 21/09) → quase certo que a pessoa esta na aba **`NÃO compraram`**, onde `Lentes Transitions` e **0 por definicao** (sao os que compraram lente e nao levaram Transitions). Nao e bug de query. Desde 21/09 o compacto abre em `compraram`; se reaparecer, confira a ordem das abas e o `active tab` do xlsx (`openpyxl`: `wb.sheetnames`, `wb.active.title`) antes de acusar o banco. Quem recebeu a versao antiga precisa do arquivo novo — trocar tambem a copia que esta no Drive.
 - timeout / nao conecta → IP fora da allowlist da PWI. Rede, nao senha.
 - erro de query → mostre o erro. Nao invente numero.
 
 ## 3. Confira antes de entregar
 
 ```powershell
-python "<pasta desta skill>\confere.py" 2026-08
+python "<pasta desta skill>\confere.py" 2026-08   # ou: python scripts\confere-transitions.py 2026-08
 ```
 
-Roda de dentro de `C:\Vixlens\AI-Vixlens`. Checa que o compacto fecha com o completo (contagem, soma, ordem, ninguem nos dois lados, `%` certo, Cliente x modelo = total) e imprime os numeros do mes contra o anterior. **`NAO FECHA` = nao entrega.** Se o total de lentes ou de clientes desviar muito do mes anterior (agosto/26: 2.351 lentes · 204 compraram · 222 nao levaram), leia a aba Resumo antes de concluir; mes parcial explica quase sempre.
+Roda de dentro de `C:\Vixlens\AI-Vixlens`. Copia versionada no repo em `scripts/confere-transitions.py` — a da skill vive no cache do marketplace e se perde em update; se as duas divergirem, a do repo e a mais nova. Checa que o compacto fecha com o completo (contagem, soma, ordem, ninguem nos dois lados, `%` certo, Cliente x modelo = total) e imprime os numeros do mes contra o anterior. **`NAO FECHA` = nao entrega.** Ele exige `compraram` como 1a aba e localiza as abas **por nome**. Se o total de lentes ou de clientes desviar muito do mes anterior (agosto/26: **2.349 lentes · 204 compraram · 222 nao levaram (5.683 lentes de potencial)**; julho/26: 2.251 · 205 · 248), leia a aba Resumo antes de concluir; mes parcial explica quase sempre.
+
+**Remedir o mesmo mes muda um pouco os numeros** — agosto/26 deu 2.351/5.703 em 08/09, 2.349/5.679 em 14/09 e 2.349/5.683 em 21/09: NF e cadastro continuam sendo mexidos no ERP depois do fechamento. Entregue o numero da leitura do dia, com a data, e registre a deriva no decision log em vez de procurar culpado.
 
 ## 4. Entregue
 
@@ -62,4 +67,4 @@ Roda de dentro de `C:\Vixlens\AI-Vixlens`. Checa que o compacto fecha com o comp
 - Nao mande o completo (com fone/e-mail) para fora do CEO/Mari.
 
 ## Liga com
-`scripts/relatorio-transitions-mes.ps1` (oraculo, no AI-Vixlens) · `docs/volpe/definicao-cliente.md` · `docs/volpe/decisoes-seladas.md` (linhas 2026-08-11 e 2026-09-08 sobre Transitions) · `docs/volpe/modus-operandi.md`
+`scripts/relatorio-transitions-mes.ps1` (oraculo, no AI-Vixlens) · `docs/volpe/definicao-cliente.md` · `docs/volpe/decisoes-seladas.md` (linhas 2026-08-11, 2026-09-08, 2026-09-14 `-ComValor` e 2026-09-21 ordem das abas) · `docs/volpe/modus-operandi.md`
