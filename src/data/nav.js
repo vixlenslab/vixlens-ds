@@ -50,7 +50,7 @@ export const navGroups = [
   {
     label: 'Materiais',
     items: [
-      { label: 'Templates', href: '#materiais', dot: '#0439D9', soon: true },
+      { label: 'Produtos & templates', href: '#materiais', dot: '#0439D9' },
     ],
   },
   {

@@ -1,6 +1,14 @@
 import { Section, SubTitle } from '../Section.jsx'
 import { ArrowSquareOut, DownloadSimple } from '@phosphor-icons/react'
 
+const PDFS = [
+  { t: 'Tabela de preços 2026', d: 'Valores praticados do laboratório para a ótica. Portfólio completo Vixlens.', f: 'tabela-precos-vixlens-2026.pdf', meta: '20 págs · 21 MB', tag: 'Atualizada' },
+  { t: 'Cardápio de lentes Freevix', d: 'As multifocais Freevix lado a lado, pra ótica explicar a diferença no balcão.', f: 'cardapio-lentes-freevix-2026.pdf', meta: 'A4 · 2 págs · 0,8 MB' },
+  { t: 'Folder de tecnologias', d: 'As tecnologias por trás das lentes Vixlens, em versão digital.', f: 'folder-tecnologias-vixlens.pdf', meta: '8 págs · 7,3 MB' },
+  { t: 'Marca própria', d: 'Como a ótica cria a própria linha de lentes e antirreflexos com a Vixlens.', f: 'marca-propria-vixlens.pdf', meta: '2 págs · 3,4 MB' },
+  { t: 'Tracer E-tess', d: 'Traçador digital em parceria com a EssilorLuxottica: a forma real da armação vai direto pra produção.', f: 'tracer-etess-vixlens.pdf', meta: '2 págs · 5,6 MB' },
+]
+
 const GRUPOS = [
   {
     grupo: 'Papelaria',
@@ -15,7 +23,6 @@ const GRUPOS = [
     cards: [
       { t: 'Proposta comercial', d: 'Modelo de proposta pronto pra preencher e enviar ao cliente.', b: [['Abrir no Google Docs', 'open'], ['Baixar PDF', 'pdf']] },
       { t: 'Apresentação de vendas', d: 'Deck de vendas pro consultor apresentar a Vixlens.', b: [['Abrir no Google Slides', 'open'], ['Baixar PDF', 'pdf']] },
-      { t: 'Tabela de preços', d: 'Planilha de preços atualizada, pronta pra consulta e envio.', b: [['Abrir no Google Sheets', 'open'], ['Baixar PDF', 'pdf']] },
     ],
   },
   {
@@ -40,23 +47,65 @@ function DisabledBtn({ label, kind }) {
   )
 }
 
+function PdfBtn({ href, label, kind }) {
+  const Icon = kind === 'pdf' ? DownloadSimple : ArrowSquareOut
+  const dark = kind === 'pdf'
+  return (
+    <a
+      href={href}
+      {...(dark ? { download: '' } : { target: '_blank', rel: 'noopener noreferrer' })}
+      className={`inline-flex items-center gap-1.5 rounded-vix-button border px-3 py-1.5 text-[11px] font-bold transition-colors ${
+        dark
+          ? 'border-vix-preto bg-vix-preto text-white hover:bg-gray-800'
+          : 'border-gray-200 bg-white text-vix-preto hover:border-vix-preto'
+      }`}
+    >
+      <Icon size={13} weight="bold" />
+      {label}
+    </a>
+  )
+}
+
 export default function MateriaisSection() {
   return (
     <Section
       id="materiais"
       eyebrow="14 — Materiais"
-      title={
-        <span className="inline-flex flex-wrap items-center gap-3">
-          Materiais
-          <span className="relative -top-0.5 rounded-vix-chip bg-vix-amarelo-light px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.1em] text-vix-preto">
-            Em breve
-          </span>
-        </span>
-      }
-      desc="Modelos prontos pro dia a dia — papelaria, comercial e institucional. Editáveis no Google (Docs, Sheets, Slides) e no celular. Os arquivos estão sendo organizados; em breve com download e link de edição."
+      title="Materiais"
+      desc="Tabela de preços e materiais de produto prontos pra enviar à ótica. Modelos de papelaria, comercial e institucional chegam em breve, editáveis no Google (Docs, Sheets, Slides)."
     >
-      {GRUPOS.map((g, i) => (
-        <div key={g.grupo} className={i > 0 ? 'mt-14' : ''}>
+      <SubTitle>Produtos & tabelas</SubTitle>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {PDFS.map((card) => {
+          const href = `/assets/materiais/${card.f}`
+          return (
+            <div key={card.f} className="flex flex-col gap-3 rounded-vix-input border border-gray-200 bg-white p-6">
+              <div className="flex items-center justify-between gap-2.5">
+                <div className="text-[15px] font-bold text-vix-preto">{card.t}</div>
+                <div className="flex shrink-0 gap-1">
+                  {card.tag && (
+                    <span className="rounded-vix-chip bg-vix-amarelo px-2 py-1 text-[9px] font-bold uppercase tracking-[0.08em] text-vix-preto">
+                      {card.tag}
+                    </span>
+                  )}
+                  <span className="rounded-vix-chip bg-vix-cinza-card px-2 py-1 text-[9px] font-bold uppercase tracking-[0.08em] text-gray-600">
+                    PDF
+                  </span>
+                </div>
+              </div>
+              <p className="flex-1 text-[13px] leading-relaxed text-gray-600">{card.d}</p>
+              <div className="text-[11px] text-gray-500">{card.meta}</div>
+              <div className="flex flex-wrap gap-1.5">
+                <PdfBtn href={href} label="Abrir" kind="open" />
+                <PdfBtn href={href} label="Baixar PDF" kind="pdf" />
+              </div>
+            </div>
+          )
+        })}
+      </div>
+
+      {GRUPOS.map((g) => (
+        <div key={g.grupo} className="mt-14">
           <SubTitle>{g.grupo}</SubTitle>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {g.cards.map((card) => (

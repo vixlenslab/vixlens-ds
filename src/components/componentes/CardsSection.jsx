@@ -1,5 +1,6 @@
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Section, SubTitle } from '../Section.jsx'
-import { ArrowRight, Eye } from '@phosphor-icons/react'
+import { ArrowRight, CaretLeft, CaretRight, Eye } from '@phosphor-icons/react'
 import { Button } from '../ui/button.jsx'
 import { PropsTable, DosDonts } from './ComponentDocs.jsx'
 import { CodeBlock } from '../Copy.jsx'
@@ -113,20 +114,15 @@ export default function CardsSection() {
       <SubTitle className="mt-14">Card Produto — carrossel de linha (Freevix)</SubTitle>
       <div className="mb-14 flex gap-4 overflow-x-auto pb-2">
         {CARROSSEL.map((p) => (
-          <div key={p.n} className="flex w-[200px] shrink-0 flex-col rounded-xl border border-gray-200 bg-white p-4">
-            <div className="mb-4 flex h-28 items-center justify-center rounded-lg bg-vix-cinza-card">
-              <Eye size={28} className="text-gray-600" />
-            </div>
-            <div className="text-[15px] font-bold text-vix-preto">{p.n}</div>
-            <div className="mt-0.5 text-xs text-vix-cinza">{p.t}</div>
-            <div className="mt-3 flex justify-end">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-vix-preto">
-                <ArrowRight size={14} weight="bold" className="text-white" />
-              </div>
-            </div>
-          </div>
+          <CarrosselCard key={p.n} p={p} />
         ))}
       </div>
+
+      <SubTitle>Card Produto — carrossel com setas abaixo</SubTitle>
+      <Carrossel nav="setas" />
+
+      <SubTitle>Card Produto — carrossel com bolinhas</SubTitle>
+      <Carrossel nav="bolinhas" />
 
       {/* Card Hero — linha de produto (foto + overlay, radius shadcn) */}
       <SubTitle>Card Hero — linha de produto (foto + overlay)</SubTitle>
@@ -170,6 +166,102 @@ export default function CardsSection() {
 </Card>`}
       />
     </Section>
+  )
+}
+
+function CarrosselCard({ p }) {
+  return (
+    <div className="flex w-[200px] shrink-0 snap-start flex-col rounded-xl border border-gray-200 bg-white p-4">
+      <div className="mb-4 flex h-28 items-center justify-center rounded-lg bg-vix-cinza-card">
+        <Eye size={28} className="text-gray-600" />
+      </div>
+      <div className="text-[15px] font-bold text-vix-preto">{p.n}</div>
+      <div className="mt-0.5 text-xs text-vix-cinza">{p.t}</div>
+      <div className="mt-3 flex justify-end">
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-vix-preto">
+          <ArrowRight size={14} weight="bold" className="text-white" />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Variante com navegação: nav="setas" (← → abaixo) ou nav="bolinhas" (um ponto por card)
+function Carrossel({ nav }) {
+  const trilho = useRef(null)
+  const [ativo, setAtivo] = useState(0)
+  const [pontas, setPontas] = useState({ inicio: true, fim: false })
+
+  const atualizar = useCallback(() => {
+    const el = trilho.current
+    if (!el) return
+    const passo = el.firstElementChild.offsetWidth + 16
+    const fim = el.scrollLeft + el.clientWidth >= el.scrollWidth - 2
+    // no fim do trilho os últimos cards não chegam à esquerda — marca o último ponto
+    setAtivo(fim ? CARROSSEL.length - 1 : Math.round(el.scrollLeft / passo))
+    setPontas({ inicio: el.scrollLeft <= 2, fim })
+  }, [])
+
+  useEffect(() => {
+    atualizar()
+    window.addEventListener('resize', atualizar)
+    return () => window.removeEventListener('resize', atualizar)
+  }, [atualizar])
+
+  const irPara = (i) => {
+    const el = trilho.current
+    el.scrollTo({ left: el.children[i].offsetLeft - el.offsetLeft, behavior: 'smooth' })
+  }
+  const mover = (dir) => {
+    const el = trilho.current
+    el.scrollBy({ left: dir * (el.firstElementChild.offsetWidth + 16), behavior: 'smooth' })
+  }
+
+  return (
+    <div className="mb-14">
+      <div
+        ref={trilho}
+        onScroll={atualizar}
+        className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {CARROSSEL.map((p) => (
+          <CarrosselCard key={p.n} p={p} />
+        ))}
+      </div>
+
+      {nav === 'setas' ? (
+        <div className="mt-4 flex justify-end gap-2">
+          {[
+            [-1, CaretLeft, 'Anterior', pontas.inicio],
+            [1, CaretRight, 'Próximo', pontas.fim],
+          ].map(([dir, Icon, label, off]) => (
+            <button
+              key={label}
+              type="button"
+              aria-label={label}
+              disabled={off}
+              onClick={() => mover(dir)}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-vix-preto transition-colors hover:border-vix-preto disabled:cursor-default disabled:opacity-30 disabled:hover:border-gray-200"
+            >
+              <Icon size={16} weight="bold" />
+            </button>
+          ))}
+        </div>
+      ) : (
+        <div className="mt-4 flex justify-center gap-1.5">
+          {CARROSSEL.map((p, i) => (
+            <button
+              key={p.n}
+              type="button"
+              aria-label={`Ir para ${p.n}`}
+              aria-current={i === ativo}
+              onClick={() => irPara(i)}
+              className={`h-2 rounded-full transition-all ${i === ativo ? 'w-6 bg-vix-amarelo' : 'w-2 bg-gray-300 hover:bg-gray-400'}`}
+            />
+          ))}
+        </div>
+      )}
+    </div>
   )
 }
 
