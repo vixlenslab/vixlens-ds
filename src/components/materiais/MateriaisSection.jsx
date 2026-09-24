@@ -2,11 +2,11 @@ import { Section, SubTitle } from '../Section.jsx'
 import { ArrowSquareOut, DownloadSimple } from '@phosphor-icons/react'
 
 const PDFS = [
-  { t: 'Tabela de preços 2026', d: 'Valores praticados do laboratório para a ótica. Portfólio completo Vixlens.', f: 'tabela-precos-vixlens-2026.pdf', meta: '20 págs · 21 MB', tag: 'Atualizada' },
-  { t: 'Cardápio de lentes Freevix', d: 'As multifocais Freevix lado a lado, pra ótica explicar a diferença no balcão.', f: 'cardapio-lentes-freevix-2026.pdf', meta: 'A4 · 2 págs · 0,8 MB' },
-  { t: 'Folder de tecnologias', d: 'As tecnologias por trás das lentes Vixlens, em versão digital.', f: 'folder-tecnologias-vixlens.pdf', meta: '9 págs · 7,2 MB' },
-  { t: 'Marca própria', d: 'Como a ótica cria a própria linha de lentes e antirreflexos com a Vixlens.', f: 'marca-propria-vixlens.pdf', meta: '2 págs · 3,4 MB' },
-  { t: 'Tracer E-tess', d: 'Traçador digital em parceria com a EssilorLuxottica: a forma real da armação vai direto pra produção.', f: 'tracer-etess-vixlens.pdf', meta: '2 págs · 5,6 MB' },
+  { t: 'Tabela de preços 2026', d: 'Valores praticados do laboratório para a ótica. Portfólio completo Vixlens.', f: 'tabela-precos-vixlens-2026.pdf', meta: '20 págs · 21 MB', atualizado: '24/09/2026', tag: 'Atualizada' },
+  { t: 'Cardápio de lentes Freevix', d: 'As multifocais Freevix lado a lado, pra ótica explicar a diferença no balcão.', f: 'cardapio-lentes-freevix-2026.pdf', meta: 'A4 · 2 págs · 0,8 MB', atualizado: '24/09/2026' },
+  { t: 'Folder de tecnologias', d: 'As tecnologias por trás das lentes Vixlens, em versão digital.', f: 'folder-tecnologias-vixlens.pdf', meta: '9 págs · 7,2 MB', atualizado: '24/09/2026' },
+  { t: 'Marca própria', d: 'Como a ótica cria a própria linha de lentes e antirreflexos com a Vixlens.', f: 'marca-propria-vixlens.pdf', meta: '2 págs · 3,4 MB', atualizado: '24/09/2026' },
+  { t: 'Tracer E-tess', d: 'Traçador digital em parceria com a EssilorLuxottica: a forma real da armação vai direto pra produção.', f: 'tracer-etess-vixlens.pdf', meta: '2 págs · 5,6 MB', atualizado: '24/09/2026' },
 ]
 
 const GRUPOS = [
@@ -94,7 +94,11 @@ export default function MateriaisSection() {
                 </div>
               </div>
               <p className="flex-1 text-[13px] leading-relaxed text-gray-600">{card.d}</p>
-              <div className="text-[11px] text-gray-500">{card.meta}</div>
+              <div className="text-[11px] text-gray-500">
+                {card.meta}
+                <br />
+                Atualizado em {card.atualizado}
+              </div>
               <div className="flex flex-wrap gap-1.5">
                 <PdfBtn href={href} label="Abrir" kind="open" />
                 <PdfBtn href={href} label="Baixar PDF" kind="pdf" />

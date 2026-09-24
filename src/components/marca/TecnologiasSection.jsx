@@ -32,6 +32,9 @@ const LENTES = [
   { id: 'astera', nome: 'Astera', familia: 'Controle de miopia' },
 ]
 
+// Data em que os arquivos de cada bloco entraram ou foram trocados no DS.
+const ATUALIZADO = { tecnologias: '24/09/2026', lentes: '24/09/2026' }
+
 const TEC = '/assets/marca/tecnologias'
 const DES = '/assets/marca/desenhos-lentes'
 
@@ -51,12 +54,13 @@ function Baixar({ href, label, primary }) {
   )
 }
 
-function Kit({ titulo, desc, href }) {
+function Kit({ titulo, desc, href, atualizado }) {
   return (
     <div className="mt-6 flex flex-col items-start gap-4 rounded-vix-card border border-gray-200 bg-vix-cinza-card p-8 md:flex-row md:items-center md:justify-between">
       <div>
         <div className="text-lg font-bold text-vix-preto">{titulo}</div>
         <div className="mt-1.5 text-[13px] leading-relaxed text-gray-600">{desc}</div>
+        <div className="mt-1 text-[11px] text-gray-500">Atualizado em {atualizado}</div>
       </div>
       <a
         href={href}
@@ -106,6 +110,7 @@ export default function TecnologiasSection() {
         titulo="Kit — Ícones de tecnologia"
         desc={`${TECNOLOGIAS.length} tecnologias × ícone e lockup, em SVG, num único .zip.`}
         href={`${TEC}/tecnologias-vixlens-svg.zip`}
+        atualizado={ATUALIZADO.tecnologias}
       />
 
       <SubTitle className="mt-14">Desenho de lentes</SubTitle>
@@ -130,6 +135,7 @@ export default function TecnologiasSection() {
         titulo="Kit — Desenho de lentes"
         desc={`${LENTES.length} desenhos em SVG num único .zip.`}
         href={`${DES}/desenhos-lentes-vixlens-svg.zip`}
+        atualizado={ATUALIZADO.lentes}
       />
     </Section>
   )

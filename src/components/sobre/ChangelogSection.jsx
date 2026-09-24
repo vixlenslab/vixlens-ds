@@ -28,9 +28,19 @@ const ORDEM = ['novo', 'melhoria', 'correcao']
 // Timeline — mais recente em cima. Dados reais do DS.
 const VERSOES = [
   {
+    versao: 'v0.10.0',
+    data: '24/09/2026',
+    atual: true,
+    mudancas: [
+      ['novo', 'Materiais: tabela de preços 2026, cardápio Freevix, folder de tecnologias, marca própria e Tracer E-tess em PDF, com abrir e baixar'],
+      ['novo', 'Marca → Tecnologias & lentes: 12 ícones de tecnologia (ícone + lockup) e 12 desenhos de lente em SVG, com .zip'],
+      ['novo', 'Cards: carrossel de linha Freevix com setas abaixo e com bolinhas'],
+      ['melhoria', 'Data de atualização em cada arquivo para download'],
+    ],
+  },
+  {
     versao: 'v0.9.1',
     data: '23/07/2026',
-    atual: true,
     mudancas: [
       ['correcao', 'Selects do Playground: seta com respiro da borda (chevron próprio)'],
       ['correcao', 'Blocos de código quebram linha no mobile (nada mais cortado) + card do Playground sem estourar na horizontal'],
@@ -192,7 +202,7 @@ export default function ChangelogSection() {
     >
       {/* Esquema de versionamento — SemVer */}
       <div className="mb-10 flex flex-col gap-4 rounded-vix-card border border-gray-100 bg-vix-cinza-card p-5 sm:flex-row sm:items-center sm:gap-6">
-        <VersaoBadge versao="v0.9.1" atual />
+        <VersaoBadge versao={VERSOES[0].versao} atual />
         <p className="text-[13px] leading-relaxed text-gray-600">
           Seguimos <span className="font-bold text-vix-preto">Semantic Versioning</span> (MAJOR.MINOR.PATCH):{' '}
           <span className="font-bold text-vix-preto">MAJOR</span> muda quando algo quebra,{' '}

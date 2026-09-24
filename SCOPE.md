@@ -55,6 +55,18 @@ Base das origens: `H:\Meu Drive\000 - Gestão Mkt\001 - Vixlens\003 - Marketing\
 - Arquivos no DS: `assets/marca/tecnologias/` e `assets/marca/desenhos-lentes/`.
 - Filtros (Sun+, UV+, Freevix Colors, Transitions, Reflecta) ficam fora por ora.
 
+## Adendo 2026-09-24 — Data de atualização e versão
+**Status:** concluído
+- Todo arquivo para download mostra "Atualizado em DD/MM/AAAA": por card em
+  Materiais (campo `atualizado` em `PDFS`) e por bloco em Tecnologias & lentes
+  (`ATUALIZADO`, mostrado no card do .zip).
+- Regra: trocou ou incluiu arquivo, a data passa a ser o dia em que ele entrou
+  no DS. Os arquivos que subiram em 24/09/2026 ficam com essa data.
+- Toda publicação de arquivo novo ou trocado ganha entrada no Changelog e bump de
+  versão (arquivo = patch; seção ou componente novo = minor).
+- v0.10.0 (24/09/2026): Materiais em PDF, Tecnologias & lentes, carrossel com
+  setas e bolinhas, datas de atualização.
+
 ## Fora do escopo
 - Tabela interativa no site (busca/filtro).
 - Compressão dos PDFs.

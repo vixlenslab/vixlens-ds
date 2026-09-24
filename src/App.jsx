@@ -75,7 +75,7 @@ export default function App() {
         <ContribuirSection />
 
         <footer className="border-t border-gray-100 px-8 py-10 text-center text-[13px] text-muted-foreground md:px-16">
-          Vixlens Design System · v0.9.1 · ds.vixlens.com.br
+          Vixlens Design System · v0.10.0 · ds.vixlens.com.br
         </footer>
       </main>
 
