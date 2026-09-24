@@ -6,6 +6,7 @@ import BackToTop from './components/BackToTop.jsx'
 import ComecarSection from './components/sobre/ComecarSection.jsx'
 import MarcaSection from './components/marca/MarcaSection.jsx'
 import FotografiaSection from './components/marca/FotografiaSection.jsx'
+import TecnologiasSection from './components/marca/TecnologiasSection.jsx'
 import CoresSection from './components/fundamentos/CoresSection.jsx'
 import TipografiaSection from './components/fundamentos/TipografiaSection.jsx'
 import TokensSection from './components/fundamentos/TokensSection.jsx'
@@ -51,6 +52,7 @@ export default function App() {
         <ComecarSection />
         <MarcaSection />
         <FotografiaSection />
+        <TecnologiasSection />
         <CoresSection />
         <TipografiaSection />
         <TokensSection />

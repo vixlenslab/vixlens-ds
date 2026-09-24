@@ -12,6 +12,7 @@ export const navGroups = [
     items: [
       { label: 'Logotipo & Marcas', href: '#logotipo', dot: '#FAC617' },
       { label: 'Fotografia', href: '#fotografia', dot: '#606F7F' },
+      { label: 'Tecnologias & lentes', href: '#tecnologias', dot: '#0439D9' },
       { label: 'Grafismos', soon: true },
     ],
   },

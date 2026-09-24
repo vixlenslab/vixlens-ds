@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 116.17 105.41">
+  <defs>
+    <style>
+      .cls-1 {
+        letter-spacing: 0em;
+      }
+
+      .cls-2, .cls-3 {
+        fill: #f9bc29;
+        stroke: #f9bc29;
+      }
+
+      .cls-2, .cls-3, .cls-4 {
+        stroke-miterlimit: 10;
+      }
+
+      .cls-2, .cls-4 {
+        stroke-width: .75px;
+      }
+
+      .cls-3 {
+        fill-rule: evenodd;
+      }
+
+      .cls-5 {
+        font-family: VisbyCF-Medium, 'Visby CF';
+        font-size: 9.51px;
+        font-weight: 500;
+      }
+
+      .cls-6 {
+        letter-spacing: 0em;
+      }
+
+      .cls-4 {
+        stroke: #000;
+      }
+
+      .cls-7 {
+        fill: url(#Gradiente_sem_nome_17);
+        opacity: .98;
+      }
+
+      .cls-8 {
+        letter-spacing: .01em;
+      }
+
+      .cls-9 {
+        letter-spacing: 0em;
+      }
+    </style>
+    <linearGradient id="Gradiente_sem_nome_17" data-name="Gradiente sem nome 17" x1="889.84" y1="2224.6" x2="995.25" y2="2224.6" gradientTransform="translate(-2175.0889 995.2527) rotate(-90)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#fff" stop-opacity=".5"/>
+    </linearGradient>
+  </defs>
+  <g id="Camada_1" data-name="Camada 1">
+    <g>
+      <path class="cls-7" d="M44.01,105.24L0,19.77s43.32-44.7,99.03.34l-45.87,85.31"/>
+      <text class="cls-5" transform="translate(114.07 103.77) rotate(-90)"><tspan x="0" y="0">a</tspan><tspan class="cls-9" x="5.62" y="0">t</tspan><tspan class="cls-1" x="8.61" y="0">é</tspan><tspan x="14.16" y="0" xml:space="preserve"> 4</tspan><tspan class="cls-8" x="22" y="0"> </tspan><tspan class="cls-6" x="24.96" y="0">m</tspan></text>
+      <line class="cls-4" x1="103.54" y1="105.41" x2="103.54"/>
+      <rect class="cls-2" x="48.98" y="25.91" width=".4" height="13.17"/>
+      <polygon class="cls-3" points="49.18 26.3 43.87 27.73 49.18 22.42 54.49 27.73 49.18 26.3"/>
+    </g>
+  </g>
+</svg>

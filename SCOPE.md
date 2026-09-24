@@ -39,6 +39,22 @@ Base das origens: `H:\Meu Drive\000 - Gestão Mkt\001 - Vixlens\003 - Marketing\
 - Scroll com snap por card; arrastar/scroll do trackpad segue funcionando.
 - Sem biblioteca nova (nada de embla); componente local na própria seção.
 
+## Adendo 2026-09-24 — Tecnologias & desenho de lentes
+**Status:** concluído
+- Nova seção **Marca → Tecnologias & lentes** (`#tecnologias`), depois de Fotografia.
+- Bloco 1 — **Ícones de tecnologia**: 12 tecnologias (freeform, WideView, Adapt,
+  SoftView, Duo, VixSense, PointLight, Mapping, VixSlim, SmartView, Pixel,
+  VixControl). Card mostra o lockup, nome e descrição; download do ícone e do
+  lockup em SVG + .zip com todos.
+- Bloco 2 — **Desenho de lentes**: 12 desenhos (Vix Total, Freevix One, Premium,
+  Freedom, IA Tech, Deskview 1,3M, Deskview 2M, Office 4M, VS, VS HD, VS Relax,
+  Astera), com família; download SVG + .zip.
+- Fonte dos arquivos: `C:\Vixlens\apresentacoes\assets-tecnologias-vixlens\`
+  (mesma pasta que alimenta o deck de tecnologias). Nomes e descrições das
+  tecnologias vêm do deck, transcritos do folder — nada de copy nova.
+- Arquivos no DS: `assets/marca/tecnologias/` e `assets/marca/desenhos-lentes/`.
+- Filtros (Sun+, UV+, Freevix Colors, Transitions, Reflecta) ficam fora por ora.
+
 ## Fora do escopo
 - Tabela interativa no site (busca/filtro).
 - Compressão dos PDFs.
