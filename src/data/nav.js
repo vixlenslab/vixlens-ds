@@ -1,4 +1,4 @@
-export const version = 'v0.10.0'
+export const version = 'v0.11.0'
 
 export const navGroups = [
   {
@@ -43,7 +43,9 @@ export const navGroups = [
       { label: 'Botões', href: '#botoes', dot: '#1D1D1F' },
       { label: 'Inputs', href: '#inputs', dot: '#606F7F' },
       { label: 'Cards', href: '#cards', dot: '#F5F5F7' },
+      { label: 'Carrossel', href: '#carrossel', dot: '#1D1D1F' },
       { label: 'Callouts', href: '#callouts', dot: '#FAC617' },
+      { label: 'Aviso de cookies', href: '#cookies', dot: '#606F7F' },
       { label: 'Biblioteca shadcn', href: '#shadcn', dot: '#0439D9' },
       { label: 'Playground', href: '#playground', dot: '#FAC617' },
     ],
