@@ -68,7 +68,7 @@ Base das origens: `H:\Meu Drive\000 - Gestão Mkt\001 - Vixlens\003 - Marketing\
   setas e bolinhas, datas de atualização.
 
 ## Adendo 2026-09-25 — Carrossel oficial + Aviso de cookies (v0.11.0)
-**Status:** em andamento
+**Status:** concluído
 **Pedido por:** Otávio (spec em `C:\vixlens\outputs\prompt-ds-carrossel.md`)
 
 Os dois componentes já estão no ar no site institucional (`vixlenslab/site_vixlens`)
@@ -102,6 +102,8 @@ e entram no DS como padrão oficial.
 
 ### Versão
 - v0.11.0 (MINOR: componentes novos) em 25/09/2026, com Changelog.
+- v0.11.1 (PATCH) em 25/09/2026: carrossel medido com largura zero contava uma
+  posição a mais; agora mantém o estado até a trilha aparecer.
 
 ## Fora do escopo
 - Tabela interativa no site (busca/filtro).

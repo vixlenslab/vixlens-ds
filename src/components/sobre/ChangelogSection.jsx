@@ -28,9 +28,16 @@ const ORDEM = ['novo', 'melhoria', 'correcao']
 // Timeline — mais recente em cima. Dados reais do DS.
 const VERSOES = [
   {
-    versao: 'v0.11.0',
+    versao: 'v0.11.1',
     data: '25/09/2026',
     atual: true,
+    mudancas: [
+      ['correcao', 'Carrossel: não conta uma posição a mais quando é medido escondido (largura zero, ex.: aba ou painel fechado)'],
+    ],
+  },
+  {
+    versao: 'v0.11.0',
+    data: '25/09/2026',
     mudancas: [
       ['novo', 'Componente Carrossel: trilha com scroll-snap, cards sempre inteiros (1 · 2 · 3 por vez) e navegação padrão com pontos à esquerda e setas à direita, em fundo claro e escuro'],
       ['novo', 'Carrossel: contador 02 / 15 no celular acima de 6 posições e autoplay com pausa para depoimentos'],

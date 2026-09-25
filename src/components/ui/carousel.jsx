@@ -50,7 +50,7 @@ export function useCarousel(scrollStep, initialCount = 0) {
   // scrollLeft de cada ponto navegável.
   const getPositions = React.useCallback(() => {
     const el = scrollRef.current
-    if (!el || el.children.length === 0) return []
+    if (!el || el.clientWidth === 0 || el.children.length === 0) return []
     const children = Array.from(el.children)
     const maxScroll = Math.max(0, el.scrollWidth - el.clientWidth)
     const first = children[0].offsetLeft
@@ -63,7 +63,9 @@ export function useCarousel(scrollStep, initialCount = 0) {
 
   const updateScrollState = React.useCallback(() => {
     const el = scrollRef.current
-    if (!el) return
+    // Largura zero (aba ou painel escondido): não dá para medir, então mantém o estado.
+    // O ResizeObserver chama de novo quando a trilha aparecer.
+    if (!el || el.clientWidth === 0) return
     const positions = getPositions()
     const maxScroll = positions[positions.length - 1] ?? 0
     setCanPrev(el.scrollLeft > EDGE)
