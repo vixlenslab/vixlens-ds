@@ -67,6 +67,42 @@ Base das origens: `H:\Meu Drive\000 - Gestão Mkt\001 - Vixlens\003 - Marketing\
 - v0.10.0 (24/09/2026): Materiais em PDF, Tecnologias & lentes, carrossel com
   setas e bolinhas, datas de atualização.
 
+## Adendo 2026-09-25 — Carrossel oficial + Aviso de cookies (v0.11.0)
+**Status:** em andamento
+**Pedido por:** Otávio (spec em `C:\vixlens\outputs\prompt-ds-carrossel.md`)
+
+Os dois componentes já estão no ar no site institucional (`vixlenslab/site_vixlens`)
+e entram no DS como padrão oficial.
+
+### Carrossel de cards
+- Referência de comportamento: `site_vixlens` → `src/components/ui/CarouselNav.tsx`
+  e `src/hooks/useCarousel.ts`. A spec completa (anatomia, visual, comportamento,
+  a11y, critérios de aceite) é o prompt acima.
+- Biblioteca: `src/components/ui/carousel.jsx`, exportado em `src/lib.js`
+  (`useCarousel`, `useCarouselAutoplay`, `CarouselNav`, `CarouselTrack`,
+  `CarouselItem`, `carouselItemWidth`).
+- Doc: nova seção **Componentes → Carrossel** (`#carrossel`), com demo em fundo
+  claro e escuro, autoplay, props, quando usar, a11y e código.
+- **Pré-visualização desktop × mobile** lado a lado (pedido do Otávio): o demo roda
+  em iframe da própria página (`/?demo=carrossel`) com larguras reais de 1280px e
+  375px, para os breakpoints do Tailwind valerem de verdade.
+- As duas variantes provisórias de 24/09 em Cards ("setas abaixo" e "bolinhas")
+  saem; Cards aponta para a seção Carrossel. O carrossel só-scroll de Cards também sai.
+- Sem dependência nova: o site usa framer-motion, o DS reproduz as animações
+  (largura da pílula, escala das setas, cascata e hover `y: -6`) em CSS/Tailwind.
+
+### Aviso de cookies (LGPD)
+- Referência: `site_vixlens` PR #9 → `src/components/layout/CookieConsent.tsx`,
+  `CookiePreferencesLink.tsx` e `src/lib/data/cookies.ts`.
+- Biblioteca: `src/components/ui/cookie-consent.jsx` (`CookieConsent`,
+  `CookiePreferencesButton`, `useCookieConsent`, `readConsent`, `saveConsent`).
+- Doc: nova seção **Componentes → Aviso de cookies** (`#cookies`), com demo
+  embutida (não flutuante), regra "scripts de medição só depois do Aceitar",
+  props e código. Copy igual à do site.
+
+### Versão
+- v0.11.0 (MINOR: componentes novos) em 25/09/2026, com Changelog.
+
 ## Fora do escopo
 - Tabela interativa no site (busca/filtro).
 - Compressão dos PDFs.

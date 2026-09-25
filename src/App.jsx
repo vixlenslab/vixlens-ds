@@ -21,7 +21,9 @@ import VocabularioSection from './components/voz/VocabularioSection.jsx'
 import BotoesSection from './components/componentes/BotoesSection.jsx'
 import InputsSection from './components/componentes/InputsSection.jsx'
 import CardsSection from './components/componentes/CardsSection.jsx'
+import CarrosselSection from './components/componentes/CarrosselSection.jsx'
 import CalloutsSection from './components/componentes/CalloutsSection.jsx'
+import CookiesSection from './components/componentes/CookiesSection.jsx'
 import ShadcnShowcase from './components/componentes/ShadcnShowcase.jsx'
 import PlaygroundSection from './components/componentes/PlaygroundSection.jsx'
 import MateriaisSection from './components/materiais/MateriaisSection.jsx'
@@ -67,7 +69,9 @@ export default function App() {
         <BotoesSection />
         <InputsSection />
         <CardsSection />
+        <CarrosselSection />
         <CalloutsSection />
+        <CookiesSection />
         <ShadcnShowcase />
         <PlaygroundSection />
         <MateriaisSection />
@@ -75,7 +79,7 @@ export default function App() {
         <ContribuirSection />
 
         <footer className="border-t border-gray-100 px-8 py-10 text-center text-[13px] text-muted-foreground md:px-16">
-          Vixlens Design System · v0.10.0 · ds.vixlens.com.br
+          Vixlens Design System · v0.11.0 · ds.vixlens.com.br
         </footer>
       </main>
 

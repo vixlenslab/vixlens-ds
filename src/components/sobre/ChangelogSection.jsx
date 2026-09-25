@@ -28,9 +28,20 @@ const ORDEM = ['novo', 'melhoria', 'correcao']
 // Timeline — mais recente em cima. Dados reais do DS.
 const VERSOES = [
   {
+    versao: 'v0.11.0',
+    data: '25/09/2026',
+    atual: true,
+    mudancas: [
+      ['novo', 'Componente Carrossel: trilha com scroll-snap, cards sempre inteiros (1 · 2 · 3 por vez) e navegação padrão com pontos à esquerda e setas à direita, em fundo claro e escuro'],
+      ['novo', 'Carrossel: contador 02 / 15 no celular acima de 6 posições e autoplay com pausa para depoimentos'],
+      ['novo', 'Carrossel: prévia lado a lado em desktop (1280px) e mobile (375px)'],
+      ['novo', 'Componente Aviso de cookies (LGPD): Aceitar e Recusar, reabrir pelo rodapé, medição só depois do aceite'],
+      ['melhoria', 'Cards: as variantes provisórias de carrossel (setas abaixo, bolinhas) dão lugar ao componente oficial'],
+    ],
+  },
+  {
     versao: 'v0.10.0',
     data: '24/09/2026',
-    atual: true,
     mudancas: [
       ['novo', 'Materiais: tabela de preços 2026, cardápio Freevix, folder de tecnologias, marca própria e Tracer E-tess em PDF, com abrir e baixar'],
       ['novo', 'Marca → Tecnologias & lentes: 12 ícones de tecnologia (ícone + lockup) e 12 desenhos de lente em SVG, com .zip'],
