@@ -20,11 +20,11 @@ Pesos por grupo: Display 700 · Section 600/500 · Body 400 · UI 500/400.
 
 | Token | Peso | Desktop | Tablet | Mobile | Line-height | Tracking |
 |---|---|---|---|---|---|---|
-| H1 | 700 | 64px | 40px | 40px | 100% | −0.02em |
-| H2 | 700 | 48px | 40px | 32px | 100% | −0.02em |
-| H3 | 700 | 40px | 32px | 28px | 100% | −0.02em |
-| H4 | 600 | 32px | 28px | 24px | 120% | −0.01em |
-| H5 | 500 | 24px | 22px | 20px | 120% | −0.01em |
+| H1 | 700 | 64px | 40px | 32px | 100% | −0.02em |
+| H2 | 700 | 48px | 40px | 28px | 100% | −0.02em |
+| H3 | 700 | 40px | 32px | 24px | 100% | −0.02em |
+| H4 | 600 | 32px | 28px | 20px | 120% | −0.01em |
+| H5 | 500 | 24px | 22px | 18px | 120% | −0.01em |
 | H6 | 500 | 20px | 18px | 16px | 120% | 0 |
 | Parágrafo | 400 | 16px | 16px | 16px | 150% | 0 |
 | Corpo bold | 600 | 16px | 16px | 16px | 150% | 0 |

@@ -13,7 +13,7 @@
       "name": "vixlens-brand",
       "source": "./plugins/vixlens-brand",
       "description": "Marca, documentos e comunicação B2B da Vixlens — skill mestre vixlens-design-system (paleta, tipografia, tokens, componentes, voz e vocabulário canônico) mais comunicado interno, manual de cliente e proposta comercial",
-      "version": "0.6.2",
+      "version": "0.6.3",
       "author": {
         "name": "Otávio Torres"
       },
@@ -31,7 +31,7 @@
       "name": "vixlens-ui",
       "source": "./plugins/vixlens-ui",
       "description": "Skills de interface Vixlens — arquitetura de UI em React + Tailwind fiel ao Design System e auditoria de 80 boas práticas de UI (tipografia, cores, botões, grid, ícones, imagens, formulários)",
-      "version": "0.4.1",
+      "version": "0.4.2",
       "author": {
         "name": "Otávio Torres"
       },

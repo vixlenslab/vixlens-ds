@@ -166,7 +166,11 @@ export default function TipografiaSection() {
       {/* Escala completa — equivalência desktop ↔ tablet ↔ mobile */}
       <SubTitle>Escala (Host Grotesk) — desktop ↔ tablet ↔ mobile</SubTitle>
       <p className="-mt-2 mb-5 max-w-2xl text-[13px] leading-relaxed text-gray-600">
-        Cada nível tem três tamanhos (H1 cai de <b className="text-vix-preto">64&nbsp;px → 40&nbsp;px → 40&nbsp;px</b>).
+        Cada nível tem três tamanhos (H1 cai de{' '}
+        <b className="text-vix-preto">
+          {DEVICES.map((d) => tokens.typography.scale.h1[d.key].replace('px', ' px')).join(' → ')}
+        </b>
+        ).
         Troque de aba para ver a escala inteira de cada aparelho no tamanho real, com o line-height e o tracking
         exatos. No mobile, a moldura tem a largura de um celular (375&nbsp;px).
       </p>

@@ -135,6 +135,23 @@ e entram no DS como padrão oficial.
 - Versão PATCH (v0.11.2), pela cadência do DS: é um token novo e compatível, sem quebrar nada.
 - v0.11.3 (pedido do Otávio): a escala vira abas Desktop · Tablet · Mobile, cada uma com
   a escala inteira em tamanho real, sem redução; o mobile vai numa moldura de 375px.
+- v0.11.4 (decisão do Otávio: 40px no mobile é muito): a escala do **mobile** desce um
+  degrau. H1 32, H2 28, H3 24, H4 20, H5 18, H6 16; corpo e UI sem mudança. Desktop e
+  tablet ficam iguais. Com isso o DS **diverge do site** (o site ainda usa H1 40 no
+  mobile); o ajuste no site é pedido separado.
+
+## Adendo 2026-09-25 — Tabela promocional do mês (PromoVix) em Materiais (v0.11.4)
+**Status:** concluído
+**Pedido por:** Otávio ("mesmo esquema da tabela de preço")
+- Card novo em Materiais → Produtos & tabelas, logo depois da tabela de preços:
+  "PromoVix — setembro 2026", A4, 6 págs, 11 MB, tag "Setembro", com abrir e baixar.
+- Arquivo: `assets/materiais/tabela-promocional-promovix.pdf`. Origem:
+  `C:\vixlens\outputs\imagens-novas\Promovix_setembro_2026.pdf`, enviado pelo Otávio.
+  As versões anteriores ficam no Drive, em `003 - Tabelas/002 - Tabela de promoção mensal/`.
+- Público, como a tabela de preços: é a PVO que o comercial já entrega às óticas.
+- **Rotina mensal:** trocar o PDF **mantendo o nome do arquivo**, para o link não
+  mudar. Atualizar em `PDFS` o `t` (mês), o `d` (validade), a `tag`, a `meta` e o `atualizado`.
+  Registrar no Changelog e fazer bump PATCH.
 
 ## Fora do escopo
 - Tabela interativa no site (busca/filtro).

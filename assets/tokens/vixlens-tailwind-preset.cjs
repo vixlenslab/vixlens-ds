@@ -129,7 +129,7 @@ module.exports = {
           }
         ],
         'vix-h1-m': [
-          '40px',
+          '32px',
           {
             'lineHeight': '1',
             'fontWeight': '700',
@@ -153,7 +153,7 @@ module.exports = {
           }
         ],
         'vix-h2-m': [
-          '32px',
+          '28px',
           {
             'lineHeight': '1',
             'fontWeight': '700',
@@ -177,7 +177,7 @@ module.exports = {
           }
         ],
         'vix-h3-m': [
-          '28px',
+          '24px',
           {
             'lineHeight': '1',
             'fontWeight': '700',
@@ -201,7 +201,7 @@ module.exports = {
           }
         ],
         'vix-h4-m': [
-          '24px',
+          '20px',
           {
             'lineHeight': '1.2',
             'fontWeight': '600',
@@ -225,7 +225,7 @@ module.exports = {
           }
         ],
         'vix-h5-m': [
-          '20px',
+          '18px',
           {
             'lineHeight': '1.2',
             'fontWeight': '500',

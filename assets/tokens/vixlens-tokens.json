@@ -191,7 +191,7 @@
       "h1": {
         "desktop": "64px",
         "tablet": "40px",
-        "mobile": "40px",
+        "mobile": "32px",
         "weight": 700,
         "lineHeight": "100%",
         "tracking": "-0.02em"
@@ -199,7 +199,7 @@
       "h2": {
         "desktop": "48px",
         "tablet": "40px",
-        "mobile": "32px",
+        "mobile": "28px",
         "weight": 700,
         "lineHeight": "100%",
         "tracking": "-0.02em"
@@ -207,7 +207,7 @@
       "h3": {
         "desktop": "40px",
         "tablet": "32px",
-        "mobile": "28px",
+        "mobile": "24px",
         "weight": 700,
         "lineHeight": "100%",
         "tracking": "-0.02em"
@@ -215,7 +215,7 @@
       "h4": {
         "desktop": "32px",
         "tablet": "28px",
-        "mobile": "24px",
+        "mobile": "20px",
         "weight": 600,
         "lineHeight": "120%",
         "tracking": "-0.01em"
@@ -223,7 +223,7 @@
       "h5": {
         "desktop": "24px",
         "tablet": "22px",
-        "mobile": "20px",
+        "mobile": "18px",
         "weight": 500,
         "lineHeight": "120%",
         "tracking": "-0.01em"
