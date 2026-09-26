@@ -135,6 +135,10 @@ e entram no DS como padrão oficial.
 - Versão PATCH (v0.11.2), pela cadência do DS: é um token novo e compatível, sem quebrar nada.
 - v0.11.3 (pedido do Otávio): a escala vira abas Desktop · Tablet · Mobile, cada uma com
   a escala inteira em tamanho real, sem redução; o mobile vai numa moldura de 375px.
+- v0.11.4 (decisão do Otávio: 40px no mobile é muito): a escala do **mobile** desce um
+  degrau. H1 32, H2 28, H3 24, H4 20, H5 18, H6 16; corpo e UI sem mudança. Desktop e
+  tablet ficam iguais. Com isso o DS **diverge do site** (o site ainda usa H1 40 no
+  mobile); o ajuste no site é pedido separado.
 
 ## Fora do escopo
 - Tabela interativa no site (busca/filtro).

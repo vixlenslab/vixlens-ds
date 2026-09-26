@@ -46,7 +46,7 @@ Escala print (Mont) — use em documentos:
 | Corpo | Regular 400 · 11pt · lh 1.4 | Parágrafos, listas, FAQ |
 | Caption | Light 300 · 9pt | Rodapé, legendas |
 
-Escala digital (Host Grotesk, estilo luma) — resumo: H1 700/64px, H2 700/48px, H3 700/40px, H4 600/32px, H5 500/24px, H6 500/20px, Parágrafo 400/16px lh1.5, Label 500/14px, Caption 400/12px, Overline 500/11px (caixa alta). Os headings colapsam no tablet (lg, 1024px) e no mobile: H1 64 → 40 → 40px. Specs completas em `references/componentes.md`.
+Escala digital (Host Grotesk, estilo luma) — resumo: H1 700/64px, H2 700/48px, H3 700/40px, H4 600/32px, H5 500/24px, H6 500/20px, Parágrafo 400/16px lh1.5, Label 500/14px, Caption 400/12px, Overline 500/11px (caixa alta). Os headings colapsam no tablet (lg, 1024px) e no mobile: H1 64 → 40 → 32px. Specs completas em `references/componentes.md`.
 
 ## Cores
 

@@ -28,9 +28,17 @@ const ORDEM = ['novo', 'melhoria', 'correcao']
 // Timeline — mais recente em cima. Dados reais do DS.
 const VERSOES = [
   {
-    versao: 'v0.11.3',
+    versao: 'v0.11.4',
     data: '25/09/2026',
     atual: true,
+    mudancas: [
+      ['melhoria', 'Tipografia: escala do mobile menor. H1 40 → 32, H2 32 → 28, H3 28 → 24, H4 24 → 20, H5 20 → 18 (H6 continua 16)'],
+      ['melhoria', 'Skills vixlens-ui-architect e vixlens-design-system com a escala mobile nova'],
+    ],
+  },
+  {
+    versao: 'v0.11.3',
+    data: '25/09/2026',
     mudancas: [
       ['melhoria', 'Tipografia: escala em abas Desktop, Tablet e Mobile, com a escala inteira de cada aparelho em tamanho real (mobile numa moldura de 375px)'],
     ],

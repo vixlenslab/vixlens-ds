@@ -50,11 +50,11 @@ Mont e Montserrat são de documento impresso. Nunca em saída web.
 
 | Grupo | Elemento | Desktop | Tablet | Mobile | Peso | Line height | Tracking |
 |---|---|---|---|---|---|---|---|
-| Display | H1 | 64px | 40px | 40px | 700 | 100% | -0.02em |
-| Display | H2 | 48px | 40px | 32px | 700 | 100% | -0.02em |
-| Display | H3 | 40px | 32px | 28px | 700 | 100% | -0.02em |
-| Seção | H4 | 32px | 28px | 24px | 600 | 120% | -0.01em |
-| Seção | H5 | 24px | 22px | 20px | 500 | 120% | -0.01em |
+| Display | H1 | 64px | 40px | 32px | 700 | 100% | -0.02em |
+| Display | H2 | 48px | 40px | 28px | 700 | 100% | -0.02em |
+| Display | H3 | 40px | 32px | 24px | 700 | 100% | -0.02em |
+| Seção | H4 | 32px | 28px | 20px | 600 | 120% | -0.01em |
+| Seção | H5 | 24px | 22px | 18px | 500 | 120% | -0.01em |
 | Seção | H6 | 20px | 18px | 16px | 500 | 120% | 0em |
 | Corpo | Parágrafo | 16px | 16px | 16px | 400 | 150% | 0em |
 | Corpo | Bold | 16px | 16px | 16px | 600 | 150% | 0em |
