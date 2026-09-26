@@ -1,9 +1,15 @@
-import { Check } from '@phosphor-icons/react'
+import { Check, Desktop, DeviceMobile, DeviceTablet } from '@phosphor-icons/react'
 import { Section, SubTitle } from '../Section.jsx'
-import { CopyValue } from '../Copy.jsx'
+import { CodeBlock, CopyValue } from '../Copy.jsx'
 import tokens from '../../data/tokens.js'
 
-const scale = tokens.typography.scale
+// 'comment' no JSON documenta os breakpoints; não é nível da escala.
+const LEVELS = Object.entries(tokens.typography.scale).filter(([k]) => k !== 'comment')
+const DEVICES = [
+  { key: 'desktop', label: 'Desktop', faixa: 'xl · a partir de 1280 px', Icon: Desktop },
+  { key: 'tablet', label: 'Tablet', faixa: 'lg · 1024 a 1279 px', Icon: DeviceTablet },
+  { key: 'mobile', label: 'Mobile', faixa: 'base · abaixo de 1024 px', Icon: DeviceMobile },
+]
 const META = {
   h1: { name: 'H1 · Display', tracking: '-0.02em' },
   h2: { name: 'H2 · Display', tracking: '-0.02em' },
@@ -20,7 +26,7 @@ const META = {
 const px = (v) => parseInt(v, 10)
 const lhNum = (v) => (v ? px(v) / 100 : 1.15)
 // escala real preservada: fator único por linha p/ caber sem perder a proporção desktop↔mobile
-const CAP = 60
+const CAP = 48
 const factor = (dpx) => Math.min(1, CAP / px(dpx))
 
 export default function TipografiaSection() {
@@ -97,16 +103,26 @@ export default function TipografiaSection() {
         </div>
       </div>
 
-      {/* Escala completa — equivalência desktop ↔ mobile */}
-      <SubTitle>Escala (Host Grotesk) — desktop ↔ mobile</SubTitle>
-      <p className="-mt-2 mb-6 max-w-2xl text-[13px] leading-relaxed text-gray-600">
-        Cada nível colapsa de desktop para mobile mantendo a proporção. As amostras abaixo estão
-        renderizadas na escala real (H1 cai de <b className="text-vix-preto">64&nbsp;px → 40&nbsp;px</b>),
-        com o line-height e o tracking exatos de cada nível.
+      {/* Escala completa — equivalência desktop ↔ tablet ↔ mobile */}
+      <SubTitle>Escala (Host Grotesk) — desktop ↔ tablet ↔ mobile</SubTitle>
+      <p className="-mt-2 mb-5 max-w-2xl text-[13px] leading-relaxed text-gray-600">
+        Cada nível tem três tamanhos e colapsa mantendo a proporção. As amostras estão na escala real
+        (H1 cai de <b className="text-vix-preto">64&nbsp;px → 40&nbsp;px → 40&nbsp;px</b>), com o line-height e o
+        tracking exatos de cada nível.
       </p>
+      <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
+        {DEVICES.map((d) => (
+          <div key={d.key} className="flex items-center gap-3 rounded-lg bg-vix-cinza-card px-3.5 py-3">
+            <d.Icon size={20} className="shrink-0 text-vix-preto" aria-hidden="true" />
+            <div>
+              <div className="text-[13px] font-bold text-vix-preto">{d.label}</div>
+              <div className="font-mono text-[11px] text-gray-600">{d.faixa}</div>
+            </div>
+          </div>
+        ))}
+      </div>
       <div className="flex flex-col gap-3">
-        {Object.entries(scale).map(([key, s]) => {
-          const same = s.desktop === s.mobile
+        {LEVELS.map(([key, s]) => {
           const f = factor(s.desktop)
           const lh = lhNum(s.lineHeight)
           const tk = META[key].tracking
@@ -116,42 +132,55 @@ export default function TipografiaSection() {
               <div className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-2">
                 <div className="mr-1 text-[13px] font-bold text-vix-preto">{META[key].name}</div>
                 <span className="rounded-full bg-vix-preto px-2.5 py-0.5 font-mono text-[11px] font-medium text-white">
-                  {s.desktop} → {s.mobile}
+                  {s.desktop} → {s.tablet} → {s.mobile}
                 </span>
                 <span className="rounded-full bg-gray-100 px-2.5 py-0.5 font-mono text-[11px] text-gray-600">peso {s.weight}</span>
                 <span className="rounded-full bg-gray-100 px-2.5 py-0.5 font-mono text-[11px] text-gray-600">lh {s.lineHeight || 'auto'}</span>
                 <span className="rounded-full bg-gray-100 px-2.5 py-0.5 font-mono text-[11px] text-gray-600">track {tk}</span>
               </div>
               {/* amostras lado a lado, na proporção real */}
-              <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:gap-10">
-                <div className="min-w-0 flex-1">
-                  <div className="mb-1.5 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.1em] text-gray-600">
-                    Desktop <span className="font-mono text-vix-azul">{s.desktop}</span>
-                  </div>
-                  <div
-                    className="truncate text-vix-preto"
-                    style={{ fontSize: px(s.desktop) * f, fontWeight: s.weight, lineHeight: lh, letterSpacing: tk }}
-                  >
-                    Vixlens
-                  </div>
-                </div>
-                <div className="min-w-0 flex-1 border-t border-gray-100 pt-4 sm:border-l sm:border-t-0 sm:pl-10 sm:pt-0">
-                  <div className="mb-1.5 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.1em] text-gray-600">
-                    Mobile <span className="font-mono text-vix-azul">{s.mobile}</span>
-                    {same && <span className="font-sans font-medium normal-case tracking-normal text-gray-600">· igual</span>}
-                  </div>
-                  <div
-                    className="truncate text-vix-preto"
-                    style={{ fontSize: px(s.mobile) * f, fontWeight: s.weight, lineHeight: lh, letterSpacing: tk }}
-                  >
-                    Vixlens
-                  </div>
-                </div>
+              <div className="grid grid-cols-1 gap-5 xl:grid-cols-3 xl:items-end xl:gap-0">
+                {DEVICES.map((d, i) => {
+                  const size = s[d.key]
+                  const igual = i > 0 && size === s[DEVICES[i - 1].key]
+                  return (
+                    <div
+                      key={d.key}
+                      className={`min-w-0 ${i > 0 ? 'border-t border-gray-100 pt-4 xl:border-l xl:border-t-0 xl:pl-6 xl:pt-0' : ''} ${i < 2 ? 'xl:pr-6' : ''}`}
+                    >
+                      <div className="mb-1.5 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.1em] text-gray-600">
+                        {d.label} <span className="font-mono text-vix-azul">{size}</span>
+                        {igual && <span className="font-sans font-medium normal-case tracking-normal text-gray-600">· igual</span>}
+                      </div>
+                      <div
+                        className="truncate text-vix-preto"
+                        style={{ fontSize: px(size) * f, fontWeight: s.weight, lineHeight: lh, letterSpacing: tk }}
+                      >
+                        Vixlens
+                      </div>
+                    </div>
+                  )
+                })}
               </div>
             </div>
           )
         })}
       </div>
+
+      <SubTitle className="mt-10">Como aplicar</SubTitle>
+      <p className="-mt-2 mb-4 max-w-2xl text-[13px] leading-relaxed text-gray-600">
+        Cada nível vira três classes: <span className="font-mono text-vix-azul">text-vix-h1-m</span> (mobile),{' '}
+        <span className="font-mono text-vix-azul">text-vix-h1-t</span> (tablet) e{' '}
+        <span className="font-mono text-vix-azul">text-vix-h1</span> (desktop). Comece pelo mobile e suba com os prefixos
+        do Tailwind. Em CSS puro: <span className="font-mono text-vix-azul">--vix-font-h1-mobile</span>,{' '}
+        <span className="font-mono text-vix-azul">-tablet</span> e <span className="font-mono text-vix-azul">--vix-font-h1</span>.
+      </p>
+      <CodeBlock
+        className="mb-14"
+        code={`<h1 className="text-vix-h1-m lg:text-vix-h1-t xl:text-vix-h1">…</h1>
+<h2 className="text-vix-h2-m lg:text-vix-h2-t xl:text-vix-h2">…</h2>
+<h3 className="text-vix-h3-m lg:text-vix-h3-t xl:text-vix-h3">…</h3>`}
+      />
 
       {/* Escala utilitária Tailwind/shadcn — ligada ao token */}
       <SubTitle className="mt-14">Escala utilitária (Tailwind / shadcn)</SubTitle>

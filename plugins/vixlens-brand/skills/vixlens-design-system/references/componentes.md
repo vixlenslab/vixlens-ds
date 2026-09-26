@@ -18,21 +18,21 @@ Specs extraídas do Figma Vixlens 3.0 e de https://ds.vixlens.com.br. Consulte a
 
 Pesos por grupo: Display 700 · Section 600/500 · Body 400 · UI 500/400.
 
-| Token | Peso | Desktop | Mobile | Line-height | Tracking |
-|---|---|---|---|---|---|
-| H1 | 700 | 64px | 40px | 100% | −0.02em |
-| H2 | 700 | 48px | 32px | 100% | −0.02em |
-| H3 | 700 | 40px | 28px | 100% | −0.02em |
-| H4 | 600 | 32px | 24px | 120% | −0.01em |
-| H5 | 500 | 24px | 20px | 120% | −0.01em |
-| H6 | 500 | 20px | 16px | 120% | 0 |
-| Parágrafo | 400 | 16px | 16px | 150% | 0 |
-| Corpo bold | 600 | 16px | 16px | 150% | 0 |
-| Label | 500 | 14px | 14px | — | +0.02em |
-| Caption | 400 | 12px | 12px | — | 0 |
-| Overline | 500 | 11px | 11px | — | +0.08em (CAIXA ALTA) |
+| Token | Peso | Desktop | Tablet | Mobile | Line-height | Tracking |
+|---|---|---|---|---|---|---|
+| H1 | 700 | 64px | 40px | 40px | 100% | −0.02em |
+| H2 | 700 | 48px | 40px | 32px | 100% | −0.02em |
+| H3 | 700 | 40px | 32px | 28px | 100% | −0.02em |
+| H4 | 600 | 32px | 28px | 24px | 120% | −0.01em |
+| H5 | 500 | 24px | 22px | 20px | 120% | −0.01em |
+| H6 | 500 | 20px | 18px | 16px | 120% | 0 |
+| Parágrafo | 400 | 16px | 16px | 16px | 150% | 0 |
+| Corpo bold | 600 | 16px | 16px | 16px | 150% | 0 |
+| Label | 500 | 14px | 14px | 14px | — | +0.02em |
+| Caption | 400 | 12px | 12px | 12px | — | 0 |
+| Overline | 500 | 11px | 11px | 11px | — | +0.08em (CAIXA ALTA) |
 
-Host Grotesk via Google Fonts, pesos 300–800.
+Host Grotesk via Google Fonts, pesos 300–800. Tablet = a partir de `lg` (1024px), desktop = a partir de `xl` (1280px), mobile abaixo de 1024px. Classes: `text-vix-h1-m lg:text-vix-h1-t xl:text-vix-h1`.
 
 ## Botões
 

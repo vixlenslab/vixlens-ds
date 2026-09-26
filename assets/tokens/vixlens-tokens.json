@@ -187,8 +187,10 @@
       "comment": "Só impressos. Nunca em web."
     },
     "scale": {
+      "comment": "desktop a partir de xl (1280px) · tablet a partir de lg (1024px) · mobile abaixo de 1024px. Uso: text-vix-h1-m lg:text-vix-h1-t xl:text-vix-h1",
       "h1": {
         "desktop": "64px",
+        "tablet": "40px",
         "mobile": "40px",
         "weight": 700,
         "lineHeight": "100%",
@@ -196,6 +198,7 @@
       },
       "h2": {
         "desktop": "48px",
+        "tablet": "40px",
         "mobile": "32px",
         "weight": 700,
         "lineHeight": "100%",
@@ -203,6 +206,7 @@
       },
       "h3": {
         "desktop": "40px",
+        "tablet": "32px",
         "mobile": "28px",
         "weight": 700,
         "lineHeight": "100%",
@@ -210,6 +214,7 @@
       },
       "h4": {
         "desktop": "32px",
+        "tablet": "28px",
         "mobile": "24px",
         "weight": 600,
         "lineHeight": "120%",
@@ -217,6 +222,7 @@
       },
       "h5": {
         "desktop": "24px",
+        "tablet": "22px",
         "mobile": "20px",
         "weight": 500,
         "lineHeight": "120%",
@@ -224,6 +230,7 @@
       },
       "h6": {
         "desktop": "20px",
+        "tablet": "18px",
         "mobile": "16px",
         "weight": 500,
         "lineHeight": "120%",
@@ -231,6 +238,7 @@
       },
       "paragraph": {
         "desktop": "16px",
+        "tablet": "16px",
         "mobile": "16px",
         "weight": 400,
         "lineHeight": "150%",
@@ -238,6 +246,7 @@
       },
       "bold": {
         "desktop": "16px",
+        "tablet": "16px",
         "mobile": "16px",
         "weight": 600,
         "lineHeight": "150%",
@@ -245,18 +254,21 @@
       },
       "label": {
         "desktop": "14px",
+        "tablet": "14px",
         "mobile": "14px",
         "weight": 500,
         "tracking": "0.02em"
       },
       "caption": {
         "desktop": "12px",
+        "tablet": "12px",
         "mobile": "12px",
         "weight": 400,
         "tracking": "0em"
       },
       "overline": {
         "desktop": "11px",
+        "tablet": "11px",
         "mobile": "11px",
         "weight": 500,
         "tracking": "0.08em"
