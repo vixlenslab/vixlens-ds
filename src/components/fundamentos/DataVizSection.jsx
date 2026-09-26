@@ -211,7 +211,7 @@ export default function DataVizSection() {
 
         {/* Nota */}
         <div className="flex flex-col justify-center rounded-vix-card border border-dashed border-gray-200 bg-vix-cinza-card p-6">
-          <div className="text-[13px] font-bold uppercase tracking-[0.1em] text-gray-600">Leitura</div>
+          <div className="text-[13px] font-bold uppercase tracking-widest text-gray-600">Leitura</div>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
             Todo gráfico usa <span className="font-mono">ChartContainer</span> com um{' '}
             <span className="font-mono">config</span> — o container gera as vars{' '}
@@ -228,7 +228,7 @@ export default function DataVizSection() {
         <div className="rounded-vix-card border border-gray-200 bg-white p-6">
           <div className="mb-3 flex items-center gap-2">
             <CheckCircle size={20} weight="fill" className="text-green-600" />
-            <span className="text-[13px] font-bold uppercase tracking-[0.1em] text-vix-preto">Faça</span>
+            <span className="text-[13px] font-bold uppercase tracking-widest text-vix-preto">Faça</span>
           </div>
           <ul className="space-y-2 text-sm leading-relaxed text-muted-foreground">
             <li>Paleta categórica para diferenciar séries.</li>
@@ -240,7 +240,7 @@ export default function DataVizSection() {
         <div className="rounded-vix-card border border-gray-200 bg-white p-6">
           <div className="mb-3 flex items-center gap-2">
             <XCircle size={20} weight="fill" className="text-red-500" />
-            <span className="text-[13px] font-bold uppercase tracking-[0.1em] text-vix-preto">Evite</span>
+            <span className="text-[13px] font-bold uppercase tracking-widest text-vix-preto">Evite</span>
           </div>
           <ul className="space-y-2 text-sm leading-relaxed text-muted-foreground">
             <li>Amarelo como texto fino sobre branco.</li>

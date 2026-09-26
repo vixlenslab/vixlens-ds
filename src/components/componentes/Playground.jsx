@@ -19,13 +19,13 @@ export function Playground({ title, controls = [], render, code }) {
   return (
     <div className="overflow-hidden rounded-vix-card border border-gray-200 bg-white">
       {title && (
-        <div className="border-b border-gray-100 px-5 py-3 text-[11px] font-bold uppercase tracking-[0.1em] text-gray-600">
+        <div className="border-b border-gray-100 px-5 py-3 text-[11px] font-bold uppercase tracking-widest text-gray-600">
           {title}
         </div>
       )}
 
       {/* Preview */}
-      <div className="flex min-h-[140px] items-center justify-center overflow-hidden bg-vix-cinza-card/60 px-6 py-8 [&>*]:max-w-full">
+      <div className="flex min-h-[140px] items-center justify-center overflow-hidden bg-vix-cinza-card/60 px-6 py-8 *:max-w-full">
         {render(state)}
       </div>
 
@@ -49,7 +49,7 @@ export function Playground({ title, controls = [], render, code }) {
                     id={id}
                     value={state[c.key]}
                     onChange={(e) => set(c.key, e.target.value)}
-                    className="appearance-none rounded-vix-input border border-gray-200 bg-white py-1.5 pl-3 pr-10 text-sm text-vix-preto transition-[color,box-shadow] focus:border-vix-preto focus:outline-none focus:ring-[3px] focus:ring-ring/30"
+                    className="appearance-none rounded-vix-input border border-gray-200 bg-white py-1.5 pl-3 pr-10 text-sm text-vix-preto transition-[color,box-shadow] focus:border-vix-preto focus:outline-hidden focus:ring-[3px] focus:ring-ring/30"
                   >
                     {(c.options || []).map((o) => (
                       <option key={o.value} value={o.value}>

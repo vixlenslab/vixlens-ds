@@ -60,7 +60,7 @@ export default function CardsSection() {
       <div className="mb-14 grid grid-cols-2 gap-3 md:grid-cols-3">
         {SPECS.map(([k, v]) => (
           <div key={k} className="rounded-lg bg-vix-cinza-card px-3.5 py-3">
-            <div className="text-[10px] font-bold uppercase tracking-[0.1em] text-gray-600">{k}</div>
+            <div className="text-[10px] font-bold uppercase tracking-widest text-gray-600">{k}</div>
             <div className="mt-0.5 text-[13px] font-bold text-vix-preto">{v}</div>
           </div>
         ))}
@@ -121,10 +121,10 @@ export default function CardsSection() {
       <SubTitle>Card Hero — linha de produto (foto + overlay)</SubTitle>
       <div className="relative overflow-hidden rounded-2xl">
         <img src="/fotos/Frame 33-1.jpg" alt="Linha Freevix" className="h-[340px] w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-r from-black/80 via-black/40 to-transparent" />
         <div className="absolute inset-0 flex flex-col justify-end gap-3 p-8 md:p-12">
           <span className="w-fit rounded-vix-chip bg-vix-amarelo px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.08em] text-vix-preto">Linha Freevix</span>
-          <div className="max-w-md text-3xl font-bold leading-tight text-white md:text-4xl">Lentes para cada perfil de cliente.</div>
+          <div className="max-w-md text-3xl font-bold leading-tight text-white md:text-4xl md:leading-10">Lentes para cada perfil de cliente.</div>
           <Button variant="dark" className="w-fit gap-2">Ver linha completa <ArrowRight size={16} weight="bold" /></Button>
         </div>
       </div>

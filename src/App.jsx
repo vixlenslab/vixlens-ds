@@ -42,7 +42,7 @@ export default function App() {
       <button
         onClick={() => setNavOpen(true)}
         aria-label="Abrir menu"
-        className="fixed right-4 top-4 z-20 flex h-11 w-11 items-center justify-center rounded-vix-input border border-gray-200 bg-white shadow-sm md:hidden"
+        className="fixed right-4 top-4 z-20 flex h-11 w-11 items-center justify-center rounded-vix-input border border-gray-200 bg-white shadow-xs md:hidden"
       >
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
           <path d="M3 6h18M3 12h18M3 18h18" />
@@ -79,7 +79,7 @@ export default function App() {
         <ContribuirSection />
 
         <footer className="border-t border-gray-100 px-8 py-10 text-center text-[13px] text-muted-foreground md:px-16">
-          Vixlens Design System · v0.12.1 · ds.vixlens.com.br
+          Vixlens Design System · v0.13.0 · ds.vixlens.com.br
         </footer>
       </main>
 

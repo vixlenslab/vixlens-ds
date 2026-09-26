@@ -138,7 +138,7 @@ export default function PlaygroundSection() {
             { key: 'disabled', label: 'disabled', type: 'toggle', default: false },
           ]}
           render={({ disabled }) => (
-            <div className="w-full max-w-xs space-y-1.5 text-left">
+            <div className="w-full max-w-xs text-left [&>:not([hidden])~:not([hidden])]:mt-1.5">
               <Label htmlFor="pg-input-email">E-mail</Label>
               <Input id="pg-input-email" placeholder="voce@vixlens.com" disabled={disabled} />
             </div>

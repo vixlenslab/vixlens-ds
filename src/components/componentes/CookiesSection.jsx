@@ -59,7 +59,7 @@ export default function CookiesSection() {
             <button
               type="button"
               onClick={() => setEscolha(null)}
-              className="text-sm font-semibold text-vix-preto underline underline-offset-2 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-vix-amarelo"
+              className="text-sm font-semibold text-vix-preto underline underline-offset-2 focus-visible:outline-hidden focus-visible:ring-[3px] focus-visible:ring-vix-amarelo"
             >
               Cookies (reabrir o aviso)
             </button>
@@ -86,7 +86,7 @@ export default function CookiesSection() {
           ['Entrada', 'Sobe 24px + fade · 0,35 s'],
         ].map(([k, v]) => (
           <div key={k} className="rounded-lg bg-vix-cinza-card px-3.5 py-3">
-            <div className="text-[10px] font-bold uppercase tracking-[0.1em] text-gray-600">{k}</div>
+            <div className="text-[10px] font-bold uppercase tracking-widest text-gray-600">{k}</div>
             <div className="mt-0.5 text-[13px] font-bold text-vix-preto">{v}</div>
           </div>
         ))}

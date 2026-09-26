@@ -28,9 +28,19 @@ const ORDEM = ['novo', 'melhoria', 'correcao']
 // Timeline — mais recente em cima. Dados reais do DS.
 const VERSOES = [
   {
-    versao: 'v0.12.1',
+    versao: 'v0.13.0',
     data: '26/09/2026',
     atual: true,
+    mudancas: [
+      ['melhoria', 'Tailwind 4.3 (a versão mais recente): o site do DS consome o mesmo @theme que as telas recebem, sem tailwind.config.js. Visual idêntico ao Tailwind 3, medido elemento a elemento em 375, 1024 e 1440px'],
+      ['melhoria', 'Componentes da biblioteca passam a usar classes do Tailwind 4 (shadow-xs, outline-hidden, ring-3...). Tokens e preset seguem servindo telas em Tailwind 3, sem mudança'],
+      ['melhoria', 'Comece aqui e README: instalação em Tailwind 4 (@import + @source) e o caminho do Tailwind 3 para telas que ainda não migraram'],
+      ['correcao', 'Tema Tailwind 4 (vixlens-ds/tailwind.css): borda padrão dentro de @layer base, para não apagar border-vix-*, e cursor de mãozinha nos botões como no Tailwind 3'],
+    ],
+  },
+  {
+    versao: 'v0.12.1',
+    data: '26/09/2026',
     mudancas: [
       ['correcao', 'Cor vix-cinza (#606F7F) volta a existir: placeholder do Input, texto de apoio dos cards e legenda da Tipografia estavam sem cor desde a consolidação do preset'],
     ],
