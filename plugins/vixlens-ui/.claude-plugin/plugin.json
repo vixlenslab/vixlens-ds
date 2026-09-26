@@ -1,7 +1,7 @@
 {
   "name": "vixlens-ui",
-  "version": "0.4.2",
-  "description": "Skills de interface Vixlens — arquitetura de UI em React + Tailwind fiel ao Design System e auditoria de 80 boas práticas de UI (tipografia, cores, botões, grid, ícones, imagens, formulários)",
+  "version": "0.5.0",
+  "description": "Skills de interface Vixlens — arquitetura de UI em React + Tailwind fiel ao Design System, auditoria de 80 boas práticas de UI e criação de páginas e landing pages no site vixlens.com.br (caminho ou subdomínio)",
   "author": {
     "name": "Otávio Torres"
   },
@@ -13,6 +13,8 @@
     "react",
     "tailwind",
     "auditoria",
-    "boas-praticas"
+    "boas-praticas",
+    "landing-page",
+    "site"
   ]
 }
