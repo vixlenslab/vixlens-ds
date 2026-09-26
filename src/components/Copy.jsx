@@ -41,7 +41,7 @@ export function useCopy(timeout = 1400) {
 }
 
 const TONE = {
-  light: { hover: 'hover:bg-black/[0.06]', icon: 'text-gray-600', ok: 'text-green-600' },
+  light: { hover: 'hover:bg-black/6', icon: 'text-gray-600', ok: 'text-green-600' },
   dark: { hover: 'hover:bg-white/10', icon: 'text-white/50', ok: 'text-vix-amarelo' },
 }
 
@@ -73,7 +73,7 @@ export function CopyButton({ value, label, tone = 'light', size = 14, className 
 export function CodeBlock({ code, className = '' }) {
   return (
     <div className={`group relative overflow-hidden rounded-vix-input bg-vix-preto ${className}`}>
-      <pre className="overflow-x-auto whitespace-pre-wrap break-words px-4 py-3.5 pr-12 font-mono text-[12.5px] leading-relaxed text-white/90">
+      <pre className="overflow-x-auto whitespace-pre-wrap wrap-break-word px-4 py-3.5 pr-12 font-mono text-[12.5px] leading-relaxed text-white/90">
         <code>{code}</code>
       </pre>
       <CopyButton value={code} label="código" tone="dark" className="absolute right-2 top-2" />

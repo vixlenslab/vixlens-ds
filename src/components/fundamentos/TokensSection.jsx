@@ -71,7 +71,7 @@ export default function TokensSection() {
         </p>
         <div className="mt-4 flex items-center gap-3 rounded-vix-input bg-vix-preto px-4 py-3">
           <span className="select-none font-mono text-xs text-vix-amarelo">$</span>
-          <code className="min-w-0 flex-1 whitespace-pre-wrap break-words font-mono text-[13px] text-white">
+          <code className="min-w-0 flex-1 whitespace-pre-wrap wrap-break-word font-mono text-[13px] text-white">
             npx shadcn@latest init --preset b6GgLgzgW
           </code>
           <CopyButton value="npx shadcn@latest init --preset b6GgLgzgW" label="comando" tone="dark" className="ml-auto" />

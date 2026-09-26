@@ -137,7 +137,7 @@ export default function AcessibilidadeSection() {
       {/* Resumo — selo + contagem honesta, computada de verdade */}
       <div className="mb-14 grid gap-7 rounded-vix-card border border-gray-200 bg-vix-cinza-card p-7 md:grid-cols-[auto_1fr] md:items-center md:gap-10 md:p-9">
         <div className="flex flex-col items-start gap-3">
-          <span className="inline-flex items-center gap-2 rounded-vix-chip bg-vix-preto px-4 py-2 text-sm font-bold uppercase tracking-[0.1em] text-white">
+          <span className="inline-flex items-center gap-2 rounded-vix-chip bg-vix-preto px-4 py-2 text-sm font-bold uppercase tracking-widest text-white">
             {allAA ? (
               <CheckCircle weight="fill" className="h-5 w-5 text-[#30D389]" />
             ) : (
@@ -179,7 +179,7 @@ export default function AcessibilidadeSection() {
       <SubTitle>Regras</SubTitle>
       <div className="grid grid-cols-1 gap-[30px] md:grid-cols-2">
         <div className="rounded-vix-card border border-gray-200 bg-white p-6">
-          <div className="mb-4 flex items-center gap-2 text-[13px] font-bold uppercase tracking-[0.1em] text-[#00782D]">
+          <div className="mb-4 flex items-center gap-2 text-[13px] font-bold uppercase tracking-widest text-[#00782D]">
             <CheckCircle weight="fill" className="h-5 w-5" />
             Faça
           </div>
@@ -193,7 +193,7 @@ export default function AcessibilidadeSection() {
           </ul>
         </div>
         <div className="rounded-vix-card border border-gray-200 bg-white p-6">
-          <div className="mb-4 flex items-center gap-2 text-[13px] font-bold uppercase tracking-[0.1em] text-red-600">
+          <div className="mb-4 flex items-center gap-2 text-[13px] font-bold uppercase tracking-widest text-red-600">
             <XCircle weight="fill" className="h-5 w-5" />
             Evite
           </div>
@@ -236,7 +236,7 @@ export default function AcessibilidadeSection() {
             readOnly
             value="Campo com foco"
             aria-label="Exemplo de campo com anel de foco"
-            className="rounded-vix-input border border-vix-preto bg-white px-4 py-2.5 text-sm text-vix-preto outline-none ring-[3px] ring-ring/30"
+            className="rounded-vix-input border border-vix-preto bg-white px-4 py-2.5 text-sm text-vix-preto outline-hidden ring-[3px] ring-ring/30"
           />
           <span className="font-mono text-[11px] text-gray-600">ring-[3px] · ring-ring/30</span>
         </div>

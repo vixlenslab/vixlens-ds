@@ -70,7 +70,7 @@ function EscalaDoAparelho({ device }) {
           </div>
         </div>
         <div
-          className={`min-w-0 break-words text-vix-preto ${key === 'overline' ? 'uppercase' : ''}`}
+          className={`min-w-0 wrap-break-word text-vix-preto ${key === 'overline' ? 'uppercase' : ''}`}
           style={{ fontSize: size, fontWeight: s.weight, lineHeight: lhNum(s.lineHeight), letterSpacing: tk }}
         >
           {AMOSTRA[key]}
@@ -82,7 +82,7 @@ function EscalaDoAparelho({ device }) {
   if (!mobile) return <div className="rounded-vix-card border border-gray-200 px-5 md:px-8">{linhas}</div>
   return (
     <div className="rounded-vix-card bg-vix-cinza-card p-4 md:p-8">
-      <div className="mx-auto w-full max-w-[375px] rounded-[28px] border border-gray-200 bg-white px-4 shadow-sm">
+      <div className="mx-auto w-full max-w-[375px] rounded-[28px] border border-gray-200 bg-white px-4 shadow-xs">
         {linhas}
       </div>
     </div>
@@ -144,10 +144,10 @@ export default function TipografiaSection() {
       <SubTitle>Exemplo em uso</SubTitle>
       <div className="mb-14 rounded-vix-card border border-gray-200 bg-white p-8 md:p-12">
         <div className="text-[11px] font-medium uppercase tracking-[0.08em] text-vix-azul">Laboratório óptico</div>
-        <h3 className="mt-3 text-4xl font-bold leading-[1.05] tracking-[-0.02em] text-vix-preto md:text-6xl">
+        <h3 className="mt-3 text-4xl font-bold leading-[1.05] tracking-[-0.02em] text-vix-preto md:text-6xl md:leading-none">
           Sua ótica cresce com a Matriz Marca Própria.
         </h3>
-        <p className="mt-5 max-w-2xl text-lg leading-[1.5] text-gray-600">
+        <p className="mt-5 max-w-2xl text-lg leading-normal text-gray-600">
           Material, índice e desenho da lente espelhados automaticamente. O consultor abre, confere e
           envia — sem renegociação, sem aditivo. A tipografia carrega a autoridade técnica sem gritar.
         </p>

@@ -309,9 +309,10 @@ export const CarouselTrack = React.forwardRef(({ className, children, ...props }
       ref={setRefs}
       data-inview={inView}
       className={cn(
-        // [overflow-x:auto] e não overflow-x-auto: páginas que estilizam a barra de .overflow-x-auto
-        // (o próprio site do DS faz isso) não podem trazer a barra de volta.
-        "group/carousel -my-2 flex snap-x snap-mandatory gap-6 py-2 [overflow-x:auto] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+        // [overflow-x:auto] e não overflow-x-auto: telas que estilizam a barra de .overflow-x-auto
+        // (o próprio site do DS faz isso) não podem trazer a barra de volta. O codemod do
+        // Tailwind 4 "canoniza" isto para overflow-x-auto; não aceitar essa troca.
+        "group/carousel -my-2 flex snap-x snap-mandatory gap-6 py-2 [overflow-x:auto] scrollbar-none [&::-webkit-scrollbar]:hidden",
         className
       )}
       {...props}
@@ -332,7 +333,7 @@ export const CarouselItem = React.forwardRef(({ size = "cards", index = 0, class
     className={cn(
       "shrink-0 snap-start opacity-0 transition-transform duration-300 ease-out hover:-translate-y-1.5",
       "group-data-[inview=true]/carousel:opacity-100 group-data-[inview=true]/carousel:animate-in group-data-[inview=true]/carousel:fade-in group-data-[inview=true]/carousel:slide-in-from-bottom-6 group-data-[inview=true]/carousel:duration-500 group-data-[inview=true]/carousel:fill-mode-backwards",
-      "motion-reduce:!animate-none motion-reduce:!opacity-100 motion-reduce:hover:translate-y-0",
+      "motion-reduce:animate-none! motion-reduce:opacity-100! motion-reduce:hover:translate-y-0",
       carouselItemWidth[size] ?? size,
       className
     )}
@@ -380,7 +381,7 @@ export function CarouselNav({
 
   const t = TONES[tone] ?? TONES.light
   const compact = count > MAX_MOBILE_DOTS
-  const focusRing = "focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-vix-amarelo"
+  const focusRing = "focus-visible:outline-hidden focus-visible:ring-[3px] focus-visible:ring-vix-amarelo"
 
   const arrow = (enabled) =>
     cn(

@@ -43,28 +43,39 @@ npm install github:vixlenslab/vixlens-ds#main
 
 O pacote se builda sozinho na instalação (script `prepare`).
 
-**2. Herdar o Tailwind** — `tailwind.config.js` da tela:
-
-```js
-import vixlens from 'vixlens-ds/tailwind.preset.js'
-
-export default {
-  presets: [vixlens],
-  content: [
-    './src/**/*.{js,jsx,ts,tsx}',
-    './node_modules/vixlens-ds/dist-lib/**/*.js', // sem isto as classes dos componentes somem
-  ],
-}
-```
-
-**3. Importar o tema** — primeira linha do `globals.css`:
+**2. Herdar o Tailwind e o tema** — no `globals.css` da tela (Tailwind 4, o padrão):
 
 ```css
+@import 'tailwindcss';
+@import 'tw-animate-css';          /* animate-in/out dos componentes */
+@import 'vixlens-ds/theme.css';    /* valores das CSS vars (tokens + shadcn) */
+@import 'vixlens-ds/tailwind.css'; /* @theme: as vars viram bg-vix-*, rounded-vix-*, text-vix-h1... */
+
+/* O Tailwind 4 não varre node_modules: sem isto as classes dos componentes somem. */
+@source '../node_modules/vixlens-ds/dist-lib';
+```
+
+Sem `tailwind.config.js`: o tema inteiro vem do `@theme` gerado de `vixlens-tokens.json`.
+
+**3. Tela ainda em Tailwind 3?** Tokens e preset continuam servindo o v3, iguais a antes:
+
+```js
+// tailwind.config.js
+import vixlens from 'vixlens-ds/tailwind.preset.js'
+export default { presets: [vixlens], content: ['./src/**/*.{js,jsx,ts,tsx}'] }
+```
+
+```css
+/* globals.css */
 @import 'vixlens-ds/theme.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 ```
+
+Os **componentes** (`import { Button } from 'vixlens-ds'`) passaram a usar classes do Tailwind 4
+(`shadow-xs`, `outline-hidden`, `ring-3`...) na v0.13.0. Em tela v3, use tokens e preset; para
+usar os componentes, migre a tela (STACK.md: o DS sobe primeiro, as telas vêm atrás).
 
 **4. Usar**
 
@@ -72,7 +83,7 @@ export default {
 import { Button, Card, CardHeader, cn } from 'vixlens-ds'
 ```
 
-São 142 exports (35 componentes shadcn on-brand + `cn`). Os tokens crus, se precisar:
+São 154 exports (componentes shadcn on-brand, Carrossel, Aviso de cookies e `cn`). Os tokens crus, se precisar:
 `import tokens from 'vixlens-ds/tokens'`.
 
 ### Por que o preset e não só o CSS

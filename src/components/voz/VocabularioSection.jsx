@@ -55,8 +55,8 @@ export default function VocabularioSection() {
         <table className="w-full border-collapse text-[13px]">
           <thead>
             <tr className="bg-vix-preto">
-              <th className="whitespace-nowrap px-4 py-3 text-left text-[11px] font-bold uppercase tracking-[0.1em] text-vix-amarelo">Termo canônico</th>
-              <th className="px-4 py-3 text-left text-[11px] font-bold uppercase tracking-[0.1em] text-white/50">Nunca usar</th>
+              <th className="whitespace-nowrap px-4 py-3 text-left text-[11px] font-bold uppercase tracking-widest text-vix-amarelo">Termo canônico</th>
+              <th className="px-4 py-3 text-left text-[11px] font-bold uppercase tracking-widest text-white/50">Nunca usar</th>
             </tr>
           </thead>
           <tbody>

@@ -115,7 +115,7 @@ export default function Search() {
         type="button"
         aria-label="Fechar busca"
         onClick={close}
-        className="absolute inset-0 h-full w-full cursor-default bg-black/40 backdrop-blur-sm"
+        className="absolute inset-0 h-full w-full cursor-default bg-black/40 backdrop-blur-xs"
       />
       <div
         role="dialog"
@@ -131,7 +131,7 @@ export default function Search() {
             onChange={(e) => setQ(e.target.value)}
             onKeyDown={onKeyDown}
             placeholder="Buscar seção, token ou componente…"
-            className="flex-1 bg-transparent text-[15px] text-vix-preto outline-none placeholder:text-gray-600"
+            className="flex-1 bg-transparent text-[15px] text-vix-preto outline-hidden placeholder:text-gray-600"
           />
           <kbd className="shrink-0 rounded-md border border-gray-200 px-1.5 py-0.5 font-mono text-[10px] text-gray-600">
             esc

@@ -66,11 +66,11 @@ export default function VozTomSection() {
               </div>
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div className="rounded-r-lg border-l-[3px] border-[#00782D] bg-[#F0FDF4] px-3.5 py-3">
-                  <div className="mb-1.5 text-[9px] font-bold uppercase tracking-[0.1em] text-[#00782D]">✓ Certo</div>
+                  <div className="mb-1.5 text-[9px] font-bold uppercase tracking-widest text-[#00782D]">✓ Certo</div>
                   <div className="text-[13px] text-vix-preto">&ldquo;{v.certo}&rdquo;</div>
                 </div>
                 <div className="rounded-r-lg border-l-[3px] border-[#B91C1C] bg-[#FEF2F2] px-3.5 py-3">
-                  <div className="mb-1.5 text-[9px] font-bold uppercase tracking-[0.1em] text-[#B91C1C]">✗ Errado</div>
+                  <div className="mb-1.5 text-[9px] font-bold uppercase tracking-widest text-[#B91C1C]">✗ Errado</div>
                   <div className="text-[13px] text-gray-600">&ldquo;{v.errado}&rdquo;</div>
                 </div>
               </div>

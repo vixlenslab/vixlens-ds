@@ -4,30 +4,56 @@
 @import '../theme.css';
 /* Montserrat = substituta web do Mont (escala print/documentos) */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap');
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+/* animate-in/out, fade-in, slide-in-from-*, fill-mode-* (no Tailwind 3 vinham do tailwindcss-animate) */
+@import 'tw-animate-css';
+/* O site consome o MESMO @theme que as telas em Tailwind 4 recebem
+   (vixlens-ds/tailwind.css), gerado de vixlens-tokens.json. Sem ponte @config:
+   se o site lesse um arquivo e as telas outro, a doc podia mostrar uma coisa e a
+   tela renderizar outra. A borda padrão (hsl(var(--border))) também vem de lá. */
+@import '../assets/tokens/vixlens-theme-v4.css';
+
+/* Paleta padrão do Tailwind usada no site, fixada nos valores do Tailwind 3.
+   O v4 refez a paleta em oklch e deixou vermelho/verde mais saturados; a doc
+   do DS mantém os tons que tinha (auditoria de contraste, legendas, bordas). */
+@theme {
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-red-500: #ef4444;
+  --color-red-600: #dc2626;
+  --color-green-600: #16a34a;
+}
 
 html {
   scroll-behavior: smooth;
 }
 
-/* scroll horizontal discreto — todo container com overflow-x-auto (carrossel, tabelas, código) */
-.overflow-x-auto {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(29, 29, 31, 0.15) transparent;
-}
-.overflow-x-auto::-webkit-scrollbar {
-  height: 4px;
-  width: 4px;
-}
-.overflow-x-auto::-webkit-scrollbar-track {
-  background: transparent;
-}
-.overflow-x-auto::-webkit-scrollbar-thumb {
-  background: rgba(29, 29, 31, 0.15);
-  border-radius: 999px;
-}
-.overflow-x-auto::-webkit-scrollbar-thumb:hover {
-  background: rgba(29, 29, 31, 0.3);
+/* scroll horizontal discreto — todo container com overflow-x-auto (tabelas, código).
+   Em @layer components de propósito: no Tailwind 4, CSS sem camada vence as
+   utilitárias, e isto passaria por cima do [scrollbar-width:none] do carrossel. */
+@layer components {
+  .overflow-x-auto {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(29, 29, 31, 0.15) transparent;
+  }
+  .overflow-x-auto::-webkit-scrollbar {
+    height: 4px;
+    width: 4px;
+  }
+  .overflow-x-auto::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .overflow-x-auto::-webkit-scrollbar-thumb {
+    background: rgba(29, 29, 31, 0.15);
+    border-radius: 999px;
+  }
+  .overflow-x-auto::-webkit-scrollbar-thumb:hover {
+    background: rgba(29, 29, 31, 0.3);
+  }
 }

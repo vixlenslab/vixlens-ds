@@ -11,7 +11,7 @@ const NIVEIS = [
   {
     nome: 'Sutil',
     nivel: 'sm',
-    classe: 'shadow-sm',
+    classe: 'shadow-xs',
     sombra: 'sombra rasa, quase colada',
     uso: 'Inputs, chips, hover leve.',
   },
@@ -68,7 +68,7 @@ export default function ElevacaoSection() {
               </span>
             )}
 
-            <code className="mt-2.5 block break-words font-mono text-[12px] text-vix-azul">
+            <code className="mt-2.5 block wrap-break-word font-mono text-[12px] text-vix-azul">
               {n.classe}
             </code>
 

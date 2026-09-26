@@ -32,7 +32,7 @@ function PropsDocs({ docKey, label }) {
   if (!entry) return null
   return (
     <details className="group mt-1 w-full border-t border-gray-100 pt-3">
-      <summary className="flex cursor-pointer list-none items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.1em] text-gray-600 transition-colors hover:text-vix-preto [&::-webkit-details-marker]:hidden">
+      <summary className="flex cursor-pointer list-none items-center gap-1.5 text-[11px] font-medium uppercase tracking-widest text-gray-600 transition-colors hover:text-vix-preto [&::-webkit-details-marker]:hidden">
         <CaretDown size={11} weight="bold" className="transition-transform duration-200 group-open:rotate-180" />
         Props{label ? <span className="text-gray-600 normal-case tracking-normal">· {label}</span> : null}
       </summary>
