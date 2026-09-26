@@ -37,6 +37,7 @@ module.exports = {
           '4': '#30D389',
           '5': '#606F7F'
         },
+        'vix-cinza': '#606F7F',
         'border': 'hsl(var(--border) / <alpha-value>)',
         'input': 'hsl(var(--input) / <alpha-value>)',
         'ring': 'hsl(var(--ring) / <alpha-value>)',
