@@ -140,6 +140,19 @@ e entram no DS como padrão oficial.
   tablet ficam iguais. Com isso o DS **diverge do site** (o site ainda usa H1 40 no
   mobile); o ajuste no site é pedido separado.
 
+## Adendo 2026-09-25 — Tabela promocional do mês (PromoVix) em Materiais (v0.11.4)
+**Status:** concluído
+**Pedido por:** Otávio ("mesmo esquema da tabela de preço")
+- Card novo em Materiais → Produtos & tabelas, logo depois da tabela de preços:
+  "PromoVix — setembro 2026", A4, 6 págs, 11 MB, tag "Setembro", com abrir e baixar.
+- Arquivo: `assets/materiais/tabela-promocional-promovix.pdf`. Origem:
+  `C:\vixlens\outputs\imagens-novas\Promovix_setembro_2026.pdf`, enviado pelo Otávio.
+  As versões anteriores ficam no Drive, em `003 - Tabelas/002 - Tabela de promoção mensal/`.
+- Público, como a tabela de preços: é a PVO que o comercial já entrega às óticas.
+- **Rotina mensal:** trocar o PDF **mantendo o nome do arquivo**, para o link não
+  mudar. Atualizar em `PDFS` o `t` (mês), o `d` (validade), a `tag`, a `meta` e o `atualizado`.
+  Registrar no Changelog e fazer bump PATCH.
+
 ## Fora do escopo
 - Tabela interativa no site (busca/filtro).
 - Compressão dos PDFs.

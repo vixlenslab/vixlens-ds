@@ -34,6 +34,7 @@ const VERSOES = [
     mudancas: [
       ['melhoria', 'Tipografia: escala do mobile menor. H1 40 → 32, H2 32 → 28, H3 28 → 24, H4 24 → 20, H5 20 → 18 (H6 continua 16)'],
       ['melhoria', 'Skills vixlens-ui-architect e vixlens-design-system com a escala mobile nova'],
+      ['novo', 'Materiais: tabela promocional do mês (PromoVix setembro 2026) em PDF, com abrir e baixar'],
     ],
   },
   {

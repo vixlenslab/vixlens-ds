@@ -3,6 +3,8 @@ import { ArrowSquareOut, DownloadSimple } from '@phosphor-icons/react'
 
 const PDFS = [
   { t: 'Tabela de preços 2026', d: 'Valores praticados do laboratório para a ótica. Portfólio completo Vixlens.', f: 'tabela-precos-vixlens-2026.pdf', meta: '20 págs · 21 MB', atualizado: '24/09/2026', tag: 'Atualizada' },
+  // Tabela promocional do mês: todo mês troca o PDF mantendo o nome do arquivo e atualiza t, d, tag e atualizado.
+  { t: 'PromoVix — setembro 2026', d: 'Tabela promocional do mês, com preços especiais para a ótica. Válida de 01/09 a 30/09/2026.', f: 'tabela-promocional-promovix.pdf', meta: 'A4 · 6 págs · 11 MB', atualizado: '25/09/2026', tag: 'Setembro' },
   { t: 'Cardápio de lentes Freevix', d: 'As multifocais Freevix lado a lado, pra ótica explicar a diferença no balcão.', f: 'cardapio-lentes-freevix-2026.pdf', meta: 'A4 · 2 págs · 0,8 MB', atualizado: '24/09/2026' },
   { t: 'Folder de tecnologias', d: 'As tecnologias por trás das lentes Vixlens, em versão digital.', f: 'folder-tecnologias-vixlens.pdf', meta: '9 págs · 7,2 MB', atualizado: '24/09/2026' },
   { t: 'Marca própria', d: 'Como a ótica cria a própria linha de lentes e antirreflexos com a Vixlens.', f: 'marca-propria-vixlens.pdf', meta: '2 págs · 3,4 MB', atualizado: '24/09/2026' },
@@ -72,7 +74,7 @@ export default function MateriaisSection() {
       id="materiais"
       eyebrow="14 — Materiais"
       title="Materiais"
-      desc="Tabela de preços e materiais de produto prontos pra enviar à ótica. Modelos de papelaria, comercial e institucional chegam em breve, editáveis no Google (Docs, Sheets, Slides)."
+      desc="Tabela de preços, tabela promocional do mês e materiais de produto prontos pra enviar à ótica. Modelos de papelaria, comercial e institucional chegam em breve, editáveis no Google (Docs, Sheets, Slides)."
     >
       <SubTitle>Produtos & tabelas</SubTitle>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
