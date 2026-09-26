@@ -28,9 +28,16 @@ const ORDEM = ['novo', 'melhoria', 'correcao']
 // Timeline — mais recente em cima. Dados reais do DS.
 const VERSOES = [
   {
-    versao: 'v0.11.2',
+    versao: 'v0.11.3',
     data: '25/09/2026',
     atual: true,
+    mudancas: [
+      ['melhoria', 'Tipografia: escala em abas Desktop, Tablet e Mobile, com a escala inteira de cada aparelho em tamanho real (mobile numa moldura de 375px)'],
+    ],
+  },
+  {
+    versao: 'v0.11.2',
+    data: '25/09/2026',
     mudancas: [
       ['melhoria', 'Tipografia: escala Host Grotesk com três tamanhos, desktop (xl) ↔ tablet (lg) ↔ mobile, com os valores do site institucional'],
       ['novo', 'Tokens: tamanho de tablet em cada nível (--vix-font-<nível>-tablet e text-vix-<nível>-t, Tailwind 3 e 4)'],

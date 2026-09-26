@@ -1,6 +1,7 @@
 import { Check, Desktop, DeviceMobile, DeviceTablet } from '@phosphor-icons/react'
 import { Section, SubTitle } from '../Section.jsx'
 import { CodeBlock, CopyValue } from '../Copy.jsx'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs.jsx'
 import tokens from '../../data/tokens.js'
 
 // 'comment' no JSON documenta os breakpoints; não é nível da escala.
@@ -25,9 +26,68 @@ const META = {
 }
 const px = (v) => parseInt(v, 10)
 const lhNum = (v) => (v ? px(v) / 100 : 1.15)
-// escala real preservada: fator único por linha p/ caber sem perder a proporção desktop↔mobile
-const CAP = 48
-const factor = (dpx) => Math.min(1, CAP / px(dpx))
+
+// Texto de amostra por nível: título curto nos headings, frase inteira no corpo.
+const AMOSTRA = {
+  h1: 'Lentes para cada perfil',
+  h2: 'Sua ótica cresce',
+  h3: 'Tecnologia Freevix',
+  h4: 'Tratamento Reflecta',
+  h5: 'Entrega rápida e rastreada',
+  h6: 'Suporte especializado',
+  paragraph: 'Material, índice e desenho da lente espelhados automaticamente, sem renegociação.',
+  bold: 'Cada pedido monitorado do laboratório até a ótica.',
+  label: 'Número de cliente',
+  caption: 'Atualizado em 25/09/2026',
+  overline: 'Laboratório óptico',
+}
+
+// Escala inteira de um aparelho, no tamanho real. Mobile vai numa moldura de 375px
+// para os títulos quebrarem linha como no celular.
+function EscalaDoAparelho({ device }) {
+  const mobile = device === 'mobile'
+  const linhas = LEVELS.map(([key, s]) => {
+    const size = s[device]
+    const tk = META[key].tracking
+    return (
+      <div
+        key={key}
+        className={`flex flex-col gap-2 border-b border-gray-100 py-5 last:border-b-0 ${mobile ? '' : 'sm:flex-row sm:items-baseline sm:gap-6'}`}
+      >
+        <div className={`shrink-0 ${mobile ? '' : 'sm:w-44'}`}>
+          <div className="text-[13px] font-bold text-vix-preto">{META[key].name}</div>
+          <div className="mt-0.5 font-mono text-[12px] font-bold text-vix-azul">{size}</div>
+          <div className="mt-0.5 font-mono text-[11px] text-gray-600">
+            {s.weight} · lh {s.lineHeight || 'auto'} · {tk}
+          </div>
+          <div className="mt-1 font-mono text-[10px] text-gray-600">
+            {DEVICES.map((d, i) => (
+              <span key={d.key} className={d.key === device ? 'font-bold text-vix-preto' : ''}>
+                {i > 0 && ' → '}
+                {px(s[d.key])}
+              </span>
+            ))}
+          </div>
+        </div>
+        <div
+          className={`min-w-0 break-words text-vix-preto ${key === 'overline' ? 'uppercase' : ''}`}
+          style={{ fontSize: size, fontWeight: s.weight, lineHeight: lhNum(s.lineHeight), letterSpacing: tk }}
+        >
+          {AMOSTRA[key]}
+        </div>
+      </div>
+    )
+  })
+
+  if (!mobile) return <div className="rounded-vix-card border border-gray-200 px-5 md:px-8">{linhas}</div>
+  return (
+    <div className="rounded-vix-card bg-vix-cinza-card p-4 md:p-8">
+      <div className="mx-auto w-full max-w-[375px] rounded-[28px] border border-gray-200 bg-white px-4 shadow-sm">
+        {linhas}
+      </div>
+    </div>
+  )
+}
 
 export default function TipografiaSection() {
   return (
@@ -106,66 +166,36 @@ export default function TipografiaSection() {
       {/* Escala completa — equivalência desktop ↔ tablet ↔ mobile */}
       <SubTitle>Escala (Host Grotesk) — desktop ↔ tablet ↔ mobile</SubTitle>
       <p className="-mt-2 mb-5 max-w-2xl text-[13px] leading-relaxed text-gray-600">
-        Cada nível tem três tamanhos e colapsa mantendo a proporção. As amostras estão na escala real
-        (H1 cai de <b className="text-vix-preto">64&nbsp;px → 40&nbsp;px → 40&nbsp;px</b>), com o line-height e o
-        tracking exatos de cada nível.
+        Cada nível tem três tamanhos (H1 cai de <b className="text-vix-preto">64&nbsp;px → 40&nbsp;px → 40&nbsp;px</b>).
+        Troque de aba para ver a escala inteira de cada aparelho no tamanho real, com o line-height e o tracking
+        exatos. No mobile, a moldura tem a largura de um celular (375&nbsp;px).
       </p>
-      <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
+      <Tabs defaultValue="desktop">
+        <TabsList className="h-auto flex-wrap bg-vix-cinza-card">
+          {DEVICES.map((d) => (
+            <TabsTrigger
+              key={d.key}
+              value={d.key}
+              className="gap-2 px-4 py-2 text-[13px] font-semibold focus-visible:ring-vix-amarelo"
+            >
+              <d.Icon size={16} aria-hidden="true" />
+              {d.label}
+            </TabsTrigger>
+          ))}
+        </TabsList>
         {DEVICES.map((d) => (
-          <div key={d.key} className="flex items-center gap-3 rounded-lg bg-vix-cinza-card px-3.5 py-3">
-            <d.Icon size={20} className="shrink-0 text-vix-preto" aria-hidden="true" />
-            <div>
-              <div className="text-[13px] font-bold text-vix-preto">{d.label}</div>
-              <div className="font-mono text-[11px] text-gray-600">{d.faixa}</div>
-            </div>
-          </div>
+          <TabsContent key={d.key} value={d.key} className="mt-5">
+            <p className="mb-4 flex items-center gap-2 text-[13px] text-gray-600">
+              <d.Icon size={16} className="shrink-0 text-vix-preto" aria-hidden="true" />
+              <span>
+                <b className="text-vix-preto">{d.label}</b> · <span className="font-mono">{d.faixa}</span> · amostras em
+                tamanho real
+              </span>
+            </p>
+            <EscalaDoAparelho device={d.key} />
+          </TabsContent>
         ))}
-      </div>
-      <div className="flex flex-col gap-3">
-        {LEVELS.map(([key, s]) => {
-          const f = factor(s.desktop)
-          const lh = lhNum(s.lineHeight)
-          const tk = META[key].tracking
-          return (
-            <div key={key} className="rounded-vix-card border border-gray-200 p-5 md:p-6">
-              {/* cabeçalho da linha: nome + specs */}
-              <div className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-2">
-                <div className="mr-1 text-[13px] font-bold text-vix-preto">{META[key].name}</div>
-                <span className="rounded-full bg-vix-preto px-2.5 py-0.5 font-mono text-[11px] font-medium text-white">
-                  {s.desktop} → {s.tablet} → {s.mobile}
-                </span>
-                <span className="rounded-full bg-gray-100 px-2.5 py-0.5 font-mono text-[11px] text-gray-600">peso {s.weight}</span>
-                <span className="rounded-full bg-gray-100 px-2.5 py-0.5 font-mono text-[11px] text-gray-600">lh {s.lineHeight || 'auto'}</span>
-                <span className="rounded-full bg-gray-100 px-2.5 py-0.5 font-mono text-[11px] text-gray-600">track {tk}</span>
-              </div>
-              {/* amostras lado a lado, na proporção real */}
-              <div className="grid grid-cols-1 gap-5 xl:grid-cols-3 xl:items-end xl:gap-0">
-                {DEVICES.map((d, i) => {
-                  const size = s[d.key]
-                  const igual = i > 0 && size === s[DEVICES[i - 1].key]
-                  return (
-                    <div
-                      key={d.key}
-                      className={`min-w-0 ${i > 0 ? 'border-t border-gray-100 pt-4 xl:border-l xl:border-t-0 xl:pl-6 xl:pt-0' : ''} ${i < 2 ? 'xl:pr-6' : ''}`}
-                    >
-                      <div className="mb-1.5 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.1em] text-gray-600">
-                        {d.label} <span className="font-mono text-vix-azul">{size}</span>
-                        {igual && <span className="font-sans font-medium normal-case tracking-normal text-gray-600">· igual</span>}
-                      </div>
-                      <div
-                        className="truncate text-vix-preto"
-                        style={{ fontSize: px(size) * f, fontWeight: s.weight, lineHeight: lh, letterSpacing: tk }}
-                      >
-                        Vixlens
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-          )
-        })}
-      </div>
+      </Tabs>
 
       <SubTitle className="mt-10">Como aplicar</SubTitle>
       <p className="-mt-2 mb-4 max-w-2xl text-[13px] leading-relaxed text-gray-600">
