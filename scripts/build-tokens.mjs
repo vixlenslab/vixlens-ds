@@ -71,7 +71,7 @@ function buildCss() {
   L.push(`  --vix-font-print: ${t.typography['font-print'].value};`)
   for (const [lvl, s] of Object.entries(t.typography.scale)) {
     if (lvl === 'comment') continue
-    L.push(`  --vix-font-${lvl}: ${s.desktop}; --vix-font-${lvl}-mobile: ${s.mobile};`)
+    L.push(`  --vix-font-${lvl}: ${s.desktop}; --vix-font-${lvl}-tablet: ${s.tablet}; --vix-font-${lvl}-mobile: ${s.mobile};`)
   }
 
   L.push('}')
@@ -143,8 +143,9 @@ const spacing = () => Object.fromEntries(
 
 const maxWidth = () => ({ 'vix-produto': val(t.layout['container-produto']), 'vix-site': val(t.layout['container-ds-site']) })
 
-// Escala tipografica: cada nivel vira text-vix-<nivel> (desktop) e -m (mobile),
-// carregando tamanho, entrelinha, peso e tracking juntos.
+// Escala tipografica: cada nivel vira text-vix-<nivel> (desktop, xl), -t (tablet, lg)
+// e -m (mobile), carregando tamanho, entrelinha, peso e tracking juntos.
+// Uso: text-vix-h1-m lg:text-vix-h1-t xl:text-vix-h1
 function typeScale() {
   const out = []
   for (const [k, v] of Object.entries(t.typography.scale)) {
@@ -155,6 +156,7 @@ function typeScale() {
       letterSpacing: v.tracking || '0em',
     }
     out.push([`vix-${k}`, v.desktop, meta])
+    out.push([`vix-${k}-t`, v.tablet, meta])
     out.push([`vix-${k}-m`, v.mobile, meta])
   }
   // xs/sm/base ligados ao token: e o que o shadcn usa na UI.

@@ -105,6 +105,35 @@ e entram no DS como padrão oficial.
 - v0.11.1 (PATCH) em 25/09/2026: carrossel medido com largura zero contava uma
   posição a mais; agora mantém o estado até a trilha aparecer.
 
+## Adendo 2026-09-25 — Escala tipográfica com tablet (v0.11.2)
+**Status:** concluído
+**Pedido por:** Otávio ("prever uma Escala (Host Grotesk) — desktop ↔ tablet ↔ mobile")
+
+- A escala passa de 2 para 3 tamanhos. Breakpoints: **mobile** abaixo de 1024,
+  **tablet** a partir de `lg` (1024px) e **desktop** a partir de `xl` (1280px).
+- Valores de tablet = os que o site institucional já usa em produção
+  (`site_vixlens/src/app/globals.css`, classes `type-h1`…`type-h6`, que vêm do Figma).
+  Nada inventado:
+
+  | Nível | Desktop | Tablet | Mobile |
+  |---|---|---|---|
+  | H1 | 64 | 40 | 40 |
+  | H2 | 48 | 40 | 32 |
+  | H3 | 40 | 32 | 28 |
+  | H4 | 32 | 28 | 24 |
+  | H5 | 24 | 22 | 20 |
+  | H6 | 20 | 18 | 16 |
+  | Corpo, label, caption, overline | iguais nos 3 | | |
+
+- Fonte única: campo `tablet` no `vixlens-tokens.json`. O gerador emite
+  `--vix-font-<nível>-tablet` e a classe `text-vix-<nível>-t` (Tailwind 3 e 4).
+  Uso: `text-vix-h1-m lg:text-vix-h1-t xl:text-vix-h1`.
+- Doc: a seção Tipografia mostra desktop ↔ tablet ↔ mobile lado a lado.
+- As tabelas de escala das skills (`vixlens-ui-architect` e `vixlens-design-system`)
+  ganham a coluna Tablet, com bump de versão dos plugins.
+- A decidir: no site, o H1 no tablet é igual ao mobile (40). Foi mantido assim.
+- Versão PATCH (v0.11.2), pela cadência do DS: é um token novo e compatível, sem quebrar nada.
+
 ## Fora do escopo
 - Tabela interativa no site (busca/filtro).
 - Compressão dos PDFs.

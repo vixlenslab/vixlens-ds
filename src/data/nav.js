@@ -1,4 +1,4 @@
-export const version = 'v0.11.1'
+export const version = 'v0.11.2'
 
 export const navGroups = [
   {

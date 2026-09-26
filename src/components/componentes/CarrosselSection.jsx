@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { Section, SubTitle } from '../Section.jsx'
 import { Desktop, DeviceMobile } from '@phosphor-icons/react'
 import { PropsTable, DosDonts } from './ComponentDocs.jsx'
@@ -79,16 +79,27 @@ const nav = (fn) => (...a) => { auto.restart(); fn(...a) }
 // Tailwind são de viewport: só num iframe o "celular" vira celular de verdade.
 function DeviceFrame({ Icon, label, width, height, cena }) {
   const box = useRef(null)
-  const [avail, setAvail] = useState(width)
+  const [avail, setAvail] = useState(0)
 
-  useEffect(() => {
+  // Mede antes da pintura: sem isso o quadro nasce com a largura cheia (1280) e empurra
+  // a página na horizontal até o ResizeObserver responder — e com a aba escondida ele não responde.
+  useLayoutEffect(() => {
     const el = box.current
     if (!el) return undefined
-    const observer = new ResizeObserver(() => setAvail(el.clientWidth))
+    const measure = () => {
+      if (el.clientWidth > 0) setAvail(el.clientWidth)
+    }
+    measure()
+    const observer = new ResizeObserver(measure)
     observer.observe(el)
-    return () => observer.disconnect()
+    window.addEventListener('resize', measure)
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('resize', measure)
+    }
   }, [])
 
+  // Até medir, 0: o quadro fica vazio por um instante em vez de estourar a página.
   const scale = Math.min(1, avail / width)
   return (
     <figure className="min-w-0">
@@ -133,7 +144,7 @@ function DevicePreview() {
           </button>
         ))}
       </div>
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_300px] lg:items-start">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_300px] xl:items-start">
         <DeviceFrame Icon={Desktop} label="Desktop" width={1280} height={560} cena={cena} />
         <DeviceFrame Icon={DeviceMobile} label="Mobile" width={375} height={640} cena={cena} />
       </div>

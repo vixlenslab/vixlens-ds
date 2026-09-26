@@ -28,9 +28,19 @@ const ORDEM = ['novo', 'melhoria', 'correcao']
 // Timeline — mais recente em cima. Dados reais do DS.
 const VERSOES = [
   {
-    versao: 'v0.11.1',
+    versao: 'v0.11.2',
     data: '25/09/2026',
     atual: true,
+    mudancas: [
+      ['melhoria', 'Tipografia: escala Host Grotesk com três tamanhos, desktop (xl) ↔ tablet (lg) ↔ mobile, com os valores do site institucional'],
+      ['novo', 'Tokens: tamanho de tablet em cada nível (--vix-font-<nível>-tablet e text-vix-<nível>-t, Tailwind 3 e 4)'],
+      ['melhoria', 'Skills vixlens-ui-architect e vixlens-design-system com a coluna Tablet na escala'],
+      ['correcao', 'Carrossel: a prévia desktop × mobile mede antes de pintar e não empurra mais a página na horizontal'],
+    ],
+  },
+  {
+    versao: 'v0.11.1',
+    data: '25/09/2026',
     mudancas: [
       ['correcao', 'Carrossel: não conta uma posição a mais quando é medido escondido (largura zero, ex.: aba ou painel fechado)'],
     ],

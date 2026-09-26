@@ -48,21 +48,21 @@ Só digital. Importe Host Grotesk:
 
 Mont e Montserrat são de documento impresso. Nunca em saída web.
 
-| Grupo | Elemento | Desktop | Mobile | Peso | Line height | Tracking |
-|---|---|---|---|---|---|---|
-| Display | H1 | 64px | 40px | 700 | 100% | -0.02em |
-| Display | H2 | 48px | 32px | 700 | 100% | -0.02em |
-| Display | H3 | 40px | 28px | 700 | 100% | -0.02em |
-| Seção | H4 | 32px | 24px | 600 | 120% | -0.01em |
-| Seção | H5 | 24px | 20px | 500 | 120% | -0.01em |
-| Seção | H6 | 20px | 16px | 500 | 120% | 0em |
-| Corpo | Parágrafo | 16px | 16px | 400 | 150% | 0em |
-| Corpo | Bold | 16px | 16px | 600 | 150% | 0em |
-| UI | Label | 14px | 14px | 500 | — | 0.02em |
-| UI | Caption | 12px | 12px | 400 | — | 0em |
-| UI | Overline | 11px | 11px | 500 | — | 0.08em |
+| Grupo | Elemento | Desktop | Tablet | Mobile | Peso | Line height | Tracking |
+|---|---|---|---|---|---|---|---|
+| Display | H1 | 64px | 40px | 40px | 700 | 100% | -0.02em |
+| Display | H2 | 48px | 40px | 32px | 700 | 100% | -0.02em |
+| Display | H3 | 40px | 32px | 28px | 700 | 100% | -0.02em |
+| Seção | H4 | 32px | 28px | 24px | 600 | 120% | -0.01em |
+| Seção | H5 | 24px | 22px | 20px | 500 | 120% | -0.01em |
+| Seção | H6 | 20px | 18px | 16px | 500 | 120% | 0em |
+| Corpo | Parágrafo | 16px | 16px | 16px | 400 | 150% | 0em |
+| Corpo | Bold | 16px | 16px | 16px | 600 | 150% | 0em |
+| UI | Label | 14px | 14px | 14px | 500 | — | 0.02em |
+| UI | Caption | 12px | 12px | 12px | 400 | — | 0em |
+| UI | Overline | 11px | 11px | 11px | 500 | — | 0.08em |
 
-Fonte: `typography.scale` no token JSON. A régua antiga deste arquivo (H1 96, H2 64, parágrafo 18) era pré-luma e está aposentada.
+Fonte: `typography.scale` no token JSON. Tablet = a partir de `lg` (1024px), desktop = a partir de `xl` (1280px), mobile abaixo de 1024px. Classes: `text-vix-h1-m lg:text-vix-h1-t xl:text-vix-h1`. A régua antiga deste arquivo (H1 96, H2 64, parágrafo 18) era pré-luma e está aposentada.
 
 **Regras:** nunca itálico. Nunca caixa alta em parágrafo corrido — só logo, tagline e label de callout. Máximo dois pesos no mesmo bloco. Sublinhado só em link. Peso 900 é de documento impresso, nunca web.
 

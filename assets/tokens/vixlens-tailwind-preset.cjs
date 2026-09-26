@@ -120,6 +120,14 @@ module.exports = {
             'letterSpacing': '-0.02em'
           }
         ],
+        'vix-h1-t': [
+          '40px',
+          {
+            'lineHeight': '1',
+            'fontWeight': '700',
+            'letterSpacing': '-0.02em'
+          }
+        ],
         'vix-h1-m': [
           '40px',
           {
@@ -130,6 +138,14 @@ module.exports = {
         ],
         'vix-h2': [
           '48px',
+          {
+            'lineHeight': '1',
+            'fontWeight': '700',
+            'letterSpacing': '-0.02em'
+          }
+        ],
+        'vix-h2-t': [
+          '40px',
           {
             'lineHeight': '1',
             'fontWeight': '700',
@@ -152,6 +168,14 @@ module.exports = {
             'letterSpacing': '-0.02em'
           }
         ],
+        'vix-h3-t': [
+          '32px',
+          {
+            'lineHeight': '1',
+            'fontWeight': '700',
+            'letterSpacing': '-0.02em'
+          }
+        ],
         'vix-h3-m': [
           '28px',
           {
@@ -162,6 +186,14 @@ module.exports = {
         ],
         'vix-h4': [
           '32px',
+          {
+            'lineHeight': '1.2',
+            'fontWeight': '600',
+            'letterSpacing': '-0.01em'
+          }
+        ],
+        'vix-h4-t': [
+          '28px',
           {
             'lineHeight': '1.2',
             'fontWeight': '600',
@@ -184,6 +216,14 @@ module.exports = {
             'letterSpacing': '-0.01em'
           }
         ],
+        'vix-h5-t': [
+          '22px',
+          {
+            'lineHeight': '1.2',
+            'fontWeight': '500',
+            'letterSpacing': '-0.01em'
+          }
+        ],
         'vix-h5-m': [
           '20px',
           {
@@ -200,6 +240,14 @@ module.exports = {
             'letterSpacing': '0em'
           }
         ],
+        'vix-h6-t': [
+          '18px',
+          {
+            'lineHeight': '1.2',
+            'fontWeight': '500',
+            'letterSpacing': '0em'
+          }
+        ],
         'vix-h6-m': [
           '16px',
           {
@@ -209,6 +257,14 @@ module.exports = {
           }
         ],
         'vix-paragraph': [
+          '16px',
+          {
+            'lineHeight': '1.5',
+            'fontWeight': '400',
+            'letterSpacing': '0em'
+          }
+        ],
+        'vix-paragraph-t': [
           '16px',
           {
             'lineHeight': '1.5',
@@ -232,6 +288,14 @@ module.exports = {
             'letterSpacing': '0em'
           }
         ],
+        'vix-bold-t': [
+          '16px',
+          {
+            'lineHeight': '1.5',
+            'fontWeight': '600',
+            'letterSpacing': '0em'
+          }
+        ],
         'vix-bold-m': [
           '16px',
           {
@@ -241,6 +305,14 @@ module.exports = {
           }
         ],
         'vix-label': [
+          '14px',
+          {
+            'lineHeight': '1.4',
+            'fontWeight': '500',
+            'letterSpacing': '0.02em'
+          }
+        ],
+        'vix-label-t': [
           '14px',
           {
             'lineHeight': '1.4',
@@ -264,6 +336,14 @@ module.exports = {
             'letterSpacing': '0em'
           }
         ],
+        'vix-caption-t': [
+          '12px',
+          {
+            'lineHeight': '1.4',
+            'fontWeight': '400',
+            'letterSpacing': '0em'
+          }
+        ],
         'vix-caption-m': [
           '12px',
           {
@@ -273,6 +353,14 @@ module.exports = {
           }
         ],
         'vix-overline': [
+          '11px',
+          {
+            'lineHeight': '1.4',
+            'fontWeight': '500',
+            'letterSpacing': '0.08em'
+          }
+        ],
+        'vix-overline-t': [
           '11px',
           {
             'lineHeight': '1.4',

@@ -62,15 +62,15 @@
   /* tipografia */
   --vix-font-digital: 'Host Grotesk', sans-serif;
   --vix-font-print: 'Montserrat', 'Mont', sans-serif;
-  --vix-font-h1: 64px; --vix-font-h1-mobile: 40px;
-  --vix-font-h2: 48px; --vix-font-h2-mobile: 32px;
-  --vix-font-h3: 40px; --vix-font-h3-mobile: 28px;
-  --vix-font-h4: 32px; --vix-font-h4-mobile: 24px;
-  --vix-font-h5: 24px; --vix-font-h5-mobile: 20px;
-  --vix-font-h6: 20px; --vix-font-h6-mobile: 16px;
-  --vix-font-paragraph: 16px; --vix-font-paragraph-mobile: 16px;
-  --vix-font-bold: 16px; --vix-font-bold-mobile: 16px;
-  --vix-font-label: 14px; --vix-font-label-mobile: 14px;
-  --vix-font-caption: 12px; --vix-font-caption-mobile: 12px;
-  --vix-font-overline: 11px; --vix-font-overline-mobile: 11px;
+  --vix-font-h1: 64px; --vix-font-h1-tablet: 40px; --vix-font-h1-mobile: 40px;
+  --vix-font-h2: 48px; --vix-font-h2-tablet: 40px; --vix-font-h2-mobile: 32px;
+  --vix-font-h3: 40px; --vix-font-h3-tablet: 32px; --vix-font-h3-mobile: 28px;
+  --vix-font-h4: 32px; --vix-font-h4-tablet: 28px; --vix-font-h4-mobile: 24px;
+  --vix-font-h5: 24px; --vix-font-h5-tablet: 22px; --vix-font-h5-mobile: 20px;
+  --vix-font-h6: 20px; --vix-font-h6-tablet: 18px; --vix-font-h6-mobile: 16px;
+  --vix-font-paragraph: 16px; --vix-font-paragraph-tablet: 16px; --vix-font-paragraph-mobile: 16px;
+  --vix-font-bold: 16px; --vix-font-bold-tablet: 16px; --vix-font-bold-mobile: 16px;
+  --vix-font-label: 14px; --vix-font-label-tablet: 14px; --vix-font-label-mobile: 14px;
+  --vix-font-caption: 12px; --vix-font-caption-tablet: 12px; --vix-font-caption-mobile: 12px;
+  --vix-font-overline: 11px; --vix-font-overline-tablet: 11px; --vix-font-overline-mobile: 11px;
 }
