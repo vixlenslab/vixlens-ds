@@ -100,6 +100,12 @@ function brandColors() {
       colors['vix-callout'] = co
     }
   }
+  // `cinza-borda` e o cinza de texto secundario, placeholder E borda. O nome do
+  // token so conta a ultima funcao, entao o config antigo do site expunha ele
+  // tambem como `vix-cinza` — e ha uso com esse nome (placeholder do Input,
+  // texto de apoio). Apelido do MESMO token: quem some com isto quebra a cor em
+  // silencio (foi o que aconteceu no 7fa4a02), quem duplica o valor cria drift.
+  colors['vix-cinza'] = t.color['cinza-borda'].value
   return colors
 }
 

@@ -28,9 +28,16 @@ const ORDEM = ['novo', 'melhoria', 'correcao']
 // Timeline — mais recente em cima. Dados reais do DS.
 const VERSOES = [
   {
-    versao: 'v0.12.0',
+    versao: 'v0.12.1',
     data: '26/09/2026',
     atual: true,
+    mudancas: [
+      ['correcao', 'Cor vix-cinza (#606F7F) volta a existir: placeholder do Input, texto de apoio dos cards e legenda da Tipografia estavam sem cor desde a consolidação do preset'],
+    ],
+  },
+  {
+    versao: 'v0.12.0',
+    data: '26/09/2026',
     mudancas: [
       ['novo', 'Carrossel: clicar e arrastar com o mouse no desktop. Ao soltar, encaixa no card mais próximo; arrastar não abre o card; toque segue nativo'],
       ['novo', 'useCarousel aceita { draggable: false } para desligar o arrasto'],

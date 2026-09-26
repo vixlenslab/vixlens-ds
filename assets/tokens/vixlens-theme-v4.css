@@ -37,6 +37,7 @@
   --color-vix-chart-3: #615FFF;
   --color-vix-chart-4: #30D389;
   --color-vix-chart-5: #606F7F;
+  --color-vix-cinza: #606F7F;
 
   /* cor — ponte shadcn (as vars vem do theme.css) */
   --color-border: hsl(var(--border));

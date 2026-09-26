@@ -165,6 +165,15 @@ e entram no DS como padrão oficial.
 - Doc: linha em Comportamento, demo com cards clicáveis e prop na tabela de hooks.
 - MINOR (v0.12.0): recurso novo do componente, como pede a spec.
 
+## Adendo 2026-09-26 — Correção do vix-cinza (v0.12.1) e Tailwind 4 adiado
+**Status:** concluído
+- O apelido `vix-cinza` (mesmo token `cinza-borda`, #606F7F) volta pelo gerador. Ele sumiu no
+  `7fa4a02`, e placeholder do Input, texto de apoio dos cards e legenda da Tipografia ficaram
+  sem cor em silêncio. A correção foi tirada do PR #2.
+- **PR #2 (Tailwind 4) fechado sem merge**, por decisão do Otávio: 37 commits atrás da `main`.
+  A migração será **refeita do zero sobre a `main`** na próxima rodada de mexer no DS: rodar
+  o codemod de novo e repetir a comparação de baseline. A branch `feat/tailwind-4` fica como roteiro.
+
 ## Fora do escopo
 - Tabela interativa no site (busca/filtro).
 - Compressão dos PDFs.
