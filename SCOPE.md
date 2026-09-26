@@ -133,6 +133,8 @@ e entram no DS como padrão oficial.
   ganham a coluna Tablet, com bump de versão dos plugins.
 - A decidir: no site, o H1 no tablet é igual ao mobile (40). Foi mantido assim.
 - Versão PATCH (v0.11.2), pela cadência do DS: é um token novo e compatível, sem quebrar nada.
+- v0.11.3 (pedido do Otávio): a escala vira abas Desktop · Tablet · Mobile, cada uma com
+  a escala inteira em tamanho real, sem redução; o mobile vai numa moldura de 375px.
 
 ## Fora do escopo
 - Tabela interativa no site (busca/filtro).
