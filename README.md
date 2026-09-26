@@ -136,10 +136,11 @@ Marca, documentos e comunicação B2B. 4 skills:
 > A skill `vixlens-brand` foi fundida na `vixlens-design-system` na 0.4.0. Duplicavam 84% das cores e todos os termos canônicos, e já tinham divergido entre si. Se você digitava `vixlens-brand`, passe a usar `vixlens-design-system`.
 
 #### `vixlens-ui`
-Interface e código de front-end. 2 skills:
+Interface e código de front-end. 3 skills:
 
 - **vixlens-ui-architect** — interfaces web em React + Tailwind + shadcn fiéis ao DS
 - **ui-boas-praticas** — audita e corrige telas contra 80 boas práticas de UI (tipografia, cores, botões, grid, ícones, imagens, formulários)
+- **nova-pagina** — cria página ou landing page no vixlens.com.br (`/palavra` ou `palavra.vixlens.com.br`), do gerador ao PR
 
 #### `vixlens-catalogo`
 Catálogo de preço. 1 skill:
@@ -173,7 +174,8 @@ site-ds/
 │   │   ├── .claude-plugin/plugin.json
 │   │   └── skills/
 │   │       ├── vixlens-ui-architect/
-│   │       └── ui-boas-praticas/
+│   │       ├── ui-boas-praticas/
+│   │       └── nova-pagina/
 │   ├── vixlens-catalogo/
 │   │   ├── .claude-plugin/plugin.json
 │   │   └── skills/
