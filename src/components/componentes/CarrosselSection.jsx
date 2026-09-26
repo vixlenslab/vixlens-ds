@@ -109,7 +109,7 @@ function DeviceFrame({ Icon, label, width, height, cena }) {
       </figcaption>
       <div ref={box} className="w-full">
         <div
-          className="overflow-hidden rounded-[20px] border border-gray-200 bg-white shadow-sm"
+          className="overflow-hidden rounded-[20px] border border-gray-200 bg-white shadow-xs"
           style={{ width: width * scale, height: height * scale }}
         >
           <iframe
@@ -136,7 +136,7 @@ function DevicePreview() {
             type="button"
             aria-pressed={cena === c.id}
             onClick={() => setCena(c.id)}
-            className={`rounded-vix-button px-4 py-2 text-[13px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-vix-amarelo ${
+            className={`rounded-vix-button px-4 py-2 text-[13px] font-semibold transition-colors focus-visible:outline-hidden focus-visible:ring-[3px] focus-visible:ring-vix-amarelo ${
               cena === c.id ? 'bg-vix-preto text-white' : 'bg-white text-vix-preto hover:bg-gray-200'
             }`}
           >
@@ -195,7 +195,7 @@ export default function CarrosselSection() {
       <div className="mb-14 grid grid-cols-2 gap-3 md:grid-cols-3">
         {SPECS.map(([k, v]) => (
           <div key={k} className="rounded-lg bg-vix-cinza-card px-3.5 py-3">
-            <div className="text-[10px] font-bold uppercase tracking-[0.1em] text-gray-600">{k}</div>
+            <div className="text-[10px] font-bold uppercase tracking-widest text-gray-600">{k}</div>
             <div className="mt-0.5 text-[13px] font-bold text-vix-preto">{v}</div>
           </div>
         ))}

@@ -31,20 +31,23 @@ const CONSUMO = [
   },
   {
     icon: PuzzlePiece,
-    title: 'Tailwind preset',
+    title: 'Tailwind 4',
     desc: (
       <>
-        Registre o preset e ganhe as classes da marca —{' '}
+        Importe o tema e ganhe as classes da marca —{' '}
         <code className="font-mono text-vix-preto">bg-vix-amarelo</code>,{' '}
-        <code className="font-mono text-vix-preto">rounded-vix-card</code> e cia.
+        <code className="font-mono text-vix-preto">rounded-vix-card</code> e cia. Tela ainda em Tailwind 3? Use o
+        preset <code className="font-mono text-vix-preto">vixlens-ds/tailwind.preset.js</code>.
       </>
     ),
-    code: `// tailwind.config.js
-export default {
-  presets: [require('./vixlens-tailwind-preset.cjs')],
-}
+    code: `/* globals.css */
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'vixlens-ds/theme.css';
+@import 'vixlens-ds/tailwind.css';
+@source '../node_modules/vixlens-ds/dist-lib';
 
-// no JSX
+/* no JSX */
 <button className="bg-vix-amarelo rounded-vix-button" />`,
   },
   {

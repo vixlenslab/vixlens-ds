@@ -22,7 +22,7 @@ Repo: https://github.com/vixlenslab/vixlens-ds · No ar: https://ds.vixlens.com.
 # 1. edite o JSON
 assets/tokens/vixlens-tokens.json
 
-# 2. regenere os exports (CSS + preset Tailwind)
+# 2. regenere os exports (CSS + preset Tailwind 3 + @theme Tailwind 4)
 npm run tokens:build
 
 # 3. confira que ficou em sync
@@ -32,7 +32,7 @@ npm run tokens:check
 git add assets/tokens/
 ```
 
-Nunca edite `vixlens-tokens.css` nem `vixlens-tailwind-preset.cjs` diretamente — o `tokens:check` (e o CI) vão barrar.
+Nunca edite `vixlens-tokens.css`, `vixlens-tailwind-preset.cjs` nem `vixlens-theme-v4.css` diretamente — o `tokens:check` (e o CI) vão barrar.
 
 ## Adicionar um componente
 

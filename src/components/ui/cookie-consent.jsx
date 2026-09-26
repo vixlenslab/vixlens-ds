@@ -71,7 +71,7 @@ export function useCookieConsent({
 }
 
 const buttonBase =
-  "h-10 flex-1 rounded-vix-button px-5 text-sm font-semibold transition-[background-color,border-color,transform] duration-200 hover:scale-[1.03] active:scale-[0.97] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-vix-amarelo motion-reduce:transform-none"
+  "h-10 flex-1 rounded-vix-button px-5 text-sm font-semibold transition-[background-color,border-color,transform] duration-200 hover:scale-[1.03] active:scale-[0.97] focus-visible:outline-hidden focus-visible:ring-[3px] focus-visible:ring-vix-amarelo motion-reduce:transform-none"
 
 /**
  * Cartão do aviso. `floating` (padrão) fixa no canto inferior esquerdo — no celular ocupa
@@ -105,7 +105,7 @@ export const CookieConsent = React.forwardRef(
         className={cn(
           "flex flex-col gap-4 rounded-vix-card bg-vix-branco p-6 shadow-[0_12px_40px_rgba(29,29,31,0.18)]",
           "animate-in fade-in slide-in-from-bottom-6 fill-mode-backwards duration-300 motion-reduce:animate-none",
-          floating && "fixed inset-x-4 bottom-4 z-[70] [animation-delay:400ms] sm:inset-x-auto sm:left-6 sm:max-w-[420px]",
+          floating && "fixed inset-x-4 bottom-4 z-70 [animation-delay:400ms] sm:inset-x-auto sm:left-6 sm:max-w-[420px]",
           className
         )}
         {...props}

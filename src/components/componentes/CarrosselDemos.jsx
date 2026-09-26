@@ -157,7 +157,7 @@ function ArrastarDemo() {
             <button
               type="button"
               onClick={() => setAberto(p.n)}
-              className="flex h-full w-full flex-col rounded-vix-card border border-gray-200 bg-white p-6 text-left transition-colors hover:border-vix-preto focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-vix-amarelo"
+              className="flex h-full w-full flex-col rounded-vix-card border border-gray-200 bg-white p-6 text-left transition-colors hover:border-vix-preto focus-visible:outline-hidden focus-visible:ring-[3px] focus-visible:ring-vix-amarelo"
             >
               <span className="mb-5 flex h-28 w-full items-center justify-center rounded-[24px] bg-vix-cinza-card">
                 <Eye size={32} className="text-gray-600" aria-hidden="true" />

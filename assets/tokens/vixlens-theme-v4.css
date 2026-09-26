@@ -234,7 +234,17 @@
 }
 
 /* A borda padrão de todo elemento. No Tailwind 3 isto sai do preflight via
-   borderColor.DEFAULT; no 4 o preflight usa currentColor, então declaramos. */
-*, ::before, ::after {
-  border-color: hsl(var(--border));
+   borderColor.DEFAULT; no 4 o preflight usa currentColor, então declaramos.
+   Dentro de @layer base de propósito: no Tailwind 4, CSS sem camada vence as
+   utilitárias, e esta regra apagaria todo border-vix-* e border-gray-*. */
+@layer base {
+  *, ::before, ::after, ::backdrop, ::file-selector-button {
+    border-color: hsl(var(--border));
+  }
+
+  /* O preflight do Tailwind 4 trocou o cursor dos botões para `default`.
+     Os componentes do DS foram desenhados com a mãozinha do Tailwind 3. */
+  button:not(:disabled), [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
 }

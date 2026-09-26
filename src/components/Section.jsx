@@ -17,7 +17,7 @@ export function Section({ id, eyebrow, title, desc, children }) {
 
 export function SubTitle({ children, className = '' }) {
   return (
-    <div className={`mb-5 border-b-2 border-gray-100 pb-2.5 text-[11px] font-bold uppercase tracking-[0.1em] text-gray-600 ${className}`}>
+    <div className={`mb-5 border-b-2 border-gray-100 pb-2.5 text-[11px] font-bold uppercase tracking-widest text-gray-600 ${className}`}>
       {children}
     </div>
   )

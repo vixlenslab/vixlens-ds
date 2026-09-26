@@ -66,19 +66,19 @@ export default function InputsSection() {
           {/* htmlFor/id explícitos: o label envolvendo o campo já associa, mas os
               auditores de acessibilidade só reconhecem com a ligação declarada. */}
           <div className="flex flex-col gap-2">
-            <label htmlFor="input-demo-default" className="text-[11px] uppercase tracking-[0.1em] text-gray-600">
+            <label htmlFor="input-demo-default" className="text-[11px] uppercase tracking-widest text-gray-600">
               Default
             </label>
             <Input id="input-demo-default" placeholder="Digite aqui" />
           </div>
           <div className="flex flex-col gap-2">
-            <label htmlFor="input-demo-foco" className="text-[11px] uppercase tracking-[0.1em] text-gray-600">
+            <label htmlFor="input-demo-foco" className="text-[11px] uppercase tracking-widest text-gray-600">
               Foco (ring)
             </label>
             <Input id="input-demo-foco" placeholder="Clique para ver o ring de foco" />
           </div>
           <div className="flex flex-col gap-2">
-            <label htmlFor="input-demo-disabled" className="text-[11px] uppercase tracking-[0.1em] text-gray-600">
+            <label htmlFor="input-demo-disabled" className="text-[11px] uppercase tracking-widest text-gray-600">
               Disabled
             </label>
             <Input id="input-demo-disabled" placeholder="Indisponível" disabled />

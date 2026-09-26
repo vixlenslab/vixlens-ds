@@ -174,6 +174,22 @@ e entram no DS como padrão oficial.
   A migração será **refeita do zero sobre a `main`** na próxima rodada de mexer no DS: rodar
   o codemod de novo e repetir a comparação de baseline. A branch `feat/tailwind-4` fica como roteiro.
 
+## Adendo 2026-09-26 — Tailwind 4 (mais recente) (v0.13.0)
+**Status:** concluído
+**Pedido por:** Otávio (combinado em 26/09: "na próxima vez que eu logar, desde que não quebre nada")
+- Refeito do zero sobre a `main` (PR #2 fechado). `tailwindcss` 4.3.3 (`latest` em 26/09), com `@tailwindcss/postcss` e o codemod oficial `@tailwindcss/upgrade`.
+- O site do DS consome o `@theme` gerado (`vixlens-theme-v4.css`) + `tw-animate-css`; `tailwind.config.js` removido, sem ponte `@config`.
+- O preset v3, o `tailwind.preset.js`, o `theme.css` e o `vixlens-tokens.css` ficaram **byte a byte iguais**: as telas em Tailwind 3 não mudam.
+- **Critério "não quebrar nada":** captura de ~60 propriedades computadas de cada elemento (5.852 a 5.864 por página) no v3 e no v4, na mesma sessão e na mesma escala de tela, em 375, 1024 e 1440px + demos do carrossel. Resultado: **zero mudança de tamanho**; o que sobra são equivalências (lado do `divide-y`/`space-y`, sombras de largura zero, `translate` no lugar de `transform`).
+- Correções que a comparação exigiu:
+  - o codemod trocou a palavra `outline` por `outline-solid` em **nomes de variante e textos** (paginação, Playground, Figma, Acessibilidade) e `ring` por `ring-3` em dois textos: desfeito;
+  - cursor de mãozinha nos botões (preflight do v4 usa `default`): regra em `@layer base` no tema v4;
+  - borda padrão do tema v4 ia sem camada e apagaria `border-vix-*`: agora em `@layer base`;
+  - barra de rolagem global do site em `@layer components` (sem camada, venceria o `[scrollbar-width:none]` do carrossel);
+  - paleta padrão do Tailwind usada no site fixada nos valores do v3 (o v4 deixou vermelho/verde mais saturados);
+  - 2 títulos com `md:leading-*` explícito (no v4 o `leading-*` vence o tamanho responsivo) e o `space-y` do Playground com o seletor do v3 (label inline perdia 6px).
+- Os **componentes** passam a usar classes do v4. Nenhuma tela importa componente hoje (briefing e funil só declaram a dependência), então nada quebra; README e Comece aqui explicam os dois caminhos.
+
 ## Fora do escopo
 - Tabela interativa no site (busca/filtro).
 - Compressão dos PDFs.

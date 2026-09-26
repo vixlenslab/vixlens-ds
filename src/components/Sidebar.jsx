@@ -60,7 +60,7 @@ export default function Sidebar({ open, onClose }) {
         </div>
 
         {/* nav — única área que scrolla */}
-        <nav className="flex-1 overflow-y-auto overscroll-contain px-3 py-4 [scrollbar-color:rgba(255,255,255,0.15)_transparent] [scrollbar-width:thin]">
+        <nav className="flex-1 overflow-y-auto overscroll-contain px-3 py-4 [scrollbar-color:rgba(255,255,255,0.15)_transparent] scrollbar-thin">
           {navGroups.map((group) => (
             <div key={group.label} className="mb-4">
               <div className="px-3 pb-2 pt-3 text-[10px] font-bold uppercase tracking-[0.12em] text-white/35">
@@ -87,7 +87,7 @@ export default function Sidebar({ open, onClose }) {
                     className={`flex items-center gap-2.5 rounded-xl px-3 py-2 text-[13px] transition-colors ${
                       active === item.href.slice(1)
                         ? 'bg-white/10 font-semibold text-white'
-                        : 'font-medium text-white/70 hover:bg-white/[0.06] hover:text-white'
+                        : 'font-medium text-white/70 hover:bg-white/6 hover:text-white'
                     }`}
                   >
                     <span
