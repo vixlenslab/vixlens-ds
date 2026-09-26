@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { ArrowRight, Eye, Quotes } from '@phosphor-icons/react'
 import {
   CarouselItem,
@@ -144,9 +145,56 @@ function DepoimentosDemo() {
   )
 }
 
+// Cards clicáveis: prova que clique simples abre e que arrastar e soltar em cima de um card não abre.
+function ArrastarDemo() {
+  const c = useCarousel(undefined, LINHA.length)
+  const [aberto, setAberto] = useState(null)
+  return (
+    <div>
+      <CarouselTrack ref={c.scrollRef} aria-label="Linha Freevix (arraste com o mouse)">
+        {LINHA.map((p, i) => (
+          <CarouselItem key={p.n} index={i} size="cards">
+            <button
+              type="button"
+              onClick={() => setAberto(p.n)}
+              className="flex h-full w-full flex-col rounded-vix-card border border-gray-200 bg-white p-6 text-left transition-colors hover:border-vix-preto focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-vix-amarelo"
+            >
+              <span className="mb-5 flex h-28 w-full items-center justify-center rounded-[24px] bg-vix-cinza-card">
+                <Eye size={32} className="text-gray-600" aria-hidden="true" />
+              </span>
+              <span className="text-xl font-bold text-vix-preto">{p.n}</span>
+              <span className="mt-1 text-sm text-gray-600">{p.t}</span>
+            </button>
+          </CarouselItem>
+        ))}
+      </CarouselTrack>
+      <CarouselNav
+        count={c.count}
+        activeIndex={c.activeIndex}
+        onSelect={c.scrollToIndex}
+        onPrev={() => c.scrollByStep(-1)}
+        onNext={() => c.scrollByStep(1)}
+        canPrev={c.canPrev}
+        canNext={c.canNext}
+        itemLabel="card"
+      />
+      <p aria-live="polite" className="mt-4 rounded-lg bg-vix-cinza-card px-3.5 py-2.5 text-[13px] text-gray-600">
+        {aberto ? (
+          <>
+            Card aberto por clique: <b className="text-vix-preto">{aberto}</b>
+          </>
+        ) : (
+          'Arraste com o mouse: ao soltar, nenhum card abre. Clique sem arrastar: o card abre.'
+        )}
+      </p>
+    </div>
+  )
+}
+
 export function CarrosselDemo({ cena = 'cards' }) {
   if (cena === 'escuro') return <EscuroDemo />
   if (cena === 'depoimentos') return <DepoimentosDemo />
+  if (cena === 'arrastar') return <ArrastarDemo />
   return <CardsDemo />
 }
 

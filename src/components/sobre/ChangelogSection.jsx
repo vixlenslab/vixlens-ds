@@ -28,9 +28,17 @@ const ORDEM = ['novo', 'melhoria', 'correcao']
 // Timeline — mais recente em cima. Dados reais do DS.
 const VERSOES = [
   {
+    versao: 'v0.12.0',
+    data: '26/09/2026',
+    atual: true,
+    mudancas: [
+      ['novo', 'Carrossel: clicar e arrastar com o mouse no desktop. Ao soltar, encaixa no card mais próximo; arrastar não abre o card; toque segue nativo'],
+      ['novo', 'useCarousel aceita { draggable: false } para desligar o arrasto'],
+    ],
+  },
+  {
     versao: 'v0.11.4',
     data: '25/09/2026',
-    atual: true,
     mudancas: [
       ['melhoria', 'Tipografia: escala do mobile menor. H1 40 → 32, H2 32 → 28, H3 28 → 24, H4 24 → 20, H5 20 → 18 (H6 continua 16)'],
       ['melhoria', 'Skills vixlens-ui-architect e vixlens-design-system com a escala mobile nova'],

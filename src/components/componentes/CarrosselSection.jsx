@@ -17,7 +17,7 @@ const NAV_PROPS = [
 ]
 
 const HOOK_PROPS = [
-  { prop: 'useCarousel(step?, initialCount?)', tipo: 'hook', padrao: '—', desc: 'step em px é opcional: sem ele as setas andam de posição em posição. initialCount = total de itens, para a navegação nascer renderizada no SSR.' },
+  { prop: 'useCarousel(step?, initialCount?, { draggable? })', tipo: 'hook', padrao: 'draggable true', desc: 'step em px é opcional: sem ele as setas andam de posição em posição. initialCount = total de itens, para a navegação nascer renderizada no SSR. draggable: false desliga o clicar e arrastar com o mouse.' },
   { prop: 'scrollRef', tipo: 'ref', padrao: '—', desc: 'Vai no CarouselTrack. Os filhos diretos são os itens.' },
   { prop: 'count · activeIndex · canPrev · canNext', tipo: 'estado', padrao: '—', desc: 'Remedidos na rolagem, no resize da janela e quando trilha ou cards mudam de tamanho (ResizeObserver).' },
   { prop: 'scrollToIndex(i) · scrollByStep(±1)', tipo: 'função', padrao: '—', desc: 'Rolagem suave até a posição / uma posição para o lado.' },
@@ -181,6 +181,11 @@ export default function CarrosselSection() {
         <CarrosselDemo cena="escuro" />
       </div>
 
+      <SubTitle>Clicar e arrastar · desktop com mouse</SubTitle>
+      <div className="mb-14">
+        <CarrosselDemo cena="arrastar" />
+      </div>
+
       <SubTitle>Depoimentos · autoplay com pausa</SubTitle>
       <div className="mb-14">
         <CarrosselDemo cena="depoimentos" />
@@ -203,6 +208,7 @@ export default function CarrosselSection() {
         <li><b className="text-vix-preto">1 posição ou menos:</b> a navegação não aparece.</li>
         <li><b className="text-vix-preto">Mais de 6 posições no celular:</b> abaixo de sm os pontos viram o contador <span className="font-mono">02 / 15</span>.</li>
         <li><b className="text-vix-preto">Autoplay</b> só em depoimentos: 5 s, volta ao início no fim, pausa com mouse em cima, foco dentro ou aba escondida, e não roda com movimento reduzido.</li>
+        <li><b className="text-vix-preto">Desktop:</b> clique e arraste com o mouse para rolar; ao soltar, encaixa no card mais próximo. O arrasto começa depois de 5px (antes disso é clique) e, se houve arrasto, soltar em cima de um card não o abre. Toque e caneta seguem com a rolagem nativa. É um atalho a mais: setas, pontos e teclado não mudam.</li>
         <li><b className="text-vix-preto">Cards</b> entram em cascata quando a trilha aparece e sobem 6px no hover.</li>
       </ul>
 

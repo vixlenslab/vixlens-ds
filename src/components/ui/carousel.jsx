@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils"
 
 const EDGE = 4
 const MAX_MOBILE_DOTS = 6
+const DRAG_THRESHOLD = 5 // px de movimento antes de virar arrasto: abaixo disso é clique
 
 // Largura dos cards para caber um número inteiro por vez: w = (100% - (N-1)*gap) / N,
 // com o gap de 24px (gap-6) da trilha.
@@ -39,8 +40,9 @@ function nearestIndex(positions, scrollLeft) {
  *
  * @param {number} [scrollStep] passo em px das setas. Sem ele, as setas andam de posição em posição.
  * @param {number} [initialCount] `count` antes da medição (SSR): a navegação já nasce renderizada.
+ * @param {{ draggable?: boolean }} [options] `draggable` (padrão true): clicar e arrastar com o mouse.
  */
-export function useCarousel(scrollStep, initialCount = 0) {
+export function useCarousel(scrollStep, initialCount = 0, { draggable = true } = {}) {
   const scrollRef = React.useRef(null)
   const [canPrev, setCanPrev] = React.useState(false)
   const [canNext, setCanNext] = React.useState(initialCount > 1)
@@ -115,6 +117,85 @@ export function useCarousel(scrollStep, initialCount = 0) {
       window.removeEventListener("resize", updateScrollState)
     }
   }, [updateScrollState])
+
+  // Arrastar com o mouse (desktop). Toque e caneta já rolam nativamente, então só age com mouse.
+  // Durante o arrasto o scroll-snap fica desligado; ao soltar, encaixa na posição navegável mais
+  // próxima (a mesma da CarouselNav). Se houve arrasto de verdade, o clique seguinte é cancelado.
+  React.useEffect(() => {
+    const el = scrollRef.current
+    if (!el || !draggable) return undefined
+    let startX = 0
+    let startScroll = 0
+    let dragging = false
+    let moved = false
+    let snapTimer = 0
+
+    const onPointerDown = (event) => {
+      if (event.pointerType !== "mouse" || event.button !== 0) return
+      window.clearTimeout(snapTimer)
+      dragging = true
+      moved = false
+      startX = event.clientX
+      startScroll = el.scrollLeft
+    }
+    const onPointerMove = (event) => {
+      if (!dragging) return
+      const dx = event.clientX - startX
+      if (!moved && Math.abs(dx) > DRAG_THRESHOLD) {
+        moved = true
+        el.setPointerCapture(event.pointerId)
+        el.style.scrollSnapType = "none"
+        el.style.cursor = "grabbing"
+        el.style.userSelect = "none"
+        window.getSelection()?.removeAllRanges()
+      }
+      if (moved) el.scrollLeft = startScroll - dx
+    }
+    const onPointerUp = (event) => {
+      if (!dragging) return
+      dragging = false
+      if (!moved) return
+      if (el.hasPointerCapture(event.pointerId)) el.releasePointerCapture(event.pointerId)
+      el.style.cursor = "grab"
+      el.style.userSelect = ""
+      const positions = getPositions()
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      el.scrollTo({ left: positions[nearestIndex(positions, el.scrollLeft)] ?? 0, behavior: reduce ? "auto" : "smooth" })
+      // Religa o snap depois da animação de encaixe.
+      snapTimer = window.setTimeout(() => {
+        el.style.scrollSnapType = ""
+      }, 400)
+    }
+    // Fase de captura: soltar em cima de um card ou link depois de arrastar não abre nada.
+    const onClickCapture = (event) => {
+      if (!moved) return
+      event.preventDefault()
+      event.stopPropagation()
+      moved = false
+    }
+    // Sem "fantasma" de imagem/link: o arrasto nativo do navegador não começa.
+    const onDragStart = (event) => event.preventDefault()
+
+    el.style.cursor = "grab"
+    el.addEventListener("pointerdown", onPointerDown)
+    el.addEventListener("pointermove", onPointerMove)
+    el.addEventListener("pointerup", onPointerUp)
+    el.addEventListener("pointercancel", onPointerUp)
+    el.addEventListener("click", onClickCapture, true)
+    el.addEventListener("dragstart", onDragStart)
+    return () => {
+      window.clearTimeout(snapTimer)
+      el.removeEventListener("pointerdown", onPointerDown)
+      el.removeEventListener("pointermove", onPointerMove)
+      el.removeEventListener("pointerup", onPointerUp)
+      el.removeEventListener("pointercancel", onPointerUp)
+      el.removeEventListener("click", onClickCapture, true)
+      el.removeEventListener("dragstart", onDragStart)
+      el.style.cursor = ""
+      el.style.userSelect = ""
+      el.style.scrollSnapType = ""
+    }
+  }, [draggable, getPositions])
 
   return { scrollRef, canPrev, canNext, activeIndex, count, updateScrollState, scrollByStep, scrollToIndex }
 }

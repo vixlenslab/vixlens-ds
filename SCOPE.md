@@ -153,6 +153,18 @@ e entram no DS como padrão oficial.
   mudar. Atualizar em `PDFS` o `t` (mês), o `d` (validade), a `tag`, a `meta` e o `atualizado`.
   Registrar no Changelog e fazer bump PATCH.
 
+## Adendo 2026-09-26 — Carrossel: clicar e arrastar com o mouse (v0.12.0)
+**Status:** concluído
+**Pedido por:** Otávio (prompt colado na sessão; referência: `site_vixlens/src/hooks/useCarousel.ts`)
+- Só com mouse (`pointerType === 'mouse'`, botão principal). Toque e caneta ficam nativos.
+- O arrasto começa depois de 5px. Durante ele: rolagem 1:1, snap desligado, `setPointerCapture`,
+  cursor `grabbing` e `user-select: none`. Ao soltar, encaixa na posição navegável mais próxima
+  (mesma lista da CarouselNav), suave, ou `auto` com movimento reduzido. O snap volta depois de 400ms.
+- Depois de um arrasto, o click seguinte é cancelado na fase de captura; o `dragstart` também é cancelado.
+- Opt-out: `useCarousel(step, initialCount, { draggable: false })`.
+- Doc: linha em Comportamento, demo com cards clicáveis e prop na tabela de hooks.
+- MINOR (v0.12.0): recurso novo do componente, como pede a spec.
+
 ## Fora do escopo
 - Tabela interativa no site (busca/filtro).
 - Compressão dos PDFs.
