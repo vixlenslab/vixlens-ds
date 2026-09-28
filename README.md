@@ -143,9 +143,10 @@ Interface e código de front-end. 3 skills:
 - **nova-pagina** — cria página ou landing page no vixlens.com.br (`/palavra` ou `palavra.vixlens.com.br`), do gerador ao PR
 
 #### `vixlens-catalogo`
-Catálogo de preço. 1 skill:
+Catálogo de preço e marca própria. 2 skills:
 
 - **tabela-optica-figma** — monta no Figma o catálogo A4 de tabela de preço a partir do CSV por ótica (capa, índice, páginas por família, contracapa)
+- **marca-propria** — leva ao projeto de Marca Própria no Drive compartilhado (acha a pasta em qualquer letra de unidade, manda ler o `CLAUDE.md` de lá, resolve as pegadinhas do Windows). As regras continuam no Drive, não na skill
 
 #### `vixlens-relatorios`
 Relatórios mensais de venda tirados do ERP Volpe, somente leitura. 1 skill:
@@ -179,6 +180,7 @@ site-ds/
 │   ├── vixlens-catalogo/
 │   │   ├── .claude-plugin/plugin.json
 │   │   └── skills/
+│   │       ├── marca-propria/
 │   │       └── tabela-optica-figma/
 │   └── vixlens-relatorios/
 │       ├── .claude-plugin/plugin.json
