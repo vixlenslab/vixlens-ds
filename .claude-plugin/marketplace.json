@@ -13,7 +13,7 @@
       "name": "vixlens-brand",
       "source": "./plugins/vixlens-brand",
       "description": "Marca, documentos e comunicação B2B da Vixlens — skill mestre vixlens-design-system (paleta, tipografia, tokens, componentes, voz e vocabulário canônico) mais comunicado interno, manual de cliente e proposta comercial",
-      "version": "0.6.3",
+      "version": "0.7.0",
       "author": {
         "name": "Otávio Torres"
       },
