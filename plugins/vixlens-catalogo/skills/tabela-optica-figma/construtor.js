@@ -126,9 +126,17 @@ hdr.paddingTop = 12; hdr.paddingBottom = 12; hdr.paddingLeft = 16; hdr.paddingRi
 page.appendChild(hdr);
 hdr.x = 20; hdr.y = 44; hdr.resize(555, hdr.height); hdr.layoutSizingHorizontal = 'FIXED';
 
+// A linha de título QUEBRA. Nome longo com três ou quatro pílulas não cabe nos
+// 523px úteis do cabeçalho, e auto-layout que não quebra também não trunca:
+// ele transborda calado, por cima da borda do bloco colorido. Com WRAP as
+// pílulas excedentes descem, o cabeçalho cresce, e o slot de imagem reabsorve
+// a altura no fim do script.
 const linhaTitulo = figma.createAutoLayout('HORIZONTAL', { name: 'titulo' });
 linhaTitulo.itemSpacing = 10; linhaTitulo.counterAxisAlignItems = 'CENTER'; linhaTitulo.fills = [];
 hdr.appendChild(linhaTitulo);
+linhaTitulo.layoutSizingHorizontal = 'FILL';
+linhaTitulo.layoutWrap = 'WRAP';
+linhaTitulo.counterAxisSpacing = 6;
 texto(linhaTitulo, CONFIG.titulo || CONFIG.familia, 'ExtraBold', 22, SOBRE_COR);
 
 // As constantes da família viram pílulas: repetir cilindro e adição em toda

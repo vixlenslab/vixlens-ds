@@ -149,9 +149,12 @@ Rode as quatro antes de dizer que terminou:
 | Checagem | Como | Critério |
 |---|---|---|
 | Texto não trunca | Nó de teste medindo o texto mais largo por coluna | `precisa <= largura` em todas |
+| **Nada transborda o container** | Largura de cada filho contra a do pai menos padding | `filho <= util` em todos |
 | Tabela não invade o rodapé | `fimDaTabela` que o construtor devolve | `<= 796` |
 | Nenhum dado perdido | Contar linhas de produto e códigos de cor contra o CSV | contagens idênticas |
 | Contraste | Razão WCAG de **todo** texto sobre cor | ≥ 4,5:1; ≥ 7:1 no que estiver abaixo de 8pt |
+
+**Truncamento e transbordo são coisas diferentes, e a checagem de um não pega o outro.** Célula de largura fixa com `textTruncation` trunca e aparece no primeiro teste. Auto-layout em HUG não faz nem uma coisa nem outra: ele cresce além do pai e desenha por cima da borda, sem erro nenhum. Foi assim que 8 cabeçalhos de 24 saíram com as pílulas atravessando o bloco colorido, passando por uma validação que só olhava truncamento. Meça **todo** filho contra a largura útil do pai, não só o que você espera que seja apertado.
 
 Nunca chute largura de coluna. Meça. `0.00 a -4.00` estourou uma coluna de 44px por 1px e só apareceu na medição.
 
@@ -171,6 +174,7 @@ Contraste é o único item que **sempre** exige número calculado, nunca olhôme
 | Iteração sobre a página quebra com `children of undefined` | Nó de teste de medição ficou solto na página | Filtrar `type === 'FRAME'` e remover o nó de teste no fim |
 | Família que cabia numa página passou a estourar | Separadores de índice custam ~21px cada | Quebrar em duas num limite de índice; não encolher tipografia |
 | Auto-layout não cresce e fica com 10px de altura | `resize()` chamado antes de preencher trava `layoutSizingVertical` em FIXED | Depois de preencher, `n.layoutSizingVertical = 'HUG'` |
+| Pílulas do cabeçalho atravessam a borda do bloco colorido | Nome longo com 3 ou 4 pílulas passa dos 523px úteis; auto-layout em HUG transborda sem truncar | `layoutWrap = 'WRAP'` na linha de título, com `layoutSizingHorizontal = 'FILL'`; o slot de imagem reabsorve a altura |
 | Colunas somem pela direita da caixa | Larguras somadas passaram do conteúdo útil e o auto-layout transbordou sem avisar | Somar as larguras **mais os gaps** e comparar com `largura − padding` antes de construir |
 | Metade das cores não aparece na legenda | Grade montada por linhas de N itens quando a intenção era N colunas | Definir chips por linha explicitamente e conferir a contagem contra a paleta |
 | Contagem de produtos maior que o CSV | O validador varreu também a tabela do índice, cujo nome também começa com "Tabela " | Excluir `Tabela indice` da contagem |
