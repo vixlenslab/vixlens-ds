@@ -208,16 +208,31 @@ No modo `varia`, cada registro de `DADOS` precisa trazer a sua altura no 11º ca
 | DESKVIEW ATÉ 1,3M | `#0E8A5F` | 16 mm | -6.00 | 0.75 a 3.50 |
 | DESKVIEW ATÉ 2M | `#3FA96E` | 16 mm | -6.00 | 0.75 a 3.50 |
 | OFFICE ATÉ 4M | `#78B472` | 16 mm | -6.00 | 0.75 a 3.50 |
+| FREEVIX ASTERA | `#C9A227` | **18 mm** | -6.00 | null |
+| BIFOCAIS CONVENCIONAIS | `#6E6E76` | 13 mm | **-4.00** | 1.00 a 3.50 / 1.00 a 3.00 |
+| BIFOCAIS FREEFORM INVISÍVEL | `#43505E` | 13 mm | -6.00 | 0.50 a 5.00 |
 
 Cilindro e adição mudam por família — **nunca reaproveite os da anterior**, confira contra o CSV.
 
-**Duas famílias param em -4.00**, contra -6.00 de todas as outras: Vix Total e Freevix Visão Simples. São as duas de entrada de cada linha (multifocal e visão simples). Na matriz do índice, marque o cilindro delas em `#C81E1E` Bold — é a diferença que mais gera pedido errado no balcão.
+**Duas famílias param em -4.00 e isso é exceção**: Vix Total e Freevix Visão Simples, as de entrada de cada linha. Na matriz do índice, marque o cilindro delas em `#C81E1E` Bold — é a diferença que mais gera pedido errado no balcão.
+
+**As Bifocais Convencionais também param em -4.00, e ali é o normal.** Bifocal não é multifocal: o desenho não comporta o mesmo cilindro. Não marque em vermelho — marcar o esperado ensina o balcão a ignorar a cor, e aí a marcação deixa de servir para a Vix Total e a Visão Simples, que é onde ela precisa funcionar.
 
 Tipo: Multifocal → `LENTES MULTIFOCAIS SURFAÇADAS`; VS → `LENTES DE VISÃO SIMPLES SURFAÇADAS`; ocupacional → `LENTES OCUPACIONAIS SURFAÇADAS`.
 
 **Freevix Visão Simples** é a de entrada da linha de visão simples, conferida contra o tabelão `tabelona_vixlens_2026_digital_v16`, página 13, logo antes da VS HD. Vem no CSV como as outras. Exports gerados até 02/09/2026 trazem 12 famílias e não a incluem — se estiver trabalhando com um desses, peça o export atualizado em vez de montar a página na mão.
 
 **O nome é "Visão Simples", não "VS".** A abreviação só aparece na VS HD e nas VS Relax; esta usa por extenso, como no tabelão.
+
+### As três sem marca própria
+
+Entraram em 28/09/2026, das páginas 11 e 12 do tabelão v16. São lentes Vixlens como as outras — mesmo cálculo, mesmo desconto — e a diferença é só que a ótica revende sem pôr o nome dela. Cada uma traz uma particularidade que o construtor precisa tratar:
+
+**Freevix Astera — não tem coluna Reflecta Express.** O tabelão traz PAR, Guard e Blue Protect, e só. As 19 linhas vêm no CSV com o campo de Express vazio. Não invente o valor a partir de PAR+50: a coluna não existe para essa família.
+
+**Freevix Astera é visão simples e mesmo assim tem altura.** É a exceção à regra de que visão simples vai com `altura: null` — a página traz 18 mm em todas as linhas e o rótulo dela é "visão simples especial". A adição continua `null`, como nas outras cinco.
+
+**Bifocais Convencionais não têm índice.** As cinco linhas são desenhos — Ultex e Biovis —, não materiais por índice. A família inteira é um bloco só: um separador com o nome dela no lugar de `Índice 1.49`, e nada de quebrar por limite de índice, porque não há limite.
 
 ### Marca própria de terceiro
 

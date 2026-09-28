@@ -9,7 +9,11 @@ Constrói o catálogo A4 inteiro no Figma a partir do CSV de tabela de preço po
 
 **Estrutura:** capa, índice com matriz de compatibilidade, uma ou mais páginas por família de lente, contracapa. Cada página de família = cabeçalho + slot de imagem + tabela.
 
-**O número de páginas não é fixo.** Depende de quantas famílias precisam quebrar. O catálogo Vixlens de 2026 fecha em 20 páginas, mesmo número do Native de 2026. As 15 do formato antigo ficaram para trás: os separadores de índice custam altura e empurram famílias para uma segunda página, e o simulador passou a ter 13 famílias com a entrada da Freevix Visão Simples. A Astera não entra — é decisão, não lacuna.
+**O número de páginas não é fixo, mas o total tem que ser múltiplo de 4.** É imposição da impressão, não gosto: a folha impressa vira quatro páginas. Some as páginas de família ao capa, índice e contracapa e arredonde para cima até o próximo múltiplo de 4; a sobra vira folga no fim, não motivo para espremer família.
+
+Quantas páginas de família cada uma precisa depende de quebrar ou não. Com as 13 famílias de marca própria o catálogo de 2026 fechou em 20. Em 28/09/2026 entraram **Astera, Bifocais Convencionais e Bifocais Freeform Invisível** — as três que a ótica revende sem pôr marca própria — e cada uma cabe em uma página, levando o total a 23 e o fechamento a **24**.
+
+As 15 do formato antigo ficaram para trás: os separadores de índice custam altura e empurram famílias para uma segunda página.
 
 ## Pré-requisitos
 
@@ -48,7 +52,7 @@ Decide qual base de preço do CSV entra — e muda a nota legal da capa.
 
 **A skill lê o CSV, nunca recalcula preço.** Não aplica markup, não arredonda valor, não deriva uma base a partir de outra. A única transformação sobre o número é cosmética: `CONFIG.centavos` corta as casas decimais na exibição.
 
-Se os valores do CSV estiverem errados, o erro sai impresso. Toda decisão de preço — markup, desconto, normalização de anomalia — pertence à etapa que **gera** o CSV, que é anterior a esta skill e não faz parte dela. Ao receber um CSV, rode a checagem de coerência antes de construir: `venda = custo × markup` em todas as linhas, e as quatro colunas de preço em ordem crescente. Divergência aí é problema da fonte, não da peça — reporte antes de gerar 20 páginas em cima de número errado.
+Se os valores do CSV estiverem errados, o erro sai impresso. Toda decisão de preço — markup, desconto, normalização de anomalia — pertence à etapa que **gera** o CSV, que é anterior a esta skill e não faz parte dela. Ao receber um CSV, rode a checagem de coerência antes de construir: `venda = custo × markup` em todas as linhas, e as quatro colunas de preço em ordem crescente. Divergência aí é problema da fonte, não da peça — reporte antes de gerar duas dezenas de páginas em cima de número errado.
 
 ### 2. Destino no Figma
 
@@ -60,14 +64,14 @@ Arquivo novo ou link de um existente. Não dá para inferir — pergunte sempre.
 
 ## Pergunte só quando o dado exigir
 
-- **Família fora das 13 conhecidas** (marca própria de terceiro, como a linha OPTIMA das Óticas Native): para qual família Vixlens ela mapeia. Define a cor e o tipo da página.
+- **Família fora das 16 conhecidas** (marca própria de terceiro, como a linha OPTIMA das Óticas Native): para qual família Vixlens ela mapeia. Define a cor e o tipo da página.
 - **Achados de qualidade no CSV**: preço divergente entre cores da mesma lente, dobras exatas de 2×, descrições duplicadas. Reporte os números e pergunte **uma vez**, com o diagnóstico pronto — nunca linha a linha.
 
 ## Resolva sozinho, não pergunte
 
 | Item | Como |
 |---|---|
-| Cor e tipo da família | Bate o nome contra as 13 famílias de `referencia-tabela.md` |
+| Cor e tipo da família | Bate o nome contra as 16 famílias de `referencia-tabela.md` |
 | Dados da ótica na capa | Saem do cabeçalho do CSV; só pergunte se vierem vazios |
 | Quantas páginas e onde quebrar | Automático, pela altura da tabela |
 | Modo de altura (fixa / varia / null) | Sai da checagem de variância |
