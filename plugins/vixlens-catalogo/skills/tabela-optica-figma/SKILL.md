@@ -9,7 +9,9 @@ Constrói o catálogo A4 inteiro no Figma a partir do CSV de tabela de preço po
 
 **Estrutura:** capa, índice, uma ou mais páginas por família de lente, contracapa. Cada página de família = cabeçalho + slot de imagem + tabela. O índice cabe numa página só e acumula três coisas: a matriz de receita, o bloco "como ler a tabela" e os códigos de cor.
 
-**O número de páginas não é fixo, mas o total tem que ser múltiplo de 4.** É imposição da impressão, não gosto: a folha impressa vira quatro páginas. Some as páginas de família ao capa, índice e contracapa e arredonde para cima até o próximo múltiplo de 4; a sobra vira folga no fim, não motivo para espremer família.
+**O número de páginas não é fixo, mas o total tem que ser múltiplo de 4.** É imposição da impressão, não gosto: a folha impressa vira quatro páginas.
+
+**Menos páginas é mais barato, e o arredondamento é degrau, não rampa.** 21 páginas custam o mesmo que 24 — então, ao chegar a um número logo acima de um múltiplo de 4, vale procurar as três ou quatro páginas que faltam para descer um degrau inteiro. Duas alavancas fazem isso sem encolher tipografia: **agrupar famílias** numa página e **tirar os separadores de índice** de famílias que estouram por pouco (ver as duas seções abaixo). A sobra vira folga no fim, nunca motivo para espremer família.
 
 ### Quantas páginas, de verdade
 
@@ -28,6 +30,39 @@ Consequência prática: **21 produtos com 5 índices já ocupam 606px sem nenhum
 Com as 16 famílias de 2026 e o CSV de uma ótica real, o resultado medido foi: 4 famílias de 21 produtos quebram sempre; Freevix One estoura por 13px e Astera por 34px — as duas cabem em página única **se abrirem mão do slot de imagem**. Fechamento em 24 páginas: capa + índice + 20 de família + contracapa.
 
 As 15 do formato antigo ficaram para trás: os separadores de índice custam altura e empurram famílias para uma segunda página.
+
+### Página agrupada
+
+Famílias pequenas e parecidas dividem uma página. Em vez de `DADOS`, declare `BLOCOS`: o separador passa a ser por família, com a bolinha da cor de cada uma, e o índice de refração continua no chip de cada linha.
+
+```js
+const BLOCOS = [
+  { nome: 'EYETECH DESKVIEW ATÉ 1,3M', cor: '#0E8A5F', dados: `...` },
+  { nome: 'EYETECH DESKVIEW ATÉ 2M',   cor: '#3FA96E', dados: `...` },
+  { nome: 'EYETECH OFFICE ATÉ 4M',     cor: '#78B472', dados: `...` }
+];
+```
+
+**Quando vale agrupar:** famílias que compartilham altura mínima, cilindro e adição, e cujos produtos são os mesmos — só mudando código e preço. As três ocupacionais são o caso exemplar: em páginas separadas viravam três páginas quase idênticas em sequência; juntas, a página passa a permitir comparar o preço das três lado a lado, que é a pergunta real de quem vende.
+
+**Quando as famílias divergem** em cilindro, adição ou disponibilidade de Express, essas pílulas descem para o separador do bloco e o cabeçalho fica só com o que é comum:
+
+```js
+{ nome: 'BIFOCAIS CONVENCIONAIS', cor: '#6E6E76',
+  pilulas: ['Cil. até -4.00', 'Add. 1.00 a 3.50 / 1.00 a 3.00', 'Sem Reflecta Express'], dados: `...` }
+```
+
+Nesse caso a tabela é uma só e mantém as quatro colunas, então a família sem Express volta a exibir travessão nessas linhas — a pílula do bloco é o que explica. `CONFIG.semExpress` só serve para página de família única.
+
+**O que o agrupamento custa:** o separador por índice. Em família de 6 produtos isso é ganho (4 separadores para 6 lentes é mais separador que lente); em família de 14 ou mais, pesa — o olho perde o degrau que agrupava por índice.
+
+**A conta:** some o corpo de cada família (altura da tabela menos 39 de base e menos os separadores de índice), some 21 por bloco, e some 39. Compare com o teto da página. Duas famílias de 14 produtos dão ~845px e não cabem em 670.
+
+### Encolher sem agrupar
+
+`CONFIG.semSeparadorIndice: true` tira os separadores de uma família única. São ~21px cada, e é isso — não o volume de lentes — que empurra várias famílias para a segunda página. Uma família de 21 produtos com 5 índices tem 105px só de separador: sem eles, cabe numa página.
+
+Use quando fechar o múltiplo de 4 depender disso. O índice continua legível no chip de cada linha, mas a tabela vira uma lista corrida — em famílias grandes, avalie se vale.
 
 ### Marca própria e linha Vixlens
 
@@ -180,6 +215,16 @@ Contraste é o único item que **sempre** exige número calculado, nunca olhôme
 | Contagem de produtos maior que o CSV | O validador varreu também a tabela do índice, cujo nome também começa com "Tabela " | Excluir `Tabela indice` da contagem |
 | Contraste "1:1" em texto sobre faixa colorida | A faixa é irmã do texto, não ancestral; a busca de fundo subiu até a página branca | Pôr o texto dentro do frame que o pinta, ou medir por sobreposição geométrica |
 | Tira de cor sumida na peça | Linha `SUB~` esquecida ao transcrever os dados | Conferir produtos **e** tiras contra o CSV; tira de uma cor vira bolinha inline, e conta |
+
+## Testar o construtor sem abrir o Figma
+
+`teste/testa-construtor.mjs` roda o `construtor.js` contra um stub da Plugin API e confere a estrutura gerada: que separador saiu, quantos, quantas linhas, quantos chips. Pega erro de lógica antes de gastar chamada de MCP.
+
+```bash
+node plugins/vixlens-catalogo/skills/tabela-optica-figma/teste/testa-construtor.mjs
+```
+
+Cobre os quatro caminhos: família única, família única sem separador de índice, página agrupada com três blocos, e página agrupada com um bloco só (que deve se comportar como família única). **Rode depois de qualquer mudança no construtor** — o stub mede altura por aproximação, então ele valida estrutura, não pixel. Pixel só o Figma confirma.
 
 ## Referências
 

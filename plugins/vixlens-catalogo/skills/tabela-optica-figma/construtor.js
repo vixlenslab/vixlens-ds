@@ -1,5 +1,5 @@
 // Construtor de página de família — cole em use_figma.
-// Ajuste CONFIG e DADOS. O resto é fixo.
+// Ajuste CONFIG e DADOS (ou BLOCOS). O resto é fixo.
 //
 // DADOS: uma linha por registro, campos separados por ~
 //   produto: cod~indice~nome~diam~esfMais~esfMenos~p1~p2~p3~p4[~altura]
@@ -9,6 +9,20 @@
 // ignorado nos outros casos. Ver "Altura" em referencia-tabela.md.
 // Campo de preço vazio vira travessão. Cod vazio vira seta quando houver linha
 // de cores logo abaixo.
+//
+// PÁGINA AGRUPADA: famílias pequenas e parecidas podem dividir uma página.
+// Em vez de DADOS, declare BLOCOS — e o separador passa a ser por família, não
+// por índice (o índice continua no chip de cada linha):
+//
+//   const BLOCOS = [
+//     { nome: 'EYETECH DESKVIEW ATÉ 1,3M', cor: '#0E8A5F', dados: `...` },
+//     { nome: 'EYETECH DESKVIEW ATÉ 2M',   cor: '#3FA96E', dados: `...` }
+//   ];
+//
+// Quando as famílias divergem em cilindro, adição ou disponibilidade de
+// Express, essas pílulas descem do cabeçalho para o separador do bloco:
+//   { nome: '...', cor: '...', pilulas: ['Cil. até -4.00'], dados: `...` }
+// O cabeçalho da página fica só com o que é comum a todas.
 
 const CONFIG = {
   pagina: '06 OPTIMA PRO (1/2)',
@@ -22,6 +36,8 @@ const CONFIG = {
   selo: 'ÓTICAS NATIVE',    // quem assina a lente; 'LINHA VIXLENS' quando não é marca própria
   antirreflexo: 'Reflecta', // marca do AR nas colunas de preço
   semExpress: false,        // true quando a família inteira não tem o AR de entrada
+  semSeparadorIndice: false,// tira os separadores de índice: ~21px cada, e é o
+                            // que faz uma família de duas páginas caber em uma
   alturaImagem: 120,        // ponto de partida; o slot cresce até preencher a página
   simbolos: true,           // padrao da casa; false volta para "Diâm." e "Alt."
   centavos: false           // preços sem casas decimais
@@ -29,6 +45,16 @@ const CONFIG = {
 
 const DADOS = `15075~1.49~Resina~80~+6~-10~R$ 2.098,54~R$ 2.356,79~R$ 2.844,88~R$ 3.845,86
 SUB~15110 Marrom | 15111 G15 | 15112 Black`;
+
+// Página agrupada: declare BLOCOS no lugar de DADOS. Deixe null para a página
+// de família única, que é o caso normal.
+const BLOCOS = null;
+
+// Normaliza os dois modos num só: daqui para baixo o script só conhece blocos.
+const blocos = BLOCOS && BLOCOS.length
+  ? BLOCOS
+  : [{ nome: CONFIG.familia, cor: CONFIG.cor, pilulas: null, dados: DADOS }];
+const AGRUPADA = blocos.length > 1;
 
 // ---------------------------------------------------------------- utilidades
 
@@ -211,7 +237,7 @@ const grupoValores = parent => {
 };
 
 const bolinha = (parent, nome, codigo, grande) => {
-  const par = CORES[nome] || ['#6C6C6C', nome.charAt(0).toUpperCase()];
+  const par = CORES[nome] || ['#545454', nome.charAt(0).toUpperCase()];
   const chip = figma.createAutoLayout('HORIZONTAL', { name: 'cor ' + nome });
   chip.itemSpacing = grande ? 3 : 2; chip.counterAxisAlignItems = 'CENTER'; chip.fills = [];
   parent.appendChild(chip);
@@ -236,14 +262,15 @@ const bolinha = (parent, nome, codigo, grande) => {
 // Bifocais convencionais não têm índice de refração. Nesse caso entra um
 // espaçador da mesma largura, e não um chip vazio: as colunas seguintes
 // continuam alinhadas com as das outras páginas.
-const chipIndice = (parent, ind) => {
+const chipIndice = (parent, ind, cor) => {
+  cor = cor || CONFIG.cor;
   const c = figma.createFrame();
   c.name = ind ? 'ind ' + ind : 'ind vazio';
   c.resize(26, 13); c.cornerRadius = 4;
   parent.appendChild(c);
   if (!ind) { c.fills = []; c.strokes = []; return; }
-  c.fills = fill(FUNDO_CHIP);
-  c.strokes = fill(CONFIG.cor); c.strokeWeight = 1;
+  c.fills = fill(tinta20(cor));
+  c.strokes = fill(cor); c.strokeWeight = 1;
   const t = texto(c, ind, 'Bold', 6.5, TINTA);
   t.letterSpacing = { unit: 'PERCENT', value: -2 };
   t.x = (26 - t.width) / 2; t.y = (13 - t.height) / 2;
@@ -287,9 +314,46 @@ const separador = ind => {
   s.appendChild(r); r.resize(100, 1); r.layoutSizingHorizontal = 'FILL';
 };
 
-const registros = DADOS.trim().split('\n').map(l => l.split('~'));
+// Numa página agrupada quem muda de bloco para bloco é a família, não o índice.
+// A bolinha repete a cor da família, e as pílulas entram aqui quando divergem
+// entre os blocos — cilindro, adição, ausência de Express.
+const separadorFamilia = (nome, cor, pilulas) => {
+  const s = figma.createAutoLayout('HORIZONTAL', { name: 'sep ' + nome });
+  s.fills = []; s.itemSpacing = 7; s.counterAxisAlignItems = 'CENTER';
+  s.paddingTop = 9; s.paddingBottom = 4; s.paddingLeft = 8; s.paddingRight = 8;
+  tbl.appendChild(s); s.layoutSizingHorizontal = 'FILL';
+  s.layoutWrap = 'WRAP'; s.counterAxisSpacing = 4;
+  const dot = figma.createFrame();
+  dot.name = 'cor'; dot.resize(9, 9); dot.cornerRadius = 100; dot.fills = fill(cor);
+  s.appendChild(dot);
+  const t = texto(s, nome, 'ExtraBold', 8, '#000000');
+  t.letterSpacing = { unit: 'PERCENT', value: 6 };
+  for (const p of (pilulas || [])) {
+    const f = figma.createAutoLayout('HORIZONTAL', { name: 'pilula' });
+    f.fills = fill('#000000'); f.cornerRadius = 100;
+    f.paddingTop = 3; f.paddingBottom = 3; f.paddingLeft = 8; f.paddingRight = 8;
+    s.appendChild(f);
+    texto(f, p, 'Bold', 7, '#FFFFFF');
+  }
+  if (!pilulas || !pilulas.length) {
+    const r = figma.createFrame();
+    r.name = 'regua'; r.fills = fill(NEUTRO);
+    s.appendChild(r); r.resize(60, 1); r.layoutSizingHorizontal = 'FILL';
+  }
+};
+
 let ultimoProduto = null, ultimaCelulaCod = null;
 let indiceAtual = null, produtos = 0, linhasCor = 0, inline = 0, seps = 0;
+let corDoBloco = CONFIG.cor;
+
+for (const bloco of blocos) {
+if (AGRUPADA) {
+  corDoBloco = bloco.cor || CONFIG.cor;
+  separadorFamilia(bloco.nome, corDoBloco, bloco.pilulas);
+  seps++;
+  indiceAtual = null;
+}
+const registros = bloco.dados.trim().split('\n').map(l => l.split('~'));
 
 registros.forEach(d => {
   if (d[0] === 'SUB') {
@@ -319,11 +383,15 @@ registros.forEach(d => {
     return;
   }
 
-  if (d[1] !== indiceAtual) { indiceAtual = d[1]; separador(indiceAtual); seps++; }
+  // Na página agrupada o separador já é o da família, e em CONFIG.semSeparadorIndice
+  // ele sai de propósito para a família caber numa página só.
+  if (!AGRUPADA && !CONFIG.semSeparadorIndice && d[1] !== indiceAtual) {
+    indiceAtual = d[1]; separador(indiceAtual); seps++;
+  }
 
   const r = linha('#FFFFFF', 3);
   ultimaCelulaCod = celula(r, d[0], W[0], { alinha: d[0] ? 'LEFT' : 'CENTER' });
-  chipIndice(r, d[1]);
+  chipIndice(r, d[1], corDoBloco);
 
   const prod = figma.createAutoLayout('HORIZONTAL', { name: 'produto' });
   prod.itemSpacing = 5; prod.counterAxisAlignItems = 'CENTER'; prod.fills = [];
@@ -349,6 +417,7 @@ registros.forEach(d => {
   });
   produtos++;
 });
+}
 
 // A imagem cresce para consumir a sobra; se não houver sobra, encolhe até o piso.
 if (img) {
