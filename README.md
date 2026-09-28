@@ -111,11 +111,15 @@ Duas cópias de React no mesmo app quebram hooks em runtime.
 
 ```bash
 claude plugin marketplace add vixlenslab/vixlens-ds
-claude plugin install vixlens-brand
-claude plugin install vixlens-ui
-claude plugin install vixlens-catalogo
-claude plugin install vixlens-relatorios
+claude plugin install vixlens
 ```
+
+`vixlens` é o pacote: não tem skill própria, só declara os quatro plugins abaixo
+como dependência, e o install puxa todos junto. Dá para instalar um a um também
+(`claude plugin install vixlens-brand`, etc.).
+
+Atenção: `claude plugin update vixlens` **não** atualiza as dependências. Para
+atualizar, use `/atualizar-skills` no chat — ela percorre `claude plugin list`.
 
 Para atualizar depois de um push novo:
 
@@ -124,6 +128,9 @@ claude plugin marketplace update vixlens-marketplace
 ```
 
 ### Plugins disponíveis
+
+#### `vixlens`
+Pacote guarda-chuva. Instala os quatro plugins de uma vez.
 
 #### `vixlens-brand`
 Marca, documentos e comunicação B2B. 4 skills:

@@ -1,0 +1,19 @@
+{
+  "name": "vixlens",
+  "version": "1.0.0",
+  "description": "Pacote completo Vixlens — instala de uma vez os quatro plugins oficiais: vixlens-brand, vixlens-ui, vixlens-catalogo e vixlens-relatorios",
+  "author": {
+    "name": "Otávio Torres"
+  },
+  "keywords": [
+    "vixlens",
+    "pacote",
+    "todos"
+  ],
+  "dependencies": [
+    "vixlens-brand",
+    "vixlens-ui",
+    "vixlens-catalogo",
+    "vixlens-relatorios"
+  ]
+}

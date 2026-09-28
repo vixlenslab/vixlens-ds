@@ -6,9 +6,23 @@
   },
   "metadata": {
     "description": "Plugins oficiais Vixlens — sistema de marca, documentos institucionais, comunicação B2B, interfaces, catálogo de preço e relatórios mensais do ERP",
-    "version": "1.13.0"
+    "version": "1.14.0"
   },
   "plugins": [
+    {
+      "name": "vixlens",
+      "source": "./plugins/vixlens",
+      "description": "Pacote completo Vixlens — instala de uma vez os quatro plugins oficiais: vixlens-brand, vixlens-ui, vixlens-catalogo e vixlens-relatorios",
+      "version": "1.0.0",
+      "author": {
+        "name": "Otávio Torres"
+      },
+      "keywords": [
+        "vixlens",
+        "pacote",
+        "todos"
+      ]
+    },
     {
       "name": "vixlens-brand",
       "source": "./plugins/vixlens-brand",
