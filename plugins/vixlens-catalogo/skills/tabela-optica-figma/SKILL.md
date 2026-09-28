@@ -164,10 +164,11 @@ A pergunta que o balconista faz é "qual família atende **essa receita**?", e �
 
 `Família | Tipo | Esférico | Cilíndrico | Adição | Alt. mín. | Ø máx. | Pág`
 
-Todos esses dados saem do CSV. Duas marcações carregam o que mais gera troca de lente:
+Todos esses dados saem do CSV. Uma marcação só:
 
-- **Vermelho** no cilindro das famílias que param em −4,00, quando as outras vão a −6,00. Use `#A82315`: o vermelho comum reprova o contraste nesse corpo de texto.
 - **Negrito** na Alt. mín. das famílias com mais de uma altura, com a nota de que a altura de cada lente sai na própria linha da tabela.
+
+**Nada de vermelho na matriz.** O cilindro das famílias que param em −4,00 sai no mesmo estilo das outras (Regular `#2F2F2F`). A marcação em vermelho existiu até a 0.7.0 e foi retirada a pedido do Otávio em 28/09/2026.
 
 Abaixo da matriz, na mesma página, vêm o bloco **"como ler a tabela"** e os **códigos de cor agrupados por tecnologia** (Transitions Gen S, Transitions XTRActive, Colors e Espelhado) — não uma lista corrida de bolinhas.
 

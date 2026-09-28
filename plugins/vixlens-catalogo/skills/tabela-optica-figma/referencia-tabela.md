@@ -230,9 +230,9 @@ No modo `varia`, cada registro de `DADOS` precisa trazer a sua altura no 11º ca
 
 Cilindro e adição mudam por família — **nunca reaproveite os da anterior**, confira contra o CSV.
 
-**Duas famílias param em -4.00 e isso é exceção**: Vix Total e Freevix Visão Simples, as de entrada de cada linha. Na matriz do índice, marque o cilindro delas em `#C81E1E` Bold — é a diferença que mais gera pedido errado no balcão.
+**Duas famílias param em -4.00 e isso é exceção**: Vix Total e Freevix Visão Simples, as de entrada de cada linha. Na matriz do índice o cilindro delas sai no mesmo estilo das outras, **sem vermelho** (decisão do Otávio, 28/09/2026). O valor na coluna já mostra a diferença.
 
-**As Bifocais Convencionais também param em -4.00, e ali é o normal.** Bifocal não é multifocal: o desenho não comporta o mesmo cilindro. Não marque em vermelho — marcar o esperado ensina o balcão a ignorar a cor, e aí a marcação deixa de servir para a Vix Total e a Visão Simples, que é onde ela precisa funcionar.
+**As Bifocais Convencionais também param em -4.00, e ali é o normal.** Bifocal não é multifocal: o desenho não comporta o mesmo cilindro.
 
 Tipo: Multifocal → `LENTES MULTIFOCAIS SURFAÇADAS`; VS → `LENTES DE VISÃO SIMPLES SURFAÇADAS`; ocupacional → `LENTES OCUPACIONAIS SURFAÇADAS`.
 
@@ -308,7 +308,9 @@ Dizer "sugestão, preço livre" numa peça de custo é falso — aquilo é o pre
 
 > As larguras `[14,128,65,70,56,60,46,38,18]` com gap 5, prescritas até a 0.5.0, somam **535** contra 495 disponíveis. O auto-layout transborda sem avisar e as duas últimas colunas — Ø máx. e Pág. — simplesmente somem para fora da caixa. **Confira a soma antes de construir**, e meça a coluna Família: com 114px ela fica com folga de 10px nos nomes mais longos.
 
-As famílias que param num cilindro menor que as outras vão em vermelho Bold. **Use `#A82315`, não `#C81E1E`:** o vermelho antigo dá 5,75:1 sobre branco e o texto da matriz tem 7pt, onde o piso é 7:1. O `#A82315` dá 7,14:1.
+**Sem vermelho na matriz.** O cilindro das famílias que param em −4,00 sai Regular `#2F2F2F`, igual às outras. Até a 0.7.0 ia em vermelho Bold; foi retirado em 28/09/2026 a pedido do Otávio. A nota abaixo da matriz fala só do negrito da Alt. mín.
+
+> A tabela da Native (arquivo `gv7WCBLEavduC6BOJHkckO`) tinha ficado com as larguras antigas: 551px numa linha de 535, e a coluna Pág. vazava 16px pela borda. Corrigido tirando 16px da Família (128 → 112; o nome mais longo, `OPTIMA VS RELAX (0.50)`, mede 83).
 
 Abaixo da matriz vêm o bloco **COMO LER A TABELA** e a legenda das bolinhas, **na mesma página** — o conjunto fecha em ~790px com 16 famílias. O bloco precisa explicar os dois modos de altura e, quando `CONFIG.simbolos` estiver ligado, **o que significam `Ø` e `↕`** — símbolo sem legenda é ícone sem rótulo.
 
