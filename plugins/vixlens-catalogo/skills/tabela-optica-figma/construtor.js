@@ -13,14 +13,18 @@
 const CONFIG = {
   pagina: '06 OPTIMA PRO (1/2)',
   familia: 'OPTIMA PRO',
+  titulo: null,             // título exibido; null usa familia. Use na continuação
   tipo: 'LENTES MULTIFOCAIS SURFAÇADAS',
   cor: '#D94F2B',
-  altura: '16 mm',        // 'NN mm' | 'varia' | null
-  cilindro: '-6.00',      // vira pílula no cabeçalho
-  adicao: '0.50 a 5.00',  // vira pílula; null em visão simples
-  alturaImagem: 120,      // ponto de partida; o slot cresce até preencher a página
-  simbolos: true,         // padrao da casa; false volta para "Diâm." e "Alt."
-  centavos: false         // preços sem casas decimais
+  altura: '16 mm',          // 'NN mm' | 'varia' | null
+  cilindro: '-6.00',        // vira pílula no cabeçalho
+  adicao: '0.50 a 5.00',    // vira pílula; null em visão simples
+  selo: 'ÓTICAS NATIVE',    // quem assina a lente; 'LINHA VIXLENS' quando não é marca própria
+  antirreflexo: 'Reflecta', // marca do AR nas colunas de preço
+  semExpress: false,        // true quando a família inteira não tem o AR de entrada
+  alturaImagem: 120,        // ponto de partida; o slot cresce até preencher a página
+  simbolos: true,           // padrao da casa; false volta para "Diâm." e "Alt."
+  centavos: false           // preços sem casas decimais
 };
 
 const DADOS = `15075~1.49~Resina~80~+6~-10~R$ 2.098,54~R$ 2.356,79~R$ 2.844,88~R$ 3.845,86
@@ -57,9 +61,13 @@ const tinta20 = h => {
   return ('#' + v(c[0]) + v(c[1]) + v(c[2])).toUpperCase();
 };
 
+// Zero não tem sinal: a Astera começa em 0.00 e "Esf. +0.00 a -10.00" está
+// errado nas 19 linhas dela. Nas outras famílias o positivo é real e o sinal
+// informa.
 const dec = s => {
   const neg = s.indexOf('-') > -1 || s.indexOf('−') > -1;
   const n = parseFloat(s.replace('−', '').replace('-', '').replace('+', ''));
+  if (n === 0) return '0.00';
   return (neg ? '-' : '+') + n.toFixed(2);
 };
 const preco = s => {
@@ -68,18 +76,26 @@ const preco = s => {
 };
 
 const CORES = {
-  'Cinza': ['#6C6C6C', 'C'], 'Marrom': ['#69401C', 'M'], 'Verde': ['#3B5424', 'V'],
+  'Cinza': ['#545454', 'C'], 'Marrom': ['#69401C', 'M'], 'Verde': ['#3B5424', 'V'],
   'Ametista': ['#54317B', 'A'], 'Safira': ['#1C5A95', 'S'], 'Âmbar': ['#754D17', 'Â'],
-  'Esmeralda': ['#106943', 'E'], 'Rubi': ['#711533', 'R'], 'G15': ['#3F4A3C', 'G'],
+  'Esmeralda': ['#0C5335', 'E'], 'Rubi': ['#711533', 'R'], 'G15': ['#3F4A3C', 'G'],
   'Black': ['#1A1A1A', 'B'],
   'Prata': ['#9EADB0', 'EP'], 'Dourado': ['#BDB024', 'ED'],
   'Azul': ['#0538D9', 'EA'], 'Rosa': ['#FFA1FF', 'ER']
 };
 const ESPELHADO = ['Prata', 'Dourado', 'Azul', 'Rosa'];
 
-const W = [27, 26, 168, 70];
+// Família sem o AR de entrada perde a coluna, e a largura vai para o nome do
+// produto. Uma coluna inteira de travessão não informa nada e come o espaço em
+// que os nomes longos truncam.
+const SEM_EXPRESS = !!CONFIG.semExpress;
+const AR = CONFIG.antirreflexo || 'Reflecta';
+
+const W = [27, 26, SEM_EXPRESS ? 222 : 168, 70];
 const PW = 46, GAP_PRECO = 8;
-const TITULOS = [['Par', ''], ['Reflecta', 'Express'], ['Reflecta', 'Guard'], ['Reflecta', 'Blue Protect']];
+const TITULOS = SEM_EXPRESS
+  ? [['Par', ''], [AR, 'Guard'], [AR, 'Blue Protect']]
+  : [['Par', ''], [AR, 'Express'], [AR, 'Guard'], [AR, 'Blue Protect']];
 
 // ---------------------------------------------------------------- construção
 
@@ -113,7 +129,7 @@ hdr.x = 20; hdr.y = 44; hdr.resize(555, hdr.height); hdr.layoutSizingHorizontal 
 const linhaTitulo = figma.createAutoLayout('HORIZONTAL', { name: 'titulo' });
 linhaTitulo.itemSpacing = 10; linhaTitulo.counterAxisAlignItems = 'CENTER'; linhaTitulo.fills = [];
 hdr.appendChild(linhaTitulo);
-texto(linhaTitulo, CONFIG.familia, 'ExtraBold', 22, SOBRE_COR);
+texto(linhaTitulo, CONFIG.titulo || CONFIG.familia, 'ExtraBold', 22, SOBRE_COR);
 
 // As constantes da família viram pílulas: repetir cilindro e adição em toda
 // linha gastava 23% da largura da tabela para dizer sempre a mesma coisa.
@@ -127,8 +143,11 @@ const pilula = rotulo => {
 if (CONFIG.altura) pilula(CONFIG.altura === 'varia' ? 'Alt. mín. varia por lente' : 'Alt. mín. ' + CONFIG.altura);
 if (CONFIG.cilindro) pilula('Cil. até ' + CONFIG.cilindro);
 if (CONFIG.adicao) pilula('Add. ' + CONFIG.adicao);
+// A coluna sumiu: a pílula é o que impede o balconista de achar que o preço
+// do AR de entrada foi esquecido.
+if (SEM_EXPRESS) pilula('Sem ' + AR + ' Express');
 
-texto(hdr, CONFIG.tipo + '  //  MARCA PRÓPRIA VIXLENS', 'Medium', 8, SOBRE_COR);
+texto(hdr, CONFIG.tipo + '  //  ' + (CONFIG.selo || 'LINHA VIXLENS'), 'Medium', 8, SOBRE_COR);
 
 // O slot de imagem é elástico: nasce com alturaImagem e cresce no fim para
 // consumir a sobra. Sem isso sobravam ~190px mortos no pé de cada página.
@@ -206,12 +225,17 @@ const bolinha = (parent, nome, codigo, grande) => {
 
 // Fundo tintado, contorno na cor cheia, número em TINTA. Mantém a identidade
 // da família e resolve o contraste que o preenchimento sólido não alcança.
+// Bifocais convencionais não têm índice de refração. Nesse caso entra um
+// espaçador da mesma largura, e não um chip vazio: as colunas seguintes
+// continuam alinhadas com as das outras páginas.
 const chipIndice = (parent, ind) => {
   const c = figma.createFrame();
-  c.name = 'ind ' + ind; c.resize(26, 13); c.cornerRadius = 4;
+  c.name = ind ? 'ind ' + ind : 'ind vazio';
+  c.resize(26, 13); c.cornerRadius = 4;
+  parent.appendChild(c);
+  if (!ind) { c.fills = []; c.strokes = []; return; }
   c.fills = fill(FUNDO_CHIP);
   c.strokes = fill(CONFIG.cor); c.strokeWeight = 1;
-  parent.appendChild(c);
   const t = texto(c, ind, 'Bold', 6.5, TINTA);
   t.letterSpacing = { unit: 'PERCENT', value: -2 };
   t.x = (26 - t.width) / 2; t.y = (13 - t.height) / 2;
@@ -241,12 +265,14 @@ tbl.appendChild(reguaCab); reguaCab.resize(100, 3); reguaCab.layoutSizingHorizon
 // Separador de índice: dá o degrau que faltava entre o título de 22pt e o corpo
 // de 6pt, e evita varrer 25 linhas para achar o 1.67. Texto em preto — a cor da
 // família sobre branco reprova em 9 das 12 famílias (a mais clara dá 1.70:1).
+// Sem índice, o separador leva o nome da família: "ÍNDICE " seguido de nada
+// não diz coisa alguma.
 const separador = ind => {
-  const s = figma.createAutoLayout('HORIZONTAL', { name: 'sep ' + ind });
+  const s = figma.createAutoLayout('HORIZONTAL', { name: 'sep ' + (ind || CONFIG.familia) });
   s.fills = []; s.itemSpacing = 8; s.counterAxisAlignItems = 'CENTER';
   s.paddingTop = 7; s.paddingBottom = 3; s.paddingLeft = 8; s.paddingRight = 8;
   tbl.appendChild(s); s.layoutSizingHorizontal = 'FILL';
-  const t = texto(s, 'ÍNDICE ' + ind, 'ExtraBold', 8, '#000000');
+  const t = texto(s, ind ? 'ÍNDICE ' + ind : CONFIG.familia, 'ExtraBold', 8, '#000000');
   t.letterSpacing = { unit: 'PERCENT', value: 6 };
   const r = figma.createFrame();
   r.name = 'regua'; r.fills = fill(NEUTRO);
@@ -309,7 +335,7 @@ registros.forEach(d => {
   celula(r, 'Esf. ' + dec(d[4]) + ' a ' + dec(d[5]) + LS + l2, W[3], { size: 6, h: 16, cor: '#4A4A4A' });
 
   const g = grupoValores(r);
-  [d[6], d[7], d[8], d[9]].forEach(v => {
+  (SEM_EXPRESS ? [d[6], d[8], d[9]] : [d[6], d[7], d[8], d[9]]).forEach(v => {
     const p = preco(v);
     celula(g, p, PW, { alinha: p && p.length ? 'LEFT' : 'CENTER' });
   });

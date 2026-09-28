@@ -23,15 +23,29 @@ Para desligar o slot numa família, use `alturaImagem: 0`.
 
 ### Quebra de página
 
-Estimativa da altura da tabela:
+Altura da tabela:
 
 ```
-altura ≈ produtos × 22 + linhasDeCor × 18 + separadores × 21 + 37
+altura = 39 + separadores × 21 + produtos × 22 + tirasEmLinhaPropria × 18
 ```
 
-O `37` cobre padding do container (14), a régua do cabeçalho (3) e a linha de títulos (20). A conta erra por ~5px para mais ou para menos — **confie no `fimDaTabela` que o construtor devolve, não na estimativa**.
+O `39` cobre padding do container (14), a régua do cabeçalho (3) e a linha de títulos (22). Recalibrada em 28/09/2026 contra seis famílias construídas, a conta erra **±2px** — boa o bastante para decidir quebra antes de construir. Ainda assim, **o número que vale é o `fimDaTabela` que o construtor devolve**.
 
-Se `cabeNoRodape` vier `false`, **quebre a família em duas páginas num limite de índice**, equilibrando as metades. Nunca encolha a tipografia. Os separadores de índice custam ~21px cada, então famílias que cabiam no formato antigo podem não caber mais — no catálogo Native de 2026, cinco das doze famílias precisaram de duas páginas.
+Duas armadilhas na contagem:
+
+- **Tira de uma cor só não vira linha.** Ela vira bolinha ao lado do nome do produto e não custa altura nenhuma. Conte apenas as tiras com duas cores ou mais. Ignorar isso superestima famílias inteiras — a Freevix One tem 8 tiras no CSV e só 5 viram linha.
+- **Tira com cor espelhada é mais alta** (bolinha de 14px em vez de 10px): some 4px em cada.
+
+Orçamento vertical, dado que o slot de imagem tem piso de 56px:
+
+| Situação | Tabela começa em | Teto de altura |
+|---|---|---|
+| Com slot de imagem | y = 194 | **602px** |
+| Sem slot de imagem | y = 126 | **670px** |
+
+Daí sai a regra mais útil: **21 produtos com 5 separadores ocupam 606px antes de qualquer tira de cor**, então essas famílias quebram sempre. Já as que estouram por pouco — 13px, 34px — cabem em página única se abrirem mão do slot de imagem, o que vale a pena quando isso fecha o múltiplo de 4 sem página em branco.
+
+Se `cabeNoRodape` vier `false`, **quebre a família em duas páginas num limite de índice**, equilibrando as metades. Nunca encolha a tipografia. No catálogo Native de 2026, cinco das doze famílias precisaram de duas páginas.
 
 ## Cabeçalho da família
 
@@ -116,6 +130,8 @@ Esf. +6.00 a -10.00
 Com `CONFIG.altura === 'varia'`, a altura entra na segunda linha: `Ø75 | ↕18`.
 
 **Sempre duas casas decimais no esférico, ponto como separador, hífen simples.** Nunca vírgula, nunca cortar os dois zeros.
+
+**Zero não leva sinal, em campo nenhum da tabela.** Escreve-se `0.00`, nunca `+0.00` nem `-0.00` — vale para esférico, cilindro, adição, pílulas do cabeçalho e matriz do índice. A Astera é o caso que expõe isso: ela vai de plano a −10,00, e `Esf. +0.00 a -10.00` afirmava atender grau positivo até zero, o que não quer dizer nada. O `dec()` do construtor já trata; se você montar texto de faixa fora dele, aplique a mesma regra.
 
 ### Símbolos — `CONFIG.simbolos`
 
@@ -232,23 +248,33 @@ Entraram em 28/09/2026, das páginas 11 e 12 do tabelão v16. São lentes Vixlen
 
 **Freevix Astera é visão simples e mesmo assim tem altura.** É a exceção à regra de que visão simples vai com `altura: null` — a página traz 18 mm em todas as linhas e o rótulo dela é "visão simples especial". A adição continua `null`, como nas outras cinco.
 
-**Bifocais Convencionais não têm índice.** As cinco linhas são desenhos — Ultex e Biovis —, não materiais por índice. A família inteira é um bloco só: um separador com o nome dela no lugar de `Índice 1.49`, e nada de quebrar por limite de índice, porque não há limite.
+**Bifocais Convencionais não têm índice.** As cinco linhas são desenhos — Ultex e Biovis —, não materiais por índice. A família inteira é um bloco só: um separador com o nome dela no lugar de `Índice 1.49`, e nada de quebrar por limite de índice, porque não há limite. O construtor trata desde a 0.6.0: separador com o nome da família e espaçador invisível no lugar do chip, para as colunas seguintes não saírem do lugar.
+
+**Bifocais Convencionais também não têm Reflecta Express.** Mesmo caso da Astera — `semExpress: true` nas duas.
+
+**Bifocais Convencionais têm duas adições.** Até 3,50 nas Resina (Ultex Resina, Biovis Resina); até 3,00 nas Foto e na Poli. Não é divisão por desenho, é por lente. A pílula do cabeçalho traz as duas faixas e o índice traz a maior com asterisco e nota.
+
+**A bifocal para em −4,00 de cilindro e isso está certo.** A checagem que alerta para cilindro baixo vale para multifocal; bifocal convencional atende até −4,00 por natureza.
 
 ### Marca própria de terceiro
 
-Uma ótica com linha própria (ex.: OPTIMA, das Óticas Native) reaproveita a paleta pela **família Vixlens equivalente**. Registre o mapeamento antes de construir.
+Uma ótica com linha própria (OPTIMA das Óticas Native, EyeTech da Ótica do Toninho) reaproveita a paleta pela **família Vixlens equivalente**. Registre o mapeamento antes de construir.
+
+A marca própria pode rebatizar também o **antirreflexo** — a EyeTech chama a linha de Lumina. Nesse caso, `CONFIG.antirreflexo` muda o rótulo das colunas de preço. As famílias de linha Vixlens na mesma peça continuam com Reflecta: a lente é Vixlens, o tratamento também.
+
+Quando a ótica batiza só parte das famílias, prefixar as demais funciona: `EYETECH VS HD`, `EYETECH DESKVIEW ATÉ 2M`. Confirme com quem pediu antes de assumir.
 
 ### Cores de lente
 
 | Cor | Hex | Inicial |
 |---|---|---|
-| Cinza | `#6C6C6C` | C |
+| Cinza | `#545454` | C |
 | Marrom | `#69401C` | M |
 | Verde | `#3B5424` | V |
 | Ametista | `#54317B` | A |
 | Safira | `#1C5A95` | S |
 | Âmbar | `#754D17` | Â |
-| Esmeralda | `#106943` | E |
+| Esmeralda | `#0C5335` | E |
 | Rubi | `#711533` | R |
 
 Freevix Colors: G15 `#3F4A3C` (G), Black `#1A1A1A` (B), Marrom reaproveita o hex acima.
@@ -257,11 +283,15 @@ Espelhado — sigla de duas letras, E de Espelhado + inicial da cor: Prata `#9EA
 
 Ametista e Âmbar dividem a letra A na legenda oficial. Mantivemos `A` para Ametista e `Â` para Âmbar — aprovado pelo Otávio em 02/09/2026; as duas aparecem juntas em toda linha de Transitions Gen S.
 
+**Cinza e Esmeralda foram escurecidos em 28/09/2026** — de `#6C6C6C` e `#106943` para `#545454` e `#0C5335`. A sigla dentro da bolinha tem 5pt, e abaixo de 8pt o piso WCAG é 7:1: o branco sobre os hexes antigos dava 5,25:1 e 6,72:1. São as duas únicas cores da paleta que não passavam; o resto ficou como estava.
+
 ## Capa, índice e contracapa
 
 **Capa, contracapa e as fotos das páginas de família são trabalho do designer, não da skill.** Gere só os slots tracejados e o texto estrutural; não invente imagem, logo nem dados de contato.
 
-**Capa:** slot `CAPA` 595×470 sangrado no topo, slot `LOGO VIXLENS` 150×46 em (20, 500), título ExtraBold 34 em duas linhas (a segunda em `#6C6C6C`), bloco "EMITIDO PARA" com os dados do cabeçalho do CSV (ótica, CNPJ, responsável, telefone, desconto, data), e a nota legal em 7pt no pé.
+**Capa:** slot `CAPA` 555×455 no topo, slot do **logo da ótica** 150×44 logo abaixo, título ExtraBold 34 em duas linhas — `TABELA DE PREÇO` e `<ÓTICA> <ANO>`, a segunda em `#6C6C6C` — seguido de `VENDA SUGERIDA POR PAR` em Bold 10 com tracking. Depois o bloco "EMITIDO PARA" com os dados do cabeçalho do CSV (ótica, CNPJ, responsável, telefone) em quatro colunas, a data de emissão no pé do bloco, e a nota legal em 7pt embaixo.
+
+O logo é **da ótica**, não da Vixlens: a peça é dela. **O desconto não entra na capa de uma tabela de venda** — é condição comercial entre Vixlens e ótica e não tem o que fazer numa peça de balcão. Ele só aparece na tabela de custo.
 
 **A nota legal muda com a base de preço** escolhida na pergunta 1 do SKILL:
 
@@ -272,11 +302,19 @@ Ametista e Âmbar dividem a letra A na legenda oficial. Mantivemos `A` para Amet
 
 Dizer "sugestão, preço livre" numa peça de custo é falso — aquilo é o preço do laboratório, não sugestão.
 
-**Índice:** título `QUAL FAMÍLIA ATENDE ESSA RECEITA?` ExtraBold 22 e a matriz de compatibilidade — uma linha por família com chip de cor 14×14 raio 4, nome, tipo, esférico, cilíndrico, adição, altura, diâmetro e página. Larguras `[14,128,65,70,56,60,46,38,18]`, gap 5, container `#E4E4E4`. Família em modo `varia` mostra os dois valores na coluna Alt., em Bold: `16/18mm`. Deixar só um valor ali contradiz a página da família. As famílias que param num cilindro menor que as outras (Vix Total e Freevix Visão Simples, ambas em -4.00) vão em `#C81E1E` Bold.
+**Índice:** título `QUAL FAMÍLIA ATENDE ESSA RECEITA?` ExtraBold 21 e a matriz de receita — uma linha por família com bolinha de cor 9–10px, nome, tipo, esférico, cilíndrico, adição, altura, diâmetro e página. Família em modo `varia` mostra os dois valores na coluna Alt., em Bold: `16/18mm`. Deixar só um valor ali contradiz a página da família.
 
-Abaixo da matriz vêm o bloco **COMO LER A TABELA** e a legenda das bolinhas. O bloco precisa explicar os dois modos de altura e, quando `CONFIG.simbolos` estiver ligado, **o que significam `Ø` e `↕`** — símbolo sem legenda é ícone sem rótulo.
+**Larguras medidas, com 16 famílias:** `[10,114,50,68,60,60,36,40,16]`, gap 4, padding lateral 8 no container e 4 nas linhas. Somam 486 contra 491 de conteúdo útil.
 
-A legenda agrupa por tratamento, não por cor, nesta ordem: **TRANSITIONS GEN S** com as oito cores em duas colunas, **TRANSITIONS XTRACTIVE** só com Cinza, e **FREEVIX COLOR** com Marrom, G15 e Black numa coluna e os quatro Espelhado na outra. Bolinha 12px, rótulo Regular 7.5pt, título do grupo Bold 7.5pt com tracking +2%.
+> As larguras `[14,128,65,70,56,60,46,38,18]` com gap 5, prescritas até a 0.5.0, somam **535** contra 495 disponíveis. O auto-layout transborda sem avisar e as duas últimas colunas — Ø máx. e Pág. — simplesmente somem para fora da caixa. **Confira a soma antes de construir**, e meça a coluna Família: com 114px ela fica com folga de 10px nos nomes mais longos.
+
+As famílias que param num cilindro menor que as outras vão em vermelho Bold. **Use `#A82315`, não `#C81E1E`:** o vermelho antigo dá 5,75:1 sobre branco e o texto da matriz tem 7pt, onde o piso é 7:1. O `#A82315` dá 7,14:1.
+
+Abaixo da matriz vêm o bloco **COMO LER A TABELA** e a legenda das bolinhas, **na mesma página** — o conjunto fecha em ~790px com 16 famílias. O bloco precisa explicar os dois modos de altura e, quando `CONFIG.simbolos` estiver ligado, **o que significam `Ø` e `↕`** — símbolo sem legenda é ícone sem rótulo.
+
+A legenda agrupa por tratamento, não por cor, nesta ordem: **TRANSITIONS GEN S** com as oito cores, **TRANSITIONS XTRACTIVE** só com Cinza, e **COLORS E ESPELHADO** com Marrom, G15, Black e os quatro Espelhado. Bolinha 12px, rótulo Regular 7pt em coluna de 50px, título do grupo Bold 6.5pt com tracking +6%.
+
+**Monte a grade por chips-por-linha, não por itens-por-coluna.** Dois por linha nos grupos grandes, um no XTRActive: assim os três blocos somam ~410px e cabem lado a lado. Uma grade de quatro chips por linha estoura os 515px e corta as últimas cores sem erro nenhum aparecer. Conte as bolinhas renderizadas contra a paleta antes de dar por pronto.
 
 **Contracapa:** slot `CONTRACAPA` 595×560, logo, bloco de contato com placeholders e o texto legal em 7pt.
 
