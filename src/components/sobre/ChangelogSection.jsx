@@ -28,9 +28,16 @@ const ORDEM = ['novo', 'melhoria', 'correcao']
 // Timeline — mais recente em cima. Dados reais do DS.
 const VERSOES = [
   {
+    versao: 'v0.14.0',
+    data: '29/09/2026',
+    atual: true,
+    mudancas: [
+      ['novo', 'Tecnologias & lentes: ícones do comparativo AR Reflecta (10 categorias, preto e branco, SVG + .zip)'],
+    ],
+  },
+  {
     versao: 'v0.13.0',
     data: '26/09/2026',
-    atual: true,
     mudancas: [
       ['melhoria', 'Tailwind 4.3 (a versão mais recente): o site do DS consome o mesmo @theme que as telas recebem, sem tailwind.config.js. Visual idêntico ao Tailwind 3, medido elemento a elemento em 375, 1024 e 1440px'],
       ['melhoria', 'Componentes da biblioteca passam a usar classes do Tailwind 4 (shadow-xs, outline-hidden, ring-3...). Tokens e preset seguem servindo telas em Tailwind 3, sem mudança'],
