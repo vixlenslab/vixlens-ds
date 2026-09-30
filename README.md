@@ -153,6 +153,7 @@ Interface e código de front-end. 3 skills:
 Catálogo de preço e marca própria. 2 skills:
 
 - **tabela-optica-figma** — monta no Figma o catálogo A4 de tabela de preço a partir do CSV por ótica (capa, índice, páginas por família, contracapa)
+- **promovix-figma** — monta no Figma a Promovix, tabela promocional mensal (PVO), a partir de um Excel modelo: tabela no formato do catálogo + moldura promocional (rodapé com validade, selo nas colunas em promoção, faixas Reflecta 50% e Montagem R$15, painel VixClub). Confere a regra 50% e a ordem das cores, e agrupa as páginas em lotes para o Figma
 - **marca-propria** — leva ao projeto de Marca Própria no Drive compartilhado (acha a pasta em qualquer letra de unidade, manda ler o `CLAUDE.md` de lá, resolve as pegadinhas do Windows). As regras continuam no Drive, não na skill
 
 #### `vixlens-relatorios`
@@ -188,6 +189,7 @@ site-ds/
 │   │   ├── .claude-plugin/plugin.json
 │   │   └── skills/
 │   │       ├── marca-propria/
+│   │       ├── promovix-figma/
 │   │       └── tabela-optica-figma/
 │   └── vixlens-relatorios/
 │       ├── .claude-plugin/plugin.json
