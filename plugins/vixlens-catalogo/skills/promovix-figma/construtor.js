@@ -8,7 +8,7 @@ let PAGINA = null;
 // ---------------------------------------------------------------- utilidades
 
 const LS = String.fromCharCode(8232);
-const TINTA = '#2F2F2F', NEUTRO = '#E4E4E4', PRETO = '#000000', AMARELO = '#F7B200';
+const TINTA = '#2F2F2F', NEUTRO = '#E4E4E4', PRETO = '#000000', AMARELO = '#F7B200', FAIXA_PROMO = '#FFF0BF';
 const LIMITE = 796;              // nada de conteúdo abaixo daqui
 const RODAPE_Y = 806;            // faixa promocional do rodapé
 const PAD_BASE = 3, PAD_MAX = 4.5;   // respiro das linhas: começa em 3 e cresce com a sobra
@@ -124,11 +124,11 @@ function familia(page, F) {
   const cv = grupo(cab);
   F.titulos.forEach((par, i) => {
     const txt = par[1] ? par[0] + LS + par[1] : par[0];
-    // Coluna em promoção: título sobre o amarelo da Promovix. É o "selo" da oferta.
+    // Coluna em promoção: o título fica sobre a faixa amarelo-clara (proposta 1, escolhida em 30/09/2026).
     if (F.promo.indexOf(i + 1) > -1) {
-      const b = figma.createAutoLayout('HORIZONTAL', { name: 'selo promo' }); b.fills = fill(AMARELO); b.cornerRadius = 4;
-      b.paddingTop = 2; b.paddingBottom = 2; b.paddingLeft = 3; b.paddingRight = 3; cv.appendChild(b);
-      cel(b, txt, PW - 6, { style: 'Bold', size: 6.5, ls: 0, h: 16, cor: PRETO });
+      const b = figma.createAutoLayout('HORIZONTAL', { name: 'selo promo' }); b.fills = [];
+      b.paddingTop = 2; b.paddingBottom = 2; b.paddingLeft = 0; b.paddingRight = 0; cv.appendChild(b);
+      cel(b, txt, PW, { style: 'Bold', size: 6.5, ls: 0, h: 16, cor: PRETO });
     } else cel(cv, txt, PW, { style: 'Bold', size: 6.5, ls: 0, h: 16 });
   });
   const rg = figma.createFrame(); rg.name = 'regua-cab'; rg.fills = fill(linhaCor); tbl.appendChild(rg); rg.resize(100, 3); rg.layoutSizingHorizontal = 'FILL';
@@ -169,8 +169,9 @@ function familia(page, F) {
     d.p.forEach((v, i) => {
       if (!v) { cel(g, '', PW, { alinha: 'CENTER' }); return; }
       const obs = d.obs && d.obs[i + 1];
-      if (obs) cel(g, 'R$ ' + v + LS + obs, PW, { small: ('R$ ' + v).length + 1, lh: 9 });
-      else cel(g, 'R$ ' + v, PW, {});
+      const promo = F.promo.indexOf(i + 1) > -1 ? 'Bold' : 'Regular';     // preço em oferta em negrito
+      if (obs) cel(g, 'R$ ' + v + LS + obs, PW, { small: ('R$ ' + v).length + 1, lh: 9, style: promo });
+      else cel(g, 'R$ ' + v, PW, { style: promo });
     });
     if (d.dest && DESTAQUE[d.dest]) {
       r.fills = fill(DESTAQUE[d.dest].fundo); r.strokes = fill(DESTAQUE[d.dest].borda); r.strokeWeight = 1.5;
@@ -185,7 +186,26 @@ function familia(page, F) {
       linhasCor++;
     }
   }
-  return { nos: [hdr, tbl], tbl, info: { familia: F.familia, produtos, linhasCor, codigosCor, seps, destaques, contrasteCabecalho: Math.round(razao(sobre, cor) * 100) / 100 } };
+  // Faixa amarelo-clara contínua atrás das colunas em promoção, do título ao último preço.
+  // As linhas ficam transparentes para a faixa aparecer; a altura é refeita no fim (ajustarFaixas),
+  // porque o respiro e o aperto mudam a altura da tabela depois daqui.
+  const selos = cv.children.filter(n => n.name === 'selo promo');
+  let faixaPromo = null;
+  if (selos.length) {
+    for (const r of tbl.children) if (r.name === 'row' || r.name === 'subrow' || r.name === 'cab') { if (!r.strokes.length) r.fills = []; }
+    const tb0 = tbl.absoluteBoundingBox, a0 = selos[0].absoluteBoundingBox, z0 = selos[selos.length - 1].absoluteBoundingBox;
+    faixaPromo = figma.createRectangle(); faixaPromo.name = 'faixa promo'; tbl.insertChild(0, faixaPromo); faixaPromo.layoutPositioning = 'ABSOLUTE';
+    faixaPromo.x = a0.x - tb0.x - 5; faixaPromo.resize(z0.x + z0.width - a0.x + 10, 10); faixaPromo.fills = fill(FAIXA_PROMO); faixaPromo.cornerRadius = 12;
+  }
+  // Adesivo da oferta sobre a borda da tabela, centrado nas colunas em promoção.
+  if (selos.length && PAGINA.adesivo) {
+    const tb = tbl.absoluteBoundingBox, a = selos[0].absoluteBoundingBox, z = selos[selos.length - 1].absoluteBoundingBox;
+    const st = figma.createAutoLayout('HORIZONTAL', { name: 'adesivo promo' }); st.fills = fill(PRETO); st.cornerRadius = 100;
+    st.paddingTop = 3; st.paddingBottom = 3; st.paddingLeft = 8; st.paddingRight = 8; tbl.appendChild(st); st.layoutPositioning = 'ABSOLUTE';
+    T(st, PAGINA.adesivo, 'ExtraBold', 7.5, AMARELO, 4);
+    st.x = (a.x - tb.x) + ((z.x + z.width) - a.x - st.width) / 2; st.y = -8;
+  }
+  return { nos: [hdr, tbl], tbl, faixaPromo, info: { familia: F.familia, produtos, linhasCor, codigosCor, seps, destaques, contrasteCabecalho: Math.round(razao(sobre, cor) * 100) / 100 } };
 }
 
 function faixa(page, B, nome) {
@@ -254,14 +274,14 @@ for (const c of frame.children.slice()) c.remove();
 frame.resize(595, 842); frame.x = PAGINA.x; frame.y = 0; frame.fills = fill('#FFFFFF'); frame.clipsContent = true;
 
 // Monta na ordem e guarda a pilha: [{nos, gapAntes}]
-const pilha = [], infos = [], tabelas = [];
+const pilha = [], infos = [], tabelas = [], faixas = [];
 let clube = null, topo = 20;
 for (const B of PAGINA.blocos) {
   if (B.tipo === 'capa') { capa(frame); topo = 102; continue; }
   if (B.tipo === 'faixa50') pilha.push({ nos: [faixa(frame, B, 'Faixa 50%')], faixa: true });
   else if (B.tipo === 'montagem') pilha.push({ nos: [faixa(frame, B, 'Faixa Montagem')], faixa: true });
   else if (B.tipo === 'vixclub') { clube = vixclub(frame, B); pilha.push({ nos: [clube.vc], clube: true }); }
-  else if (B.tipo === 'familia') { const r = familia(frame, B); pilha.push({ nos: r.nos }); infos.push(r.info); tabelas.push(r.tbl); }
+  else if (B.tipo === 'familia') { const r = familia(frame, B); pilha.push({ nos: r.nos }); infos.push(r.info); tabelas.push(r.tbl); if (r.faixaPromo) faixas.push([r.tbl, r.faixaPromo]); }
 }
 rodape(frame);
 
@@ -300,6 +320,12 @@ if (!aperto && !clube && fim < alvo && linhas.length) {
   fim = empilhar(GAP_BLOCO);
   const nBlocos = pilha.filter((b, i) => i > 0 && !pilha[i - 1].faixa).length;
   if (nBlocos && fim < alvo) fim = empilhar(Math.min(GAP_BLOCO_MAX, GAP_BLOCO + (alvo - fim) / nBlocos));
+}
+for (const [t, fp] of faixas) {
+  const cab = t.children.find(n => n.name === 'cab');
+  const fluxo = t.children.filter(n => n.layoutPositioning !== 'ABSOLUTE');
+  const ult = fluxo[fluxo.length - 1];
+  fp.y = cab.y - 4; fp.resize(fp.width, ult.y + ult.height - fp.y + 2);
 }
 let clubeOk = true, idFoto = null;
 if (clube) {

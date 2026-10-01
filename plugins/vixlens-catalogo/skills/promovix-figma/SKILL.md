@@ -67,7 +67,7 @@ Pergunte só o **destino**: arquivo novo (qual nome) ou o link de um arquivo exi
 
 **A moldura é o que diferencia a promo do catálogo.** A Promovix vale um mês. Se ela tivesse a cara da tabela permanente, cedo ou tarde alguém cotaria pela promo vencida. Por isso a moldura tem quatro elementos:
 - **Rodapé preto em toda página:** PROMOVIX // MÊS.ANO, validade, contato e "Página N/T". A folha solta circula sozinha, então cada página precisa dizer até quando vale.
-- **Selo amarelo** no título das colunas em promoção (`colunas_promo`).
+- **Colunas em promoção** (`colunas_promo`): faixa amarelo-clara contínua #FFF0BF do título ao último preço, preços em negrito e um adesivo preto/amarelo sobre a borda da tabela com o texto de `adesivo_promo` (Config; padrão "REFLECTA −50%"). É a proposta 1, escolhida pelo Otávio entre 6 propostas em 30/09/2026. As linhas dessas tabelas ficam transparentes para a faixa aparecer; a altura da faixa é recalculada no fim, depois do respiro e do aperto.
 - **Faixas de oferta** pretas, com o número grande em amarelo: Reflecta 50% e Montagem R$15.
 - **Preto com amarelo** reservado à Promovix. O catálogo não usa essa combinação.
 

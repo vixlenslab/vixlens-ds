@@ -230,7 +230,7 @@ def main():
                 F = dict(fams[b]); F.pop('titulosTexto'); F.pop('regra50')
                 blocos.append({'tipo': 'familia', **F})
         pag = dict(numero=n, total=len(numeros), mes=mes, ano=ano, validade=txt(cfg.get('validade')).upper(),
-                   aviso=txt(cfg.get('aviso')), contato=contato,
+                   aviso=txt(cfg.get('aviso')), contato=contato, adesivo=txt(cfg.get('adesivo_promo')),
                    frameNome=f'Promovix {mes} // P{n:02d}', x=(n - 1) * 640, blocos=blocos,
                    svgVixlens=svg_vix if 'CAPA' in pags[n] else None,
                    svgVixclub=svg_club if 'VIXCLUB' in pags[n] else None)
