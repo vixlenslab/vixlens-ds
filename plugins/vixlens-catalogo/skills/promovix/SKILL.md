@@ -1,5 +1,5 @@
 ---
-name: promovix-figma
+name: promovix
 description: >-
   Monta a Promovix, tabela promocional mensal da Vixlens (PVO) para as óticas, no Figma a partir de um Excel,
   seguindo o layout da Promovix Outubro 2026: tabela no formato do catálogo, moldura promocional preta e amarela,
