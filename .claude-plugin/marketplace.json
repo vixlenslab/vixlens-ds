@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Plugins oficiais Vixlens — sistema de marca, documentos institucionais, comunicação B2B, interfaces, catálogo de preço e relatórios mensais do ERP",
-    "version": "1.15.0"
+    "version": "1.15.1"
   },
   "plugins": [
     {
@@ -66,7 +66,7 @@
       "name": "vixlens-catalogo",
       "source": "./plugins/vixlens-catalogo",
       "description": "Catálogo A4 de tabela de preço no Figma a partir do CSV por ótica (grid, contraste WCAG, quebra automática de família, validação contra a fonte), a Promovix mensal a partir de Excel e o caminho para o projeto de Marca Própria no Drive compartilhado",
-      "version": "0.9.0",
+      "version": "0.9.1",
       "author": {
         "name": "Otávio Torres"
       },

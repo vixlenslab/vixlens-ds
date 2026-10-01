@@ -96,7 +96,9 @@ function familia(page, F) {
       if (!F.rows.some(r => r.dest === k)) continue;
       const f = figma.createAutoLayout('HORIZONTAL', { name: 'legenda' }); f.fills = fill('#FFFFFF'); f.strokes = fill(DESTAQUE[k].borda);
       f.strokeWeight = 1.5; f.strokeAlign = 'INSIDE'; f.cornerRadius = 100; f.paddingTop = 4; f.paddingBottom = 4; f.paddingLeft = 10; f.paddingRight = 10;
-      lt.appendChild(f); T(f, DESTAQUE[k].rotulo, 'Bold', 8.5, TINTA);
+      // Se todas as linhas FOTO são Transitions, a legenda diz isso (pedido de 01/10 na lente pronta Kodak).
+      const soTransitions = k === 'FOTO' && F.rows.filter(r => r.dest === 'FOTO').every(r => /transitions/i.test(r.n));
+      lt.appendChild(f); T(f, soTransitions ? 'Transitions · Fotossensível' : DESTAQUE[k].rotulo, 'Bold', 8.5, TINTA);
     }
   }
   T(hdr, F.subtitulo, 'Medium', 8, sobre);
@@ -200,10 +202,19 @@ function familia(page, F) {
   // Adesivo da oferta sobre a borda da tabela, centrado nas colunas em promoção.
   if (selos.length && PAGINA.adesivo) {
     const tb = tbl.absoluteBoundingBox, a = selos[0].absoluteBoundingBox, z = selos[selos.length - 1].absoluteBoundingBox;
+    // Selo de oferta: rótulo em branco + valor grande em amarelo, inclinado, com contorno e sombra.
+    // "REFLECTA −50%" vira rótulo "REFLECTA" + valor "−50%" (quebra no último espaço).
+    const k = PAGINA.adesivo.lastIndexOf(' ');
+    const rotulo = k > 0 ? PAGINA.adesivo.slice(0, k) : '', valor = k > 0 ? PAGINA.adesivo.slice(k + 1) : PAGINA.adesivo;
     const st = figma.createAutoLayout('HORIZONTAL', { name: 'adesivo promo' }); st.fills = fill(PRETO); st.cornerRadius = 100;
-    st.paddingTop = 3; st.paddingBottom = 3; st.paddingLeft = 8; st.paddingRight = 8; tbl.appendChild(st); st.layoutPositioning = 'ABSOLUTE';
-    T(st, PAGINA.adesivo, 'ExtraBold', 7.5, AMARELO, 4);
-    st.x = (a.x - tb.x) + ((z.x + z.width) - a.x - st.width) / 2; st.y = -8;
+    st.paddingTop = 4; st.paddingBottom = 4; st.paddingLeft = 12; st.paddingRight = 12; st.itemSpacing = 5; st.counterAxisAlignItems = 'CENTER';
+    st.strokes = fill(AMARELO); st.strokeWeight = 1.5; st.strokeAlign = 'INSIDE';
+    st.effects = [{ type: 'DROP_SHADOW', color: { r: 0, g: 0, b: 0, a: 0.25 }, offset: { x: 0, y: 2 }, radius: 4, spread: 0, visible: true, blendMode: 'NORMAL' }];
+    tbl.appendChild(st); st.layoutPositioning = 'ABSOLUTE';
+    if (rotulo) T(st, rotulo, 'Bold', 8, '#FFFFFF', 8);
+    T(st, valor, 'ExtraBold', 14, AMARELO, -2);
+    st.rotation = 4;
+    st.x = (a.x - tb.x) + ((z.x + z.width) - a.x - st.width) / 2; st.y = -16;
   }
   return { nos: [hdr, tbl], tbl, faixaPromo, info: { familia: F.familia, produtos, linhasCor, codigosCor, seps, destaques, contrasteCabecalho: Math.round(razao(sobre, cor) * 100) / 100 } };
 }

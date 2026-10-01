@@ -67,7 +67,7 @@ Pergunte só o **destino**: arquivo novo (qual nome) ou o link de um arquivo exi
 
 **A moldura é o que diferencia a promo do catálogo.** A Promovix vale um mês. Se ela tivesse a cara da tabela permanente, cedo ou tarde alguém cotaria pela promo vencida. Por isso a moldura tem quatro elementos:
 - **Rodapé preto em toda página:** PROMOVIX // MÊS.ANO, validade, contato e "Página N/T". A folha solta circula sozinha, então cada página precisa dizer até quando vale.
-- **Colunas em promoção** (`colunas_promo`): faixa amarelo-clara contínua #FFF0BF do título ao último preço, preços em negrito e um adesivo preto/amarelo sobre a borda da tabela com o texto de `adesivo_promo` (Config; padrão "REFLECTA −50%"). É a proposta 1, escolhida pelo Otávio entre 6 propostas em 30/09/2026. As linhas dessas tabelas ficam transparentes para a faixa aparecer; a altura da faixa é recalculada no fim, depois do respiro e do aperto.
+- **Colunas em promoção** (`colunas_promo`): faixa amarelo-clara contínua #FFF0BF do título ao último preço, preços em negrito e um selo de oferta sobre a borda da tabela com o texto de `adesivo_promo` (Config; padrão "REFLECTA −50%"): pílula preta com contorno amarelo, rótulo em branco, valor grande em amarelo, inclinada 4° e com sombra — invade de leve o cabeçalho de propósito (pedido de 01/10: "bonito e chamativo"). É a proposta 1, escolhida pelo Otávio entre 6 propostas em 30/09/2026. As linhas dessas tabelas ficam transparentes para a faixa aparecer; a altura da faixa é recalculada no fim, depois do respiro e do aperto.
 - **Faixas de oferta** pretas, com o número grande em amarelo: Reflecta 50% e Montagem R$15.
 - **Preto com amarelo** reservado à Promovix. O catálogo não usa essa combinação.
 
@@ -88,15 +88,15 @@ Com `legenda_destaque = S`, pílulas no cabeçalho explicam as duas marcações.
 
 | Família | Cor |
 |---|---|
-| Kodak (todas) e Vix Total | amarelo #F7B200 |
+| Kodak (todas, inclusive a lente pronta) e Vix Total | amarelo #F7B200 |
 | Espace | laranja #EF7F02 |
 | Freevix VS | azul #00497A |
 | Essilor surfaçadas | verde-oliva #3F4A3C |
-| Lentes prontas | azul #006BB2 |
+| Lente pronta Essilor | cinza-azulado #414B55 (cor dos cabeçalhos da tabela oficial Essilor) |
 | Optview e MF acabada | azul-acinzentado #D0DDE4 |
 | Optfácil e Solar | cinza #DADFE2 |
 
-A Optview **não** usa o azul das lentes prontas: ele pediu que tivesse cor própria. Em família de cor clara, régua e borda do selo saem num tom escurecido, senão somem.
+A Optview tem cor própria, pedido dele. Na lente pronta Kodak a linha Transitions sai com destaque FOTO, e a legenda vira "Transitions · Fotossensível" quando todas as linhas destacadas são Transitions. Em família de cor clara, régua e borda do selo saem num tom escurecido, senão somem.
 
 ## Dados que exigem conferência fora do Excel
 
