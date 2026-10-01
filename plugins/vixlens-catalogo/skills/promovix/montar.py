@@ -106,7 +106,10 @@ def main():
             regra50=sn(r.get('regra_50')), sep=sn(r.get('separador_indice')), trat=sn(r.get('coluna_tratamento')),
             dispTitulo=txt(r.get('titulo_disponibilidade')) or None,
             dispW=int(num(r.get('largura_disponibilidade')) or 70),
-            legenda=sn(r.get('legenda_destaque')), rows=[])
+            legenda=sn(r.get('legenda_destaque')), montagem=sn(r.get('selo_montagem')),
+            compacta=sn(r.get('compacta')), rows=[])
+        if fams[nome]['compacta'] and len(titulos) > 1:
+            erros.append(f'Familias l.{r["_linha"]} {nome}: compacta = S só funciona com 1 coluna de preço.')
 
     vistos = {}
     for r in tabela(wb['Produtos']):
@@ -188,7 +191,9 @@ def main():
 
     # estimativa de altura (a verdade é o fimDoConteudo que o construtor devolve)
     def altura_familia(F):
+        if F['compacta']: return 13 + 22 + 4 + 20 * ((len(F['rows']) + 1) // 2)
         h = 58 + 8 + 18 + 22 + 3          # cabeçalho da família, gap, padding da tabela, títulos, régua
+        if F['promo'] and txt(cfg.get('adesivo_promo')): h += 10     # folga sob o adesivo −50%
         ind = None
         for r in F['rows']:
             if F['sep'] and r['i'] != ind: h += 25
@@ -232,6 +237,8 @@ def main():
                 blocos.append({'tipo': 'familia', **F})
         pag = dict(numero=n, total=len(numeros), mes=mes, ano=ano, validade=txt(cfg.get('validade')).upper(),
                    aviso=txt(cfg.get('aviso')), contato=contato, adesivo=txt(cfg.get('adesivo_promo')),
+                   montagem=dict(rotulo=txt(cfg.get('montagem_selo')) or 'MONTAGEM\nLENTE PRONTA', valor=txt(cfg.get('montagem_destaque')))
+                   if any(fams[b]['montagem'] for b in pags[n] if b in fams) else None,
                    frameNome=f'Promovix {mes} // P{n:02d}', x=(n - 1) * 640, blocos=blocos,
                    svgVixlens=svg_vix if 'CAPA' in pags[n] else None,
                    svgVixclub=svg_club if 'VIXCLUB' in pags[n] else None)

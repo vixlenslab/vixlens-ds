@@ -3,7 +3,7 @@ name: promovix
 description: >-
   Monta a Promovix, tabela promocional mensal da Vixlens (PVO) para as óticas, no Figma a partir de um Excel,
   seguindo o layout da Promovix Outubro 2026: tabela no formato do catálogo, moldura promocional preta e amarela,
-  faixas de oferta (Reflecta 50%, Montagem R$15), painel VixClub e destaques Optview.
+  faixa Reflecta 50%, selo de montagem R$15 no cabeçalho, pílulas Transitions, painel VixClub e destaques Optview.
   Use SEMPRE que o pedido for a Promovix ou a tabela promocional do mês — "promovix de novembro",
   "atualiza a tabela promocional", "nova versão da promo", "tabela PVO", "promoção do mês das óticas",
   "Reflecta 50% nas Kodak", "entrou produto novo na promovix" — mesmo sem citar Excel ou Figma.
@@ -34,7 +34,7 @@ Gera a Promovix do mês inteira a partir de um Excel: capa, uma ou mais família
 | **Leia-me** | Regras de preenchimento para quem atualiza o Excel |
 | **Config** | Mês, validade, acréscimos da regra 50%, textos das faixas e do VixClub, contato |
 | **Paginas** | Qual bloco vai em qual página, na ordem. Blocos especiais: `CAPA`, `FAIXA_50`, `FAIXA_MONTAGEM`, `VIXCLUB`; o resto é nome de família |
-| **Familias** | Uma linha por família: cor, pílulas, títulos das colunas de preço, colunas em promoção, regra 50%, separador de índice, coluna de tratamento, largura da Disponibilidade, legenda de destaque |
+| **Familias** | Uma linha por família: cor, pílulas, títulos das colunas de preço, colunas em promoção, regra 50%, separador de índice, coluna de tratamento, largura da Disponibilidade, legenda de destaque, `selo_montagem`, `compacta` |
 | **Produtos** | Uma linha por linha impressa, na ordem da tabela |
 
 Três convenções que não são óbvias:
@@ -68,13 +68,22 @@ Pergunte só o **destino**: arquivo novo (qual nome) ou o link de um arquivo exi
 **A moldura é o que diferencia a promo do catálogo.** A Promovix vale um mês. Se ela tivesse a cara da tabela permanente, cedo ou tarde alguém cotaria pela promo vencida. Por isso a moldura tem quatro elementos:
 - **Rodapé preto em toda página:** PROMOVIX // MÊS.ANO, validade, contato e "Página N/T". A folha solta circula sozinha, então cada página precisa dizer até quando vale.
 - **Colunas em promoção** (`colunas_promo`): faixa amarelo-clara contínua #FFF0BF do título ao último preço, preços em negrito e um selo de oferta sobre a borda da tabela com o texto de `adesivo_promo` (Config; padrão "REFLECTA −50%"): pílula preta com contorno amarelo, ícone de cupom (SealPercent do Phosphor, `modelo/svg/selo-oferta.svg`), rótulo em branco e valor grande em amarelo, com sombra; reta (a versão inclinada foi recusada) e invadindo de leve o cabeçalho de propósito (pedido de 01/10: "bonito e chamativo"). É a proposta 1, escolhida pelo Otávio entre 6 propostas em 30/09/2026. As linhas dessas tabelas ficam transparentes para a faixa aparecer; a altura da faixa é recalculada no fim, depois do respiro e do aperto.
-- **Faixas de oferta** pretas, com o número grande em amarelo: Reflecta 50% e Montagem R$15.
+  Tabela com adesivo ganha 10 px a mais de padding no topo, para os títulos "Reflecta Guard / Blue Protect SH" não ficarem colados no selo (pedido de 01/10).
+- **Faixa de oferta** preta com o número grande em amarelo: Reflecta 50% (`FAIXA_50`). Pode repetir em mais de uma página da promoção; na Outubro ela abre as páginas 3 e 4.
+- **Selo de montagem** (`selo_montagem = S`): pílula preta "MONTAGEM / LENTE PRONTA" + valor em amarelo no canto direito do cabeçalho da família (Optview e Lente Pronta Kodak). Substituiu a faixa `FAIXA_MONTAGEM` em 01/10/2026: a faixa custava ~67 px por página e repetia nas duas páginas de lente pronta. Textos em `montagem_selo` e `montagem_destaque` (Config). A faixa ainda existe para quem quiser, mas não é o padrão.
 - **Preto com amarelo** reservado à Promovix. O catálogo não usa essa combinação.
+
+**Transitions no nome do produto vira pílula, sozinho.** O construtor acha "Transitions Gen S / XTRActive / Signature / Classic" no nome e troca pela pílula; o resto do nome fica em texto ("Orma [Transitions Gen S] Cinza"):
+- Gen S e as demais: degradê Transitions (#FCBE95 → #FF766E → #CB81C0 → #96CCDC), texto escuro.
+- XTRActive: cinza-escuro #3A3A3C com texto branco (pedido do Otávio, 01/10).
+Não use `destaque FOTO` em linha Transitions: a pílula já identifica, e o fundo azul junto pesava demais. FOTO fica para fotossensível de outra marca (Optview Sun+, Resina Foto).
+
+**Bloco compacto** (`compacta = S`): família curta e de pouco peso, como a Solar, sai sem o cabeçalho grande: chip com o nome, uma linha com o que é igual em todas as lentes (subtítulo, índice, curva/diâmetro) e os produtos em 2 colunas com código, nome, cor e preço. Só aceita 1 coluna de preço. Foi assim que a Solar coube na página da lente pronta (pedido de 01/10: "tem que entrar em lente pronta, pode reduzir").
 
 **Faixa "ÍNDICE" só onde ajuda.** Ela custa ~25 px por grupo. Fica ligada nas tabelas longas de marca própria (Vix Total, Freevix VS). Nas Kodak, Essilor e lentes prontas, o selo de índice da linha basta, e foi desligando as faixas que Unique UHD e Unique Infinite couberam na mesma página.
 
 **Respiro e aperto automáticos.** O construtor monta com espaçamento base e depois ajusta:
-- **Sobrou espaço:** aumenta o respiro das linhas (até 4,5 px) e depois o espaço entre blocos (até 22 px).
+- **Sobrou espaço:** aumenta o respiro das linhas (até 6 px) e depois o espaço entre blocos (até 22 px). Página com buraco grande mesmo assim (ex.: duas tabelas curtas) pede outro bloco, não mais respiro: na Outubro o VixClub foi para a página da Freevix e a página 4 ganhou a faixa 50%.
 - **Estourou:** aperta primeiro os espaços, depois o padding das tabelas e só então as linhas.
 - **Tipografia nunca encolhe.**
 
@@ -96,7 +105,7 @@ Com `legenda_destaque = S`, pílulas no cabeçalho explicam as duas marcações.
 | Optview e MF acabada | azul-acinzentado #D0DDE4 |
 | Optfácil e Solar | cinza #DADFE2 |
 
-A Optview tem cor própria, pedido dele. Na lente pronta Kodak a linha Transitions sai com destaque FOTO, e a legenda vira "Transitions · Fotossensível" quando todas as linhas destacadas são Transitions — nesse caso a pílula leva o degradê Transitions (#FCBE95 → #FF766E → #CB81C0 → #96CCDC, da esquerda para a direita) com contorno preto de 1px, desenhado pelo Otávio. Em família de cor clara, régua e borda do selo saem num tom escurecido, senão somem.
+A Optview tem cor própria, pedido dele. Com `legenda_destaque = S`, família que tem Transitions e nenhum outro fotossensível destacado (a lente pronta Kodak) ganha a legenda "Transitions · Fotossensível" com o degradê e contorno preto de 1px, desenhada pelo Otávio. Em família de cor clara, régua e borda do selo saem num tom escurecido, senão somem.
 
 ## Dados que exigem conferência fora do Excel
 

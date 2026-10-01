@@ -12,7 +12,7 @@ const LS = String.fromCharCode(8232);
 const TINTA = '#2F2F2F', NEUTRO = '#E4E4E4', PRETO = '#000000', AMARELO = '#F7B200', FAIXA_PROMO = '#FFF0BF';
 const LIMITE = 796;              // nada de conteúdo abaixo daqui
 const RODAPE_Y = 806;            // faixa promocional do rodapé
-const PAD_BASE = 3, PAD_MAX = 4.5;   // respiro das linhas: começa em 3 e cresce com a sobra
+const PAD_BASE = 3, PAD_MAX = 6;     // respiro das linhas: começa em 3 e cresce com a sobra
 let GAP_FAIXA = 14, GAP_HDR = 8, GAP_BLOCO = 14; const GAP_BLOCO_MAX = 22;
 
 const canais = h => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
@@ -35,6 +35,12 @@ const CORES = {
 };
 const PONTO = { verde: '#78B472', azul: '#61AFE3', roxo: '#804CC4' };
 const DESTAQUE = { FOTO: { fundo: '#D0DDE4', borda: '#78B472', rotulo: 'Fotossensível' }, RX: { fundo: '#FFFFFF', borda: '#72B2DD', rotulo: 'RX  ·  Cil. -2.25 a -4.00' } };
+// Degradê Transitions (desenho do Otávio, 01/10/2026): legenda do cabeçalho e pílula no nome do produto.
+const GRAD_TR = [{ type: 'GRADIENT_LINEAR', gradientTransform: [[1, 0, 0], [0, 1, 0]], gradientStops: [
+  { position: 0, color: { ...rgb('#FCBE95'), a: 1 } }, { position: 0.33, color: { ...rgb('#FF766E'), a: 1 } },
+  { position: 0.66, color: { ...rgb('#CB81C0'), a: 1 } }, { position: 1, color: { ...rgb('#96CCDC'), a: 1 } }] }];
+const XTR = '#3A3A3C';               // XTRActive: pílula cinza-escura, texto branco (pedido de 01/10)
+const RX_TR = /Transitions(?: Gen ?S| XTRActive(?: New Generation)?| Signature(?: Gen ?8)?| Classic)?/i;
 
 for (const s of ['Regular', 'Medium', 'Bold', 'ExtraBold']) await figma.loadFontAsync({ family: 'Host Grotesk', style: s });
 
@@ -69,6 +75,32 @@ const ponto = (parent, k) => {
   const d = figma.createFrame(); d.name = k ? 'ponto ' + k : 'ponto vazio'; d.resize(7, 7); d.cornerRadius = 100;
   d.fills = k ? fill(PONTO[k] || '#6C6C6C') : []; parent.appendChild(d);
 };
+// Nome do produto. "Transitions…" vira pílula; o que vem antes e depois fica em texto normal
+// ("Orma [Transitions Gen S] Cinza"). Substituiu o fundo de destaque nas linhas Transitions.
+const nomeProduto = (pr, n) => {
+  const m = n.match(RX_TR);
+  if (!m) { T(pr, n, 'Regular', 8, TINTA, -4); return; }
+  const antes = n.slice(0, m.index).trim(), depois = n.slice(m.index + m[0].length).trim();
+  const xtr = /xtractive/i.test(m[0]);
+  if (antes) T(pr, antes, 'Regular', 8, TINTA, -4);
+  const p = figma.createAutoLayout('HORIZONTAL', { name: xtr ? 'pilula transitions xtractive' : 'pilula transitions' });
+  p.cornerRadius = 100; p.paddingTop = 1.5; p.paddingBottom = 1.5; p.paddingLeft = 6; p.paddingRight = 6; p.counterAxisAlignItems = 'CENTER';
+  p.fills = xtr ? fill(XTR) : GRAD_TR; pr.appendChild(p);
+  T(p, m[0], 'Medium', 7.5, xtr ? '#FFFFFF' : '#1D1D1F');
+  if (depois) T(pr, depois, 'Regular', 8, TINTA, -4);
+};
+// Selo "MONTAGEM LENTE PRONTA R$15" no canto do cabeçalho da família (selo_montagem).
+// Substituiu a faixa preta de montagem em 01/10/2026: a faixa custava ~67 px por página.
+const seloMontagem = hdr => {
+  const b = figma.createAutoLayout('HORIZONTAL', { name: 'Montagem LP' }); b.fills = fill(PRETO); b.cornerRadius = 100;
+  b.itemSpacing = 6; b.paddingTop = 5; b.paddingBottom = 5; b.paddingLeft = 12; b.paddingRight = 12; b.counterAxisAlignItems = 'CENTER';
+  hdr.appendChild(b);
+  const r = T(b, PAGINA.montagem.rotulo.split('\n').join(LS), 'Bold', 7, '#FFFFFF', 4); r.lineHeight = { unit: 'PERCENT', value: 110 };
+  T(b, PAGINA.montagem.valor, 'ExtraBold', 18, AMARELO);
+  b.layoutPositioning = 'ABSOLUTE'; b.x = hdr.width - 16 - b.width; b.y = Math.round((hdr.height - b.height) / 2);
+  const lt = hdr.children[0];
+  if (lt.x + lt.width + 10 > b.x) estouros.push('selo de montagem encosta no título (' + Math.ceil(lt.x + lt.width) + ' > ' + Math.floor(b.x - 10) + ')');
+};
 const bolinha = (parent, nome, codigo) => {
   const par = CORES[nome] || ['#6C6C6C', nome.charAt(0)];
   const chip = figma.createAutoLayout('HORIZONTAL', { name: 'cor ' + nome }); chip.itemSpacing = 2; chip.counterAxisAlignItems = 'CENTER'; chip.fills = [];
@@ -93,27 +125,29 @@ function familia(page, F) {
     f.paddingTop = 4; f.paddingBottom = 4; f.paddingLeft = 10; f.paddingRight = 10; lt.appendChild(f); T(f, p, 'Bold', 9, '#FFFFFF');
   }
   if (F.legenda) {
-    for (const k of ['FOTO', 'RX']) {
-      if (!F.rows.some(r => r.dest === k)) continue;
-      const f = figma.createAutoLayout('HORIZONTAL', { name: 'legenda' }); f.fills = fill('#FFFFFF'); f.strokes = fill(DESTAQUE[k].borda);
-      f.strokeWeight = 1.5; f.strokeAlign = 'INSIDE'; f.cornerRadius = 100; f.paddingTop = 4; f.paddingBottom = 4; f.paddingLeft = 10; f.paddingRight = 10;
-      // Se todas as linhas FOTO são Transitions, a legenda diz isso e ganha o degradê Transitions
-      // com contorno preto — desenho do Otávio na lente pronta Kodak, 01/10/2026.
-      const soTransitions = k === 'FOTO' && F.rows.filter(r => r.dest === 'FOTO').every(r => /transitions/i.test(r.n));
-      if (soTransitions) {
-        f.fills = [{ type: 'GRADIENT_LINEAR', gradientTransform: [[1, 0, 0], [0, 1, 0]], gradientStops: [
-          { position: 0, color: { ...rgb('#FCBE95'), a: 1 } }, { position: 0.33, color: { ...rgb('#FF766E'), a: 1 } },
-          { position: 0.66, color: { ...rgb('#CB81C0'), a: 1 } }, { position: 1, color: { ...rgb('#96CCDC'), a: 1 } }] }];
-        f.strokes = fill(PRETO); f.strokeWeight = 1;
-      }
-      lt.appendChild(f); T(f, soTransitions ? 'Transitions · Fotossensível' : DESTAQUE[k].rotulo, 'Bold', 8.5, soTransitions ? PRETO : TINTA);
-    }
+    // Família com Transitions (e sem outro fotossensível destacado) ganha a legenda
+    // "Transitions · Fotossensível" em degradê com contorno preto — desenho do Otávio, 01/10/2026.
+    const fotos = F.rows.filter(r => r.dest === 'FOTO');
+    const legTr = F.rows.some(r => RX_TR.test(r.n)) && fotos.every(r => RX_TR.test(r.n));
+    const pilulaLeg = (rotulo, k) => {
+      const f = figma.createAutoLayout('HORIZONTAL', { name: 'legenda' }); f.cornerRadius = 100;
+      f.paddingTop = 4; f.paddingBottom = 4; f.paddingLeft = 10; f.paddingRight = 10; f.strokeAlign = 'INSIDE';
+      if (k) { f.fills = fill('#FFFFFF'); f.strokes = fill(DESTAQUE[k].borda); f.strokeWeight = 1.5; }
+      else { f.fills = GRAD_TR; f.strokes = fill(PRETO); f.strokeWeight = 1; }
+      lt.appendChild(f); T(f, rotulo, 'Bold', 8.5, k ? TINTA : PRETO);
+    };
+    if (legTr) pilulaLeg('Transitions · Fotossensível', null);
+    else if (fotos.length) pilulaLeg(DESTAQUE.FOTO.rotulo, 'FOTO');
+    if (F.rows.some(r => r.dest === 'RX')) pilulaLeg(DESTAQUE.RX.rotulo, 'RX');
   }
   T(hdr, F.subtitulo, 'Medium', 8, sobre);
+  if (F.montagem && PAGINA.montagem) seloMontagem(hdr);
 
   const tbl = figma.createAutoLayout('VERTICAL', { name: 'Tabela ' + F.familia });
   tbl.fills = fill('#FFFFFF'); tbl.strokes = fill(NEUTRO); tbl.strokeWeight = 1; tbl.cornerRadius = 20; tbl.clipsContent = false;
-  tbl.paddingTop = 10; tbl.paddingBottom = 8; tbl.paddingLeft = 10; tbl.paddingRight = 10; tbl.itemSpacing = 0;
+  // Com o adesivo −50% invadindo a borda, os títulos Reflecta precisam de 10 px a mais de folga (01/10).
+  const comAdesivo = F.promo.length > 0 && !!PAGINA.adesivo;
+  tbl.paddingTop = comAdesivo ? 20 : 10; tbl.paddingBottom = 8; tbl.paddingLeft = 10; tbl.paddingRight = 10; tbl.itemSpacing = 0;
   page.appendChild(tbl); tbl.x = 20; tbl.resize(555, tbl.height); tbl.layoutSizingHorizontal = 'FIXED';
 
   const NP = F.titulos.length, PW = 52, TW = 62, DW = F.dispW || 70;
@@ -161,7 +195,7 @@ function familia(page, F) {
     const ct = T(ch, d.i, 'Bold', 6.5, TINTA, -2); ct.x = (26 - ct.width) / 2; ct.y = (13 - ct.height) / 2;
     const pr = figma.createAutoLayout('HORIZONTAL', { name: 'produto' }); pr.itemSpacing = 5; pr.counterAxisAlignItems = 'CENTER'; pr.fills = []; r.appendChild(pr);
     if (temPonto) ponto(pr, d.d);          // ponto vazio mantém os nomes alinhados
-    T(pr, d.n, 'Regular', 8, TINTA, -4);
+    nomeProduto(pr, d.n);
     if (d.b) selo(pr);
     if (d.cores && d.cores.length === 1) { bolinha(pr, d.cores[0][1], d.cores[0][0]); codigosCor += d.cores[0][0] ? 1 : 0; }
     if (pr.width > prodW + 0.5) estouros.push(d.n + ' (produto ' + Math.ceil(pr.width) + ' > ' + prodW + ')');
@@ -225,7 +259,52 @@ function familia(page, F) {
     T(st, valor, 'ExtraBold', 14, AMARELO, -2);
     st.x = (a.x - tb.x) + ((z.x + z.width) - a.x - st.width) / 2; st.y = -14;
   }
-  return { nos: [hdr, tbl], tbl, faixaPromo, info: { familia: F.familia, produtos, linhasCor, codigosCor, seps, destaques, contrasteCabecalho: Math.round(razao(sobre, cor) * 100) / 100 } };
+  return { nos: [hdr, tbl], tbl, comAdesivo, faixaPromo, info: { familia: F.familia, produtos, linhasCor, codigosCor, seps, destaques, contrasteCabecalho: Math.round(razao(sobre, cor) * 100) / 100 } };
+}
+
+// Família curta e de pouco peso (compacta = S, ex.: Solar): sem cabeçalho grande — chip com o nome,
+// uma linha com o que é igual em todas as lentes, e os produtos em 2 colunas. Pedido de 01/10/2026.
+function compacta(page, F) {
+  const box = figma.createAutoLayout('VERTICAL', { name: 'Tabela ' + F.familia }); box.fills = fill('#FFFFFF'); box.strokes = fill(NEUTRO);
+  box.strokeWeight = 1; box.cornerRadius = 20; box.itemSpacing = 4; box.paddingTop = 7; box.paddingBottom = 6; box.paddingLeft = 11; box.paddingRight = 11;
+  page.appendChild(box); box.x = 20; box.resize(555, box.height); box.layoutSizingHorizontal = 'FIXED';
+  const tit = figma.createAutoLayout('HORIZONTAL', { name: 'titulo' }); tit.fills = []; tit.itemSpacing = 8; tit.paddingLeft = 6; tit.counterAxisAlignItems = 'CENTER'; box.appendChild(tit);
+  const chip = figma.createAutoLayout('HORIZONTAL', { name: 'chip' }); chip.fills = fill(F.cor); chip.cornerRadius = 100;
+  chip.paddingTop = 3; chip.paddingBottom = 3; chip.paddingLeft = 10; chip.paddingRight = 10; tit.appendChild(chip);
+  T(chip, F.familia, 'ExtraBold', 11, contraste(F.cor));
+  const igual = k => F.rows.every(r => JSON.stringify(r[k]) === JSON.stringify(F.rows[0][k]));
+  const info = [];
+  if (F.subtitulo) info.push(F.subtitulo.charAt(0) + F.subtitulo.slice(1).toLowerCase());
+  const mesmoInd = igual('i');
+  if (mesmoInd) info.push('Índice ' + F.rows[0].i);
+  if (igual('disp') && F.rows[0].disp.length) info.push(F.rows[0].disp.join(' | '));
+  if (info.length) T(tit, info.join('   ·   '), 'Medium', 7.5, '#4A4A4A');
+  const grade = figma.createAutoLayout('HORIZONTAL', { name: 'grade' }); grade.fills = []; grade.itemSpacing = 14; box.appendChild(grade); grade.layoutSizingHorizontal = 'FILL';
+  const meio = Math.ceil(F.rows.length / 2);
+  let produtos = 0, codigosCor = 0;
+  [F.rows.slice(0, meio), F.rows.slice(meio)].forEach((lista, c) => {
+    const col = figma.createAutoLayout('VERTICAL', { name: 'coluna ' + (c + 1) }); col.fills = []; grade.appendChild(col); col.layoutSizingHorizontal = 'FILL';
+    for (const d of lista) {
+      const r = figma.createAutoLayout('HORIZONTAL', { name: 'row' }); r.itemSpacing = 5; r.paddingTop = PAD_BASE; r.paddingBottom = PAD_BASE;
+      r.paddingLeft = 8; r.paddingRight = 8; r.cornerRadius = 30; r.fills = fill('#FFFFFF'); r.counterAxisAlignItems = 'CENTER';
+      col.appendChild(r); r.layoutSizingHorizontal = 'FILL';
+      cel(r, d.c, 27);
+      if (!mesmoInd) { const ch = figma.createFrame(); ch.name = 'ind ' + d.i; ch.resize(26, 13); ch.cornerRadius = 4; ch.fills = fill(tinta20(F.cor)); ch.strokes = fill(traco(F.cor)); ch.strokeWeight = 1; r.appendChild(ch);
+        const ct = T(ch, d.i, 'Bold', 6.5, TINTA, -2); ct.x = (26 - ct.width) / 2; ct.y = (13 - ct.height) / 2; }
+      const pr = figma.createAutoLayout('HORIZONTAL', { name: 'produto' }); pr.itemSpacing = 5; pr.counterAxisAlignItems = 'CENTER'; pr.fills = []; r.appendChild(pr);
+      nomeProduto(pr, d.n);
+      if (d.b) selo(pr);
+      if (d.cores && d.cores.length) for (const m of d.cores) { bolinha(pr, m[1], m[0]); codigosCor += m[0] ? 1 : 0; }
+      pr.layoutSizingHorizontal = 'FILL';
+      cel(r, d.p[0] ? 'R$ ' + d.p[0] : '', 52);
+      produtos++;
+    }
+  });
+  for (const col of grade.children) for (const r of col.children) {
+    const pr = r.children.find(n => n.name === 'produto'); const usado = pr.children.reduce((s, k) => s + k.width, 0) + pr.itemSpacing * (pr.children.length - 1);
+    if (usado > pr.width + 0.5) estouros.push(F.familia + ': nome largo demais para a coluna compacta (' + Math.ceil(usado) + ' > ' + Math.floor(pr.width) + ')');
+  }
+  return { box, info: { familia: F.familia, produtos, linhasCor: 0, codigosCor, seps: 0, destaques: 0, compacta: true } };
 }
 
 function faixa(page, B, nome) {
@@ -294,14 +373,15 @@ for (const c of frame.children.slice()) c.remove();
 frame.resize(595, 842); frame.x = PAGINA.x; frame.y = 0; frame.fills = fill('#FFFFFF'); frame.clipsContent = true;
 
 // Monta na ordem e guarda a pilha: [{nos, gapAntes}]
-const pilha = [], infos = [], tabelas = [], faixas = [];
+const pilha = [], infos = [], tabelas = [], faixas = [], linhasCompactas = [], comAdesivo = new Set();
 let clube = null, topo = 20;
 for (const B of PAGINA.blocos) {
   if (B.tipo === 'capa') { capa(frame); topo = 102; continue; }
   if (B.tipo === 'faixa50') pilha.push({ nos: [faixa(frame, B, 'Faixa 50%')], faixa: true });
   else if (B.tipo === 'montagem') pilha.push({ nos: [faixa(frame, B, 'Faixa Montagem')], faixa: true });
   else if (B.tipo === 'vixclub') { clube = vixclub(frame, B); pilha.push({ nos: [clube.vc], clube: true }); }
-  else if (B.tipo === 'familia') { const r = familia(frame, B); pilha.push({ nos: r.nos }); infos.push(r.info); tabelas.push(r.tbl); if (r.faixaPromo) faixas.push([r.tbl, r.faixaPromo]); }
+  else if (B.tipo === 'familia' && B.compacta) { const r = compacta(frame, B); pilha.push({ nos: [r.box] }); infos.push(r.info); linhasCompactas.push(...r.box.findAll(n => n.name === 'row')); }
+  else if (B.tipo === 'familia') { const r = familia(frame, B); pilha.push({ nos: r.nos }); infos.push(r.info); tabelas.push(r.tbl); if (r.comAdesivo) comAdesivo.add(r.tbl); if (r.faixaPromo) faixas.push([r.tbl, r.faixaPromo]); }
 }
 rodape(frame);
 
@@ -318,6 +398,7 @@ const empilhar = gapBloco => {
 };
 const linhas = [];
 for (const t of tabelas) for (const r of t.children) if (r.name === 'row' || r.name === 'cab' || r.name === 'subrow') linhas.push(r);
+linhas.push(...linhasCompactas);
 const aplicarPad = extra => { for (const r of linhas) { const base = r.name === 'subrow' ? PAD_BASE + 1 : PAD_BASE; r.paddingTop = base + extra; r.paddingBottom = base + extra; } };
 
 // O VixClub ocupa o que sobrar, mas precisa de um mínimo para o texto caber.
@@ -328,7 +409,7 @@ let fim = empilhar(GAP_BLOCO), aperto = 0;
 // padding das tabelas e, por último, o respiro das linhas. Tipografia não encolhe.
 if (fim > alvo) {
   aperto = 1; GAP_FAIXA = 10; GAP_BLOCO = 10;
-  for (const t of tabelas) { t.paddingTop = 8; t.paddingBottom = 6; }
+  for (const t of tabelas) { t.paddingTop = comAdesivo.has(t) ? 18 : 8; t.paddingBottom = 6; }
   fim = empilhar(GAP_BLOCO);
 }
 if (fim > alvo) { aperto = 2; aplicarPad(-0.5); fim = empilhar(GAP_BLOCO); }
