@@ -93,7 +93,9 @@ Quando a ótica tem marca própria, **peça o de-para antes de construir** — o
 
 ## Entrada
 
-**CSV** no layout de 28 colunas do simulador: `Lente;Descrição;cod.;Diâm;Altura;Esf +;Esf -;Cilíndrico;Adição;Tabelão×4;Desconto;Custo×4;Markup Par;Markup Reflecta;Venda×4;Lucro×4`, separador `;`. Linhas cujo primeiro campo é vazio e o segundo começa com `cod. por cor:` são continuação da linha anterior.
+**CSV** no layout de 29 colunas do simulador: `Lente;Descrição;cod.;Diâm;Altura;Esf +;Esf -;Cilíndrico;Adição;Tabelão×4;Desconto;Custo×4;Markup Par;Markup Reflecta;Venda×4;Lucro×4;Linha do cliente`, separador `;`. Linhas cujo primeiro campo é vazio e o segundo começa com `cod. por cor:` são continuação da linha anterior.
+
+**Coluna 29, `Linha do cliente`** (desde 01/10/2026): o nome que a ótica deu à família no simulador (`Virtu Start` para o Vix Total). Preenchida, vira o título da família na peça (`CONFIG.titulo`); vazia, vale o nome Vixlens. A cor e o tipo da família continuam saindo da coluna 1, `Lente`, que segue com o nome Vixlens. Astera e bifocais vêm sempre vazias: a ótica revende sem nome próprio. CSV antigo, de 28 colunas, é o mesmo arquivo sem esse nome — leia normalmente e trate como coluna 29 vazia.
 
 ## Perguntas antes de rodar
 
@@ -127,7 +129,7 @@ Arquivo novo ou link de um existente. Não dá para inferir — pergunte sempre.
 ## Pergunte só quando o dado exigir
 
 - **Família fora das 16 conhecidas** (marca própria de terceiro, como a linha OPTIMA das Óticas Native): para qual família Vixlens ela mapeia. Define a cor e o tipo da página.
-- **De-para da marca própria**: o CSV traz o nome canônico Vixlens. Se a ótica batiza as lentes, peça a lista toda numa rodada só, junto com o nome do antirreflexo dela, se houver. Pergunte também o que acontece com as famílias de linha Vixlens — o padrão é manterem nome e antirreflexo Vixlens.
+- **De-para da marca própria**: primeiro leia a coluna 29, `Linha do cliente` — o que vier preenchido ali já é o nome da ótica e **não se pergunta de novo**. Só se a ótica batiza as lentes e a coluna veio vazia (ou o CSV é antigo, de 28 colunas), peça a lista das que faltam numa rodada só. O nome do antirreflexo dela não vem no CSV: pergunte junto, se houver. Pergunte também o que acontece com as famílias de linha Vixlens — o padrão é manterem nome e antirreflexo Vixlens.
 - **Achados de qualidade no CSV**: preço divergente entre cores da mesma lente, dobras exatas de 2×, descrições duplicadas. Reporte os números e pergunte **uma vez**, com o diagnóstico pronto — nunca linha a linha.
 
 ## Resolva sozinho, não pergunte
