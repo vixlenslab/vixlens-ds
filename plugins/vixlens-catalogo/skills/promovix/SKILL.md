@@ -96,7 +96,7 @@ Com `legenda_destaque = S`, pílulas no cabeçalho explicam as duas marcações.
 | Optview e MF acabada | azul-acinzentado #D0DDE4 |
 | Optfácil e Solar | cinza #DADFE2 |
 
-A Optview tem cor própria, pedido dele. Na lente pronta Kodak a linha Transitions sai com destaque FOTO, e a legenda vira "Transitions · Fotossensível" quando todas as linhas destacadas são Transitions. Em família de cor clara, régua e borda do selo saem num tom escurecido, senão somem.
+A Optview tem cor própria, pedido dele. Na lente pronta Kodak a linha Transitions sai com destaque FOTO, e a legenda vira "Transitions · Fotossensível" quando todas as linhas destacadas são Transitions — nesse caso a pílula leva o degradê Transitions (#FCBE95 → #FF766E → #CB81C0 → #96CCDC, da esquerda para a direita) com contorno preto de 1px, desenhado pelo Otávio. Em família de cor clara, régua e borda do selo saem num tom escurecido, senão somem.
 
 ## Dados que exigem conferência fora do Excel
 

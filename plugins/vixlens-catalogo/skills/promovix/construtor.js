@@ -97,9 +97,16 @@ function familia(page, F) {
       if (!F.rows.some(r => r.dest === k)) continue;
       const f = figma.createAutoLayout('HORIZONTAL', { name: 'legenda' }); f.fills = fill('#FFFFFF'); f.strokes = fill(DESTAQUE[k].borda);
       f.strokeWeight = 1.5; f.strokeAlign = 'INSIDE'; f.cornerRadius = 100; f.paddingTop = 4; f.paddingBottom = 4; f.paddingLeft = 10; f.paddingRight = 10;
-      // Se todas as linhas FOTO são Transitions, a legenda diz isso (pedido de 01/10 na lente pronta Kodak).
+      // Se todas as linhas FOTO são Transitions, a legenda diz isso e ganha o degradê Transitions
+      // com contorno preto — desenho do Otávio na lente pronta Kodak, 01/10/2026.
       const soTransitions = k === 'FOTO' && F.rows.filter(r => r.dest === 'FOTO').every(r => /transitions/i.test(r.n));
-      lt.appendChild(f); T(f, soTransitions ? 'Transitions · Fotossensível' : DESTAQUE[k].rotulo, 'Bold', 8.5, TINTA);
+      if (soTransitions) {
+        f.fills = [{ type: 'GRADIENT_LINEAR', gradientTransform: [[1, 0, 0], [0, 1, 0]], gradientStops: [
+          { position: 0, color: { ...rgb('#FCBE95'), a: 1 } }, { position: 0.33, color: { ...rgb('#FF766E'), a: 1 } },
+          { position: 0.66, color: { ...rgb('#CB81C0'), a: 1 } }, { position: 1, color: { ...rgb('#96CCDC'), a: 1 } }] }];
+        f.strokes = fill(PRETO); f.strokeWeight = 1;
+      }
+      lt.appendChild(f); T(f, soTransitions ? 'Transitions · Fotossensível' : DESTAQUE[k].rotulo, 'Bold', 8.5, soTransitions ? PRETO : TINTA);
     }
   }
   T(hdr, F.subtitulo, 'Medium', 8, sobre);
