@@ -444,7 +444,7 @@ return {
   idFotoVixClub: idFoto,
   familias: infos,
   estouros,
-  aviso: fim > LIMITE ? 'ESTOUROU: mova um bloco para outra página na aba Paginas e gere de novo.' : null
+  aviso: fim > LIMITE ? 'ESTOUROU: mova um bloco para outra página na aba Páginas e gere de novo.' : null
 };
 }
 

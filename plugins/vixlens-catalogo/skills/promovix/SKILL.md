@@ -27,20 +27,23 @@ Gera a Promovix do mês inteira a partir de um Excel: capa, uma ou mais família
 
 ## Entrada: o Excel modelo
 
-`modelo/Promovix_modelo.xlsx` vem preenchido com a Promovix Outubro 2026. Para um mês novo, parta do Excel do mês anterior. Abas:
+`modelo/Promovix_modelo.xlsx` vem preenchido com a Promovix Outubro 2026. Para um mês novo, parta do Excel do mês anterior. Ele foi desenhado para quem preenche (o comercial) não precisar desta skill: títulos em português, notas explicando cada coluna (passe o mouse no título), listas suspensas para família, índice, S/N, ponto e destaque, e colunas cinzas de conferência automática. Abas:
 
 | Aba | O que tem |
 |---|---|
-| **Leia-me** | Regras de preenchimento para quem atualiza o Excel |
-| **Config** | Mês, validade, acréscimos da regra 50%, textos das faixas e do VixClub, contato |
-| **Paginas** | Qual bloco vai em qual página, na ordem. Blocos especiais: `CAPA`, `FAIXA_50`, `FAIXA_MONTAGEM`, `VIXCLUB`; o resto é nome de família |
-| **Familias** | Uma linha por família: cor, pílulas, títulos das colunas de preço, colunas em promoção, regra 50%, separador de índice, coluna de tratamento, largura da Disponibilidade, legenda de destaque, `selo_montagem`, `compacta` |
-| **Produtos** | Uma linha por linha impressa, na ordem da tabela |
+| **Comece aqui** | Passo a passo de quem preenche, legenda de cores e as regras que a skill confere |
+| **Mês** | Mês, validade, acréscimos da regra 50%, textos do selo, das faixas, do VixClub e do rodapé. A coluna oculta `chave` é o que o `montar.py` lê |
+| **Famílias** | Uma linha por família: cor, pílulas, colunas de preço, colunas em promoção, Regra 50%, Faixa ÍNDICE, Coluna Tratamento, Disponibilidade, Legenda de destaque, Selo de montagem, Bloco compacto. Conferência: quantos produtos e em que página (FALTA se não estiver em nenhuma) |
+| **Produtos** | Uma linha por linha impressa, na ordem da tabela. Conferência: "Colunas desta família" diz o que é Preço 1, 2, 3 e 4 |
+| **Páginas** | Qual bloco vai em qual página, na ordem. Blocos especiais: `CAPA`, `FAIXA_50`, `FAIXA_MONTAGEM`, `VIXCLUB`; o resto é nome de família |
+| Listas (oculta) | Fonte da lista suspensa de blocos |
+
+Linha 1 de Famílias, Produtos e Páginas é a faixa amarela de grupos; o título fica na linha 2. O `montar.py` acha o título sozinho e traduz os nomes em português (`ALIAS`); Excel no formato antigo (abas Config/Paginas/Familias, títulos `cod`, `preco_1`…) continua valendo. Código e índice ficam em células de texto; se o Excel virar 0357 em 357 ou 1.50 em 1.5, o `montar.py` corrige.
 
 Três convenções que não são óbvias:
-- `cod` vazio + `cores` com 2 ou mais códigos = seta ↓ e linha de bolinhas logo abaixo. Com 1 código (`86413 Cinza`), a bolinha fica ao lado do nome (XTRActive). Sem código (`G15`), sai só a bolinha (Solar).
+- Código vazio + "Cores e códigos" com 2 ou mais códigos = seta ↓ e linha de bolinhas logo abaixo. Com 1 código (`86413 Cinza`), a bolinha fica ao lado do nome (XTRActive). Sem código (`G15`), sai só a bolinha (Solar).
 - Na regra 50%, deixe Guard e Blue **vazios** e a skill calcula Sem A.R. + acréscimos. Se vierem preenchidos, ela confere e acusa diferença.
-- `obs_preco` no formato `2: só Cinza 0012` põe uma nota pequena sob o preço da coluna 2.
+- "Obs. do preço" no formato `2: só Cinza 0012` põe uma nota pequena sob o preço da coluna 2.
 
 ## Pergunte antes de rodar
 
@@ -56,7 +59,7 @@ Pergunte só o **destino**: arquivo novo (qual nome) ou o link de um arquivo exi
 2. **Destino.** Arquivo novo: `create_new_file` no Tríade Pro. Existente: o construtor recria só os frames `Promovix <MÊS> // PNN` que o lote traz e não mexe no resto do arquivo.
 3. **Rodar os lotes.** Para cada `lote_NN.js`, leia o arquivo e passe o conteúdo **inteiro, sem alterar**, como `code` do `use_figma`. Lotes diferentes podem rodar em paralelo.
 4. **Ler o retorno.** Cada página devolve `fimDoConteudo`, `aperto`, `cabeNoRodape`, `estouros` e `vixclubCabe`.
-   - `cabeNoRodape: false` quer dizer que nem o aperto salvou: mova um bloco na aba Paginas e regere.
+   - `cabeNoRodape: false` quer dizer que nem o aperto salvou: mova um bloco na aba Páginas e regere.
    - `estouros` com itens quer dizer texto mais largo que a coluna: aumente `largura_disponibilidade` na família ou encurte o nome.
 5. **Foto do VixClub.** A página com `VIXCLUB` devolve `idFotoVixClub`. Chame `upload_assets` com `nodeIds: [idFotoVixClub]` e `scaleMode: FILL`, e faça POST de `modelo/vixclub.jpg` na URL devolvida. A foto já vem recortada na proporção do painel, centrada no rosto.
 6. **Validar.** Some `produtos` e `codigosCor` dos retornos e compare com o `resumo.json`: as contagens têm que ser idênticas. Depois, uma screenshot por página.

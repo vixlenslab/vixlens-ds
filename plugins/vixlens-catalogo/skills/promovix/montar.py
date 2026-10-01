@@ -43,11 +43,34 @@ def reais(v):
     s = f'{v:,.2f}'
     return s.replace(',', '#').replace('.', ',').replace('#', '.')
 
+# Títulos amigáveis do Excel (01/10/2026) -> nomes internos. Os nomes antigos continuam valendo.
+ALIAS = {
+    'Família': 'familia', 'Subtítulo': 'tipo', 'Cor (hex)': 'cor', 'Pílulas do cabeçalho': 'pilulas',
+    'Colunas de preço': 'colunas_preco', 'Colunas em promoção': 'colunas_promo', 'Regra 50%': 'regra_50',
+    'Faixa ÍNDICE': 'separador_indice', 'Coluna Tratamento': 'coluna_tratamento',
+    'Título da Disponibilidade': 'titulo_disponibilidade', 'Largura da Disponibilidade': 'largura_disponibilidade',
+    'Legenda de destaque': 'legenda_destaque', 'Selo de montagem': 'selo_montagem', 'Bloco compacto': 'compacta',
+    'Código': 'cod', 'Índice': 'indice', 'Nome do produto': 'produto', 'Blue UV': 'blue_uv', 'Ponto': 'ponto',
+    'Destaque': 'destaque', 'Tratamento': 'tratamento', 'Pontos do tratamento': 'pontos_tratamento',
+    'Esf. máx': 'esf_max', 'Esf. mín': 'esf_min', 'Cil.': 'cil', 'Add.': 'add', 'Diâm.': 'diam', 'Curva': 'curva',
+    'Linha extra': 'disp_extra', 'Preço 1': 'preco_1', 'Preço 2': 'preco_2', 'Preço 3': 'preco_3', 'Preço 4': 'preco_4',
+    'Obs. do preço': 'obs_preco', 'Cores e códigos': 'cores', 'Página': 'pagina', 'Bloco': 'bloco', 'Valor': 'valor',
+}
+ABAS = {'Config': ('Mês', 'Config'), 'Paginas': ('Páginas', 'Paginas'), 'Familias': ('Famílias', 'Familias'), 'Produtos': ('Produtos',)}
+PRIMEIRAS = {'chave', 'Campo', 'familia', 'Família', 'pagina', 'Página'}
+
+def aba(wb, nome):
+    for n in ABAS[nome]:
+        if n in wb.sheetnames: return wb[n]
+    sys.exit(f'ERRO: aba "{ABAS[nome][0]}" não existe no Excel.')
+
 def tabela(ws):
     linhas = list(ws.iter_rows(values_only=True))
-    cab = [txt(c) for c in linhas[0]]
+    # O título pode estar na linha 1 ou 2 (no modelo novo a linha 1 é a faixa de grupos).
+    h = next(i for i, l in enumerate(linhas[:5]) if l and txt(l[0]) in PRIMEIRAS)
+    cab = [ALIAS.get(txt(c), txt(c)) for c in linhas[h]]
     out = []
-    for i, l in enumerate(linhas[1:], start=2):
+    for i, l in enumerate(linhas[h + 1:], start=h + 2):
         d = {cab[j]: l[j] for j in range(len(cab)) if cab[j]}
         if all(v is None or txt(v) == '' for v in d.values()): continue
         d['_linha'] = i
@@ -79,16 +102,15 @@ def main():
     ap.add_argument('excel'); ap.add_argument('--saida', default='paginas')
     a = ap.parse_args()
     wb = load_workbook(a.excel, data_only=True)
-    for aba in ('Config', 'Paginas', 'Familias', 'Produtos'):
-        if aba not in wb.sheetnames: sys.exit(f'ERRO: aba "{aba}" não existe no Excel.')
+    abas = {n: aba(wb, n) for n in ABAS}
 
-    cfg = {txt(r['chave']): r['valor'] for r in tabela(wb['Config']) if txt(r.get('chave'))}
+    cfg = {txt(r['chave']): r.get('valor') for r in tabela(abas['Config']) if txt(r.get('chave'))}
     for k in ('mes', 'ano', 'validade'):
         if not txt(cfg.get(k)): erros.append(f'Config: "{k}" vazio.')
     ag, ab = num(cfg.get('acrescimo_guard')), num(cfg.get('acrescimo_blue'))
 
     fams = {}
-    for r in tabela(wb['Familias']):
+    for r in tabela(abas['Familias']):
         nome = txt(r.get('familia'))
         if not nome or not txt(r.get('cor')): continue          # linhas de ajuda
         titulos = [t.strip() for t in txt(r.get('colunas_preco')).split(';') if t.strip()]
@@ -112,11 +134,14 @@ def main():
             erros.append(f'Familias l.{r["_linha"]} {nome}: compacta = S só funciona com 1 coluna de preço.')
 
     vistos = {}
-    for r in tabela(wb['Produtos']):
+    for r in tabela(abas['Produtos']):
         fam = txt(r.get('familia')); onde = f'Produtos l.{r["_linha"]}'
         if fam not in fams: erros.append(f'{onde}: família "{fam}" não está na aba Familias.'); continue
         F = fams[fam]
         cod, ind, nome = txt(r.get('cod')), txt(r.get('indice')), txt(r.get('produto'))
+        # Excel costuma virar 0357 em 357 e 1.50 em 1.5 quando a célula não está como texto.
+        if isinstance(r.get('cod'), (int, float)) and len(cod) < 4: cod = cod.zfill(4)
+        if isinstance(r.get('indice'), (int, float)): ind = f'{float(r["indice"]):.2f}'
         if not nome: erros.append(f'{onde}: produto vazio.')
         if not re.match(r'^\d\.\d\d$', ind): erros.append(f'{onde}: índice "{ind}" — use 1.50, 1.59, 1.67…')
         cs = cores(r.get('cores'), onde)
@@ -173,7 +198,7 @@ def main():
 
     # páginas
     pags = {}
-    for r in tabela(wb['Paginas']):
+    for r in tabela(abas['Paginas']):
         b = txt(r.get('bloco'))
         if not b: continue
         try: n = int(num(r.get('pagina')))
