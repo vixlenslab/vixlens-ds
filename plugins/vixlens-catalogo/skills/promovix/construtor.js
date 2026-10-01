@@ -3,6 +3,7 @@
 // prontos (lote_NN.js), cada um com uma ou mais páginas abaixo do limite de tamanho.
 
 const PAGINAS = /*PAGINAS*/[];
+const SVG_OFERTA = /*SVG_OFERTA*/null;   // ícone SealPercent (Phosphor, fill) em amarelo
 let PAGINA = null;
 
 // ---------------------------------------------------------------- utilidades
@@ -202,19 +203,20 @@ function familia(page, F) {
   // Adesivo da oferta sobre a borda da tabela, centrado nas colunas em promoção.
   if (selos.length && PAGINA.adesivo) {
     const tb = tbl.absoluteBoundingBox, a = selos[0].absoluteBoundingBox, z = selos[selos.length - 1].absoluteBoundingBox;
-    // Selo de oferta: rótulo em branco + valor grande em amarelo, inclinado, com contorno e sombra.
+    // Selo de oferta: ícone de cupom + rótulo em branco + valor grande em amarelo, com contorno e sombra.
+    // Reto: a versão inclinada foi recusada em 01/10.
     // "REFLECTA −50%" vira rótulo "REFLECTA" + valor "−50%" (quebra no último espaço).
     const k = PAGINA.adesivo.lastIndexOf(' ');
     const rotulo = k > 0 ? PAGINA.adesivo.slice(0, k) : '', valor = k > 0 ? PAGINA.adesivo.slice(k + 1) : PAGINA.adesivo;
     const st = figma.createAutoLayout('HORIZONTAL', { name: 'adesivo promo' }); st.fills = fill(PRETO); st.cornerRadius = 100;
-    st.paddingTop = 4; st.paddingBottom = 4; st.paddingLeft = 12; st.paddingRight = 12; st.itemSpacing = 5; st.counterAxisAlignItems = 'CENTER';
+    st.paddingTop = 4; st.paddingBottom = 4; st.paddingLeft = SVG_OFERTA ? 8 : 12; st.paddingRight = 12; st.itemSpacing = 5; st.counterAxisAlignItems = 'CENTER';
     st.strokes = fill(AMARELO); st.strokeWeight = 1.5; st.strokeAlign = 'INSIDE';
     st.effects = [{ type: 'DROP_SHADOW', color: { r: 0, g: 0, b: 0, a: 0.25 }, offset: { x: 0, y: 2 }, radius: 4, spread: 0, visible: true, blendMode: 'NORMAL' }];
     tbl.appendChild(st); st.layoutPositioning = 'ABSOLUTE';
+    if (SVG_OFERTA) { const ic = figma.createNodeFromSvg(SVG_OFERTA); ic.name = 'icone oferta'; st.appendChild(ic); ic.rescale(16 / ic.width); }
     if (rotulo) T(st, rotulo, 'Bold', 8, '#FFFFFF', 8);
     T(st, valor, 'ExtraBold', 14, AMARELO, -2);
-    st.rotation = 4;
-    st.x = (a.x - tb.x) + ((z.x + z.width) - a.x - st.width) / 2; st.y = -16;
+    st.x = (a.x - tb.x) + ((z.x + z.width) - a.x - st.width) / 2; st.y = -14;
   }
   return { nos: [hdr, tbl], tbl, faixaPromo, info: { familia: F.familia, produtos, linhasCor, codigosCor, seps, destaques, contrasteCabecalho: Math.round(razao(sobre, cor) * 100) / 100 } };
 }

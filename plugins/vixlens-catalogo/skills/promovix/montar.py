@@ -211,6 +211,7 @@ def main():
     fonte = (AQUI / 'construtor.js').read_text(encoding='utf-8')
     svg_vix = (AQUI / 'modelo' / 'svg' / 'vixlens-negativo.svg').read_text(encoding='utf-8')
     svg_club = (AQUI / 'modelo' / 'svg' / 'vixclub.svg').read_text(encoding='utf-8')
+    svg_oferta = (AQUI / 'modelo' / 'svg' / 'selo-oferta.svg').read_text(encoding='utf-8').strip()
     mes, ano = txt(cfg.get('mes')).upper(), txt(cfg.get('ano'))
     contato = '   ·   '.join(x for x in (txt(cfg.get('instagram')), txt(cfg.get('telefone')), txt(cfg.get('site'))) if x)
     saida = Path(a.saida); saida.mkdir(parents=True, exist_ok=True)
@@ -241,6 +242,7 @@ def main():
     # abaixo do limite de 50 mil caracteres do use_figma.
     def empacotar(lista):
         js = fonte.replace('/*PAGINAS*/[]', json.dumps([p for _, p in lista], ensure_ascii=False, separators=(',', ':')))
+        js = js.replace('/*SVG_OFERTA*/null', json.dumps(svg_oferta))
         return '\n'.join(l.strip() for l in js.splitlines() if l.strip() and not l.strip().startswith('//'))
     for f in saida.glob('lote_*.js'): f.unlink()
     lotes, atual = [], []

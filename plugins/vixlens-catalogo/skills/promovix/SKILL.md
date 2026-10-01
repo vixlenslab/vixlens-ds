@@ -67,7 +67,7 @@ Pergunte só o **destino**: arquivo novo (qual nome) ou o link de um arquivo exi
 
 **A moldura é o que diferencia a promo do catálogo.** A Promovix vale um mês. Se ela tivesse a cara da tabela permanente, cedo ou tarde alguém cotaria pela promo vencida. Por isso a moldura tem quatro elementos:
 - **Rodapé preto em toda página:** PROMOVIX // MÊS.ANO, validade, contato e "Página N/T". A folha solta circula sozinha, então cada página precisa dizer até quando vale.
-- **Colunas em promoção** (`colunas_promo`): faixa amarelo-clara contínua #FFF0BF do título ao último preço, preços em negrito e um selo de oferta sobre a borda da tabela com o texto de `adesivo_promo` (Config; padrão "REFLECTA −50%"): pílula preta com contorno amarelo, rótulo em branco, valor grande em amarelo, inclinada 4° e com sombra — invade de leve o cabeçalho de propósito (pedido de 01/10: "bonito e chamativo"). É a proposta 1, escolhida pelo Otávio entre 6 propostas em 30/09/2026. As linhas dessas tabelas ficam transparentes para a faixa aparecer; a altura da faixa é recalculada no fim, depois do respiro e do aperto.
+- **Colunas em promoção** (`colunas_promo`): faixa amarelo-clara contínua #FFF0BF do título ao último preço, preços em negrito e um selo de oferta sobre a borda da tabela com o texto de `adesivo_promo` (Config; padrão "REFLECTA −50%"): pílula preta com contorno amarelo, ícone de cupom (SealPercent do Phosphor, `modelo/svg/selo-oferta.svg`), rótulo em branco e valor grande em amarelo, com sombra; reta (a versão inclinada foi recusada) e invadindo de leve o cabeçalho de propósito (pedido de 01/10: "bonito e chamativo"). É a proposta 1, escolhida pelo Otávio entre 6 propostas em 30/09/2026. As linhas dessas tabelas ficam transparentes para a faixa aparecer; a altura da faixa é recalculada no fim, depois do respiro e do aperto.
 - **Faixas de oferta** pretas, com o número grande em amarelo: Reflecta 50% e Montagem R$15.
 - **Preto com amarelo** reservado à Promovix. O catálogo não usa essa combinação.
 
@@ -121,4 +121,4 @@ A Optview tem cor própria, pedido dele. Na lente pronta Kodak a linha Transitio
 - `construtor.js`: construtor das páginas (recebe `PAGINAS` do `montar.py`)
 - `modelo/Promovix_modelo.xlsx`: Excel modelo com os dados de outubro/2026
 - `modelo/vixclub.jpg`: foto do painel VixClub, já recortada
-- `modelo/svg/`: logo Vixlens negativo (capa) e logo VixClub
+- `modelo/svg/`: logo Vixlens negativo (capa), logo VixClub e o ícone do selo de oferta
