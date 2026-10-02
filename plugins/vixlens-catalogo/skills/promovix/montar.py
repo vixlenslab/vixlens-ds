@@ -5,6 +5,9 @@ Uso:
 
 Grava pasta/lote_NN.js (construtor + páginas, cada lote abaixo do limite do
 use_figma) e pasta/resumo.json. Sai com código 1 se houver ERRO; AVISO não bloqueia.
+
+Combo (opcional): aba "Combos" + chaves combo_* na aba Mês + bloco COMBO na aba Páginas.
+Sem isso, a Promovix sai exatamente como antes (sem página de combo).
 """
 import argparse, json, re, sys
 from pathlib import Path
@@ -15,7 +18,10 @@ GEN_S = ['Cinza', 'Marrom', 'Verde', 'Ametista', 'Safira', 'Âmbar', 'Esmeralda'
 COLORS = ['Marrom', 'G15', 'Black']
 ESPELHADO = ['Prata', 'Dourado', 'Azul', 'Rosa']
 CONHECIDAS = set(GEN_S + COLORS + ESPELHADO)
-ESPECIAIS = {'CAPA', 'FAIXA_50', 'FAIXA_MONTAGEM', 'VIXCLUB'}
+ESPECIAIS = {'CAPA', 'FAIXA_50', 'FAIXA_MONTAGEM', 'VIXCLUB', 'COMBO'}
+MARCAS_COMBO = {'Kodak', 'Optview', 'Essilor'}
+PAINEIS = {'VIXCLUB', 'CAMPANHA_FREEVIX', 'NENHUM'}
+QR_URL_PADRAO = 'https://vixlens.com.br/vix-club#segundo-par'
 LIMITE, TOPO, TOPO_CAPA = 796, 20, 102
 
 erros, avisos = [], []
@@ -55,13 +61,16 @@ ALIAS = {
     'Esf. máx': 'esf_max', 'Esf. mín': 'esf_min', 'Cil.': 'cil', 'Add.': 'add', 'Diâm.': 'diam', 'Curva': 'curva',
     'Linha extra': 'disp_extra', 'Preço 1': 'preco_1', 'Preço 2': 'preco_2', 'Preço 3': 'preco_3', 'Preço 4': 'preco_4',
     'Obs. do preço': 'obs_preco', 'Cores e códigos': 'cores', 'Página': 'pagina', 'Bloco': 'bloco', 'Valor': 'valor',
+    'Ícone': 'icone', 'Marca': 'marca', 'Produto': 'produto', 'Montado': 'montado', 'Par + montagem': 'montado',
+    'Bolinha': 'bolinha', 'Observação': 'obs',
 }
-ABAS = {'Config': ('Mês', 'Config'), 'Paginas': ('Páginas', 'Paginas'), 'Familias': ('Famílias', 'Familias'), 'Produtos': ('Produtos',)}
-PRIMEIRAS = {'chave', 'Campo', 'familia', 'Família', 'pagina', 'Página'}
+ABAS = {'Config': ('Mês', 'Config'), 'Paginas': ('Páginas', 'Paginas'), 'Familias': ('Famílias', 'Familias'), 'Produtos': ('Produtos',), 'Combos': ('Combos',)}
+PRIMEIRAS = {'chave', 'Campo', 'familia', 'Família', 'pagina', 'Página', 'Código', 'cod'}
 
-def aba(wb, nome):
+def aba(wb, nome, obrigatoria=True):
     for n in ABAS[nome]:
         if n in wb.sheetnames: return wb[n]
+    if not obrigatoria: return None
     sys.exit(f'ERRO: aba "{ABAS[nome][0]}" não existe no Excel.')
 
 def tabela(ws):
@@ -95,6 +104,50 @@ def cores(v, onde):
             erros.append(f'{onde}: cores fora da ordem fixa ({", ".join(nomes)}). Ordem: {" · ".join(seq)}.')
     return res
 
+def icone_de(F):
+    """Mesma regra do construtor.js: coluna Ícone do Excel ou, vazio, o nome da família."""
+    e = (F.get('icone') or '').lower()
+    if e == 'nenhum': return None
+    if e: return e
+    n = F['familia'].upper()
+    if 'FREEVIX' in n: return 'freevix'
+    if 'ESSILOR' in n: return 'essilor'
+    if 'OPTVIEW' in n: return 'sol'
+    if 'ESPACE' in n: return 'brilho'
+    if 'PRONTA' in n: return 'caixa'
+    if 'KODAK' in n: return 'olho'
+    if re.search(r'VIX TOTAL|OPTF|MULTIFOCAL', n): return 'oculos'
+    return None
+
+def ar_de(titulo):
+    k = titulo.lower()
+    if 'blue' in k: return 'blue'
+    if 'guard' in k: return 'guard'
+    if 'express' in k: return 'express'
+    return None
+
+def svg_qr(url, aqui):
+    """SVG do QR (retângulos cheios, que o Figma importa sem erro de traço). Usa o pacote segno quando existe;
+    sem ele, só serve o endereço padrão, que vai pronto em modelo/svg/qr-segundo-par-figma.svg."""
+    try:
+        import segno
+        m = [list(r) for r in segno.make(url, error='q', boost_error=False).matrix]
+        n, d = len(m), []
+        for y, row in enumerate(m):
+            x = 0
+            while x < n:
+                if row[x]:
+                    w = 1
+                    while x + w < n and row[x + w]: w += 1
+                    d.append('M%d %dh%dv1h-%dz' % (x, y, w, w)); x += w
+                else: x += 1
+        return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" shape-rendering="crispEdges"><path fill="#000000" d="%s"/></svg>' % (n, n, ''.join(d))
+    except ImportError:
+        if url == QR_URL_PADRAO:
+            f = aqui / 'modelo' / 'svg' / 'qr-segundo-par-figma.svg'
+            if f.exists(): return f.read_text(encoding='utf-8').strip()
+        return None
+
 def main():
     try: sys.stdout.reconfigure(encoding="utf-8")
     except Exception: pass
@@ -102,7 +155,8 @@ def main():
     ap.add_argument('excel'); ap.add_argument('--saida', default='paginas')
     a = ap.parse_args()
     wb = load_workbook(a.excel, data_only=True)
-    abas = {n: aba(wb, n) for n in ABAS}
+    abas = {n: aba(wb, n) for n in ABAS if n != 'Combos'}
+    aba_combos = aba(wb, 'Combos', False)
 
     cfg = {txt(r['chave']): r.get('valor') for r in tabela(abas['Config']) if txt(r.get('chave'))}
     for k in ('mes', 'ano', 'validade'):
@@ -129,7 +183,7 @@ def main():
             dispTitulo=txt(r.get('titulo_disponibilidade')) or None,
             dispW=int(num(r.get('largura_disponibilidade')) or 70),
             legenda=sn(r.get('legenda_destaque')), montagem=sn(r.get('selo_montagem')),
-            compacta=sn(r.get('compacta')), rows=[])
+            compacta=sn(r.get('compacta')), icone=txt(r.get('icone')).lower(), rows=[])
         if fams[nome]['compacta'] and len(titulos) > 1:
             erros.append(f'Familias l.{r["_linha"]} {nome}: compacta = S só funciona com 1 coluna de preço.')
 
@@ -194,7 +248,39 @@ def main():
             c=cod, i=ind, n=nome, b=sn(r.get('blue_uv')), d=ponto,
             t=txt(r.get('tratamento')) or None,
             td=[p.strip().lower() for p in txt(r.get('pontos_tratamento')).split(';') if p.strip()],
-            disp=disp, p=[reais(v) if v is not None else '' for v in ps], obs=obs, dest=dest, cores=cs))
+            disp=disp, p=[reais(v) if v is not None else '' for v in ps], obs=obs, dest=dest, cores=cs, _preco=ps[0]))
+
+    # combos (opcional): aba Combos + chaves combo_* no Mês + bloco COMBO em Páginas
+    combo_ativo = sn(cfg.get('combo_ativo'))
+    combos = []
+    precos_tabela = {}                       # código -> menor preço da 1ª coluna nas tabelas normais
+    for F in fams.values():
+        for r in F['rows']:
+            if r['c'] and r['_preco'] is not None: precos_tabela[r['c']] = min(r['_preco'], precos_tabela.get(r['c'], 1e12))
+    if aba_combos is not None:
+        for r in tabela(aba_combos):
+            onde = f'Combos l.{r["_linha"]}'
+            cod, marca, nome = txt(r.get('cod')), txt(r.get('marca')), txt(r.get('produto'))
+            if isinstance(r.get('cod'), (int, float)) and len(cod) < 4: cod = cod.zfill(4)
+            if not cod and not nome: continue
+            if not cod or not nome: erros.append(f'{onde}: código e produto são obrigatórios.'); continue
+            if marca not in MARCAS_COMBO: erros.append(f'{onde} {cod}: marca "{marca}" — use {", ".join(sorted(MARCAS_COMBO))}.')
+            try: preco = num(r.get('montado'))
+            except Exception: preco = None
+            if preco is None: erros.append(f'{onde} {cod}: preço montado vazio ou inválido.'); continue
+            bol = txt(r.get('bolinha')).lower()
+            if bol and bol not in ('verde', 'azul', 'roxo'): erros.append(f'{onde} {cod}: bolinha "{bol}" — use verde, azul ou roxo.'); bol = ''
+            if marca and nome.lower().startswith(marca.lower() + ' '): avisos.append(f'{onde} {cod}: o produto começa com a marca ("{marca}"); ela já vira chip, tire do nome.')
+            if cod in precos_tabela and preco < precos_tabela[cod] - 0.005:
+                avisos.append(f'{onde} {cod}: combo montado ({reais(preco)}) abaixo do preço da lente na tabela ({reais(precos_tabela[cod])}). A montagem entra no combo, confira.')
+            if cod not in precos_tabela: avisos.append(f'{onde} {cod}: código não está em nenhuma tabela normal (ok se for só do combo).')
+            combos.append(dict(c=cod, marca=marca, nome=nome, preco=reais(preco), bol=bol))
+    codigos_combo = {c['c'] for c in combos}
+    for F in fams.values():
+        for r in F['rows']:
+            if r['c'] in codigos_combo: r['k'] = True
+    painel = txt(cfg.get('combo_painel')).upper() or 'NENHUM'
+    if painel not in PAINEIS: erros.append(f'Mês: combo_painel "{painel}" — use {", ".join(sorted(PAINEIS))}.')
 
     # páginas
     pags = {}
@@ -206,6 +292,10 @@ def main():
         if b not in ESPECIAIS and b not in fams: erros.append(f'Paginas l.{r["_linha"]}: bloco "{b}" não é família nem bloco especial.')
         pags.setdefault(n, []).append(b)
     usadas = {b for bs in pags.values() for b in bs}
+    if 'COMBO' in usadas and not combo_ativo: erros.append('Páginas tem o bloco COMBO, mas Mês: combo_ativo não está em S.')
+    if combo_ativo and 'COMBO' not in usadas: erros.append('Mês: combo_ativo = S, mas o bloco COMBO não está em nenhuma página da aba Páginas.')
+    if 'COMBO' in usadas and not combos: erros.append('Bloco COMBO em Páginas, mas a aba Combos está vazia.')
+    if 'COMBO' in usadas and painel == 'VIXCLUB' and 'VIXCLUB' in usadas: erros.append('Painel VIXCLUB do combo e bloco VIXCLUB avulso na mesma promoção: use só um.')
     for f in fams:
         if f not in usadas and fams[f]['rows']: erros.append(f'Família "{f}" tem produtos mas não está em nenhuma página.')
     for f, F in fams.items():
@@ -232,7 +322,7 @@ def main():
         blocos = [b for b in pags[n] if b != 'CAPA']
         for i, b in enumerate(blocos):
             if i: y += 14
-            y += {'FAIXA_50': 53, 'FAIXA_MONTAGEM': 53, 'VIXCLUB': 150}.get(b) or altura_familia(fams[b])
+            y += {'FAIXA_50': 53, 'FAIXA_MONTAGEM': 53, 'VIXCLUB': 150, 'COMBO': 640}.get(b) or altura_familia(fams[b])
         estim[n] = round(y)
         # O construtor aperta até ~30px sozinho; acima disso, a página não cabe.
         if y > LIMITE + 30: avisos.append(f'Página {n}: estimativa {round(y)} bem acima de {LIMITE} — provavelmente estoura mesmo com o aperto. Considere mover um bloco.')
@@ -242,6 +332,12 @@ def main():
     svg_vix = (AQUI / 'modelo' / 'svg' / 'vixlens-negativo.svg').read_text(encoding='utf-8')
     svg_club = (AQUI / 'modelo' / 'svg' / 'vixclub.svg').read_text(encoding='utf-8')
     svg_oferta = (AQUI / 'modelo' / 'svg' / 'selo-oferta.svg').read_text(encoding='utf-8').strip()
+    icones = json.loads((AQUI / 'modelo' / 'svg' / 'icones.json').read_text(encoding='utf-8'))
+    qr_url = txt(cfg.get('combo_qr_url')) or QR_URL_PADRAO
+    qr_svg = None
+    if 'COMBO' in usadas and painel == 'CAMPANHA_FREEVIX':
+        qr_svg = svg_qr(qr_url, AQUI)
+        if qr_svg is None: erros.append(f'QR: o endereço {qr_url} é diferente do padrão e o pacote segno não está instalado (pip install segno).')
     mes, ano = txt(cfg.get('mes')).upper(), txt(cfg.get('ano'))
     contato = '   ·   '.join(x for x in (txt(cfg.get('instagram')), txt(cfg.get('telefone')), txt(cfg.get('site'))) if x)
     saida = Path(a.saida); saida.mkdir(parents=True, exist_ok=True)
@@ -257,23 +353,56 @@ def main():
             elif b == 'FAIXA_50': blocos.append({'tipo': 'faixa50', 'antes': txt(cfg.get('faixa50_antes')), 'destaque': txt(cfg.get('faixa50_destaque')), 'depois': txt(cfg.get('faixa50_depois')), 'direita': txt(cfg.get('faixa50_direita'))})
             elif b == 'FAIXA_MONTAGEM': blocos.append({'tipo': 'montagem', 'antes': txt(cfg.get('montagem_antes')), 'destaque': txt(cfg.get('montagem_destaque')), 'depois': '', 'direita': txt(cfg.get('montagem_direita'))})
             elif b == 'VIXCLUB': blocos.append({'tipo': 'vixclub', 'titulo': txt(cfg.get('vixclub_titulo')), 'texto': txt(cfg.get('vixclub_texto'))})
+            elif b == 'COMBO':
+                blocos.append({'tipo': 'combo', 'titulo': txt(cfg.get('combo_titulo')), 'chamada': txt(cfg.get('combo_chamada')), 'chip': txt(cfg.get('combo_chip')),
+                               'colunaPreco': txt(cfg.get('combo_coluna_preco')) or 'Montado', 'itens': combos, 'painel': painel,
+                               'chamadaCampanha': txt(cfg.get('combo_chamada_campanha')) or 'Fale com seu consultor e aponte a câmera para o QR Code para conferir as regras e saber mais.',
+                               'qrSvg': qr_svg, 'qrUrl': qr_url})
+                if painel == 'VIXCLUB': blocos.append({'tipo': 'vixclub', 'titulo': txt(cfg.get('vixclub_titulo')), 'texto': txt(cfg.get('vixclub_texto'))})
             else:
-                F = dict(fams[b]); F.pop('titulosTexto'); F.pop('regra50')
+                F = dict(fams[b]); F.pop('regra50')
+                F['rows'] = [{k: v for k, v in r.items() if k != '_preco'} for r in F['rows']]
                 blocos.append({'tipo': 'familia', **F})
         pag = dict(numero=n, total=len(numeros), mes=mes, ano=ano, validade=txt(cfg.get('validade')).upper(),
                    aviso=txt(cfg.get('aviso')), contato=contato, adesivo=txt(cfg.get('adesivo_promo')),
+                   comboSelo=txt(cfg.get('combo_selo')) or 'Combo disponível',
                    montagem=dict(rotulo=txt(cfg.get('montagem_selo')) or 'MONTAGEM\nLENTE PRONTA', valor=txt(cfg.get('montagem_destaque')))
                    if any(fams[b]['montagem'] for b in pags[n] if b in fams) else None,
                    frameNome=f'Promovix {mes} // P{n:02d}', x=(n - 1) * 640, blocos=blocos,
                    svgVixlens=svg_vix if 'CAPA' in pags[n] else None,
-                   svgVixclub=svg_club if 'VIXCLUB' in pags[n] else None)
+                   svgVixclub=svg_club if ('VIXCLUB' in pags[n] or ('COMBO' in pags[n] and painel == 'VIXCLUB')) else None)
+        ph, ar, marca = {}, {}, {}
+        for b in pags[n]:
+            if b == 'COMBO': ph['oculos'] = icones['ph']['oculos']
+            if b not in fams or fams[b]['compacta']: continue
+            F = fams[b]; k = icone_de(F)
+            if k in icones['marca']: marca[k] = icones['marca'][k]
+            elif k in icones['ph']: ph[k] = icones['ph'][k]
+            elif k: avisos.append(f'Famílias {b}: ícone "{k}" desconhecido (use oculos, olho, sol, caixa, brilho, freevix, essilor ou nenhum).')
+            for t in F['titulosTexto']:
+                a = ar_de(t)
+                if a: ar[a] = icones['ar'][a]
+            if any(r.get('k') for r in F['rows']): ph['selo'] = icones['ph']['selo']
+        pag.update(ph=ph, ar=ar, marca=marca)
         paginas_js.append((n, pag))
         resumo['porPagina'][n] = dict(blocos=pags[n], produtos=sum(len(fams[b]['rows']) for b in pags[n] if b in fams))
 
     # Agrupa páginas em lotes: o construtor vai uma vez por lote, e o lote fica
     # abaixo do limite de 50 mil caracteres do use_figma.
+    def secoes(lista):
+        tipos, compacta, montagem = set(), False, False
+        for _, pg in lista:
+            for b in pg['blocos']:
+                tipos.add(b['tipo'])
+                if b['tipo'] == 'familia' and b.get('compacta'): compacta = True
+            if pg.get('montagem'): montagem = True
+        return {'capa': 'capa' in tipos, 'combo': 'combo' in tipos, 'vixclub': 'vixclub' in tipos,
+                'faixa': bool(tipos & {'faixa50', 'montagem'}), 'compacta': compacta, 'montagem': montagem}
     def empacotar(lista):
-        js = fonte.replace('/*PAGINAS*/[]', json.dumps([p for _, p in lista], ensure_ascii=False, separators=(',', ':')))
+        js = fonte
+        for nome, usa in secoes(lista).items():
+            if not usa: js = re.sub(r'//#sec ' + nome + r'\n.*?//#fim ' + nome + r'\n', '', js, flags=re.S)
+        js = js.replace('/*PAGINAS*/[]', json.dumps([p for _, p in lista], ensure_ascii=False, separators=(',', ':')))
         js = js.replace('/*SVG_OFERTA*/null', json.dumps(svg_oferta))
         return '\n'.join(l.strip() for l in js.splitlines() if l.strip() and not l.strip().startswith('//'))
     for f in saida.glob('lote_*.js'): f.unlink()

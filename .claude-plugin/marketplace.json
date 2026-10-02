@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Plugins oficiais Vixlens — sistema de marca, documentos institucionais, comunicação B2B, interfaces, catálogo de preço e relatórios mensais do ERP",
-    "version": "1.17.0"
+    "version": "1.18.0"
   },
   "plugins": [
     {
@@ -45,7 +45,7 @@
       "name": "vixlens-ui",
       "source": "./plugins/vixlens-ui",
       "description": "Skills de interface Vixlens — arquitetura de UI em React + Tailwind fiel ao Design System, auditoria de 80 boas práticas de UI e criação de páginas e landing pages no site vixlens.com.br (caminho ou subdomínio)",
-      "version": "0.5.0",
+      "version": "0.5.1",
       "author": {
         "name": "Otávio Torres"
       },
@@ -65,8 +65,8 @@
     {
       "name": "vixlens-catalogo",
       "source": "./plugins/vixlens-catalogo",
-      "description": "Catálogo A4 de tabela de preço no Figma a partir do CSV por ótica (grid, contraste WCAG, quebra automática de família, validação contra a fonte), a Promovix mensal a partir de Excel e o caminho para o projeto de Marca Própria no Drive compartilhado",
-      "version": "0.11.0",
+      "description": "Catálogo A4 de tabela de preço no Figma a partir do CSV por ótica (grid, contraste WCAG, quebra automática de família, validação contra a fonte), a Promovix mensal (com ou sem página de combo e QR da campanha) a partir de Excel e o caminho para o projeto de Marca Própria no Drive compartilhado",
+      "version": "0.12.0",
       "author": {
         "name": "Otávio Torres"
       },
