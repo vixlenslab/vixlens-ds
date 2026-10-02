@@ -1,7 +1,7 @@
 {
   "name": "vixlens-catalogo",
-  "version": "0.10.0",
-  "description": "Catálogo A4 de tabela de preço no Figma a partir do CSV por ótica (grid, contraste WCAG, quebra automática de família, validação contra a fonte) a Promovix mensal a partir de Excel e o caminho para o projeto de Marca Própria no Drive compartilhado",
+  "version": "0.12.0",
+  "description": "Catálogo A4 de tabela de preço no Figma a partir do CSV por ótica (grid, contraste WCAG, quebra automática de família, validação contra a fonte) a Promovix mensal (com ou sem página de combo e QR da campanha) a partir de Excel e o caminho para o projeto de Marca Própria no Drive compartilhado",
   "author": {
     "name": "Otávio Torres"
   },
