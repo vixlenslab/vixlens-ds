@@ -1,0 +1,380 @@
+{
+  "versao": 1,
+  "como_usar": "Cada caso é um pedido real e quais skills devem (acionar) ou não devem (nao_acionar) entrar. Rode em sessão limpa com as skills instaladas e anote o resultado em docs/skills/disparo.md. decisao_pendente marca onde a regra ainda não foi decidida.",
+  "casos": [
+    {
+      "id": "atualizar-1",
+      "pedido": "atualiza as skills da Vixlens",
+      "acionar": [
+        "atualizar-skills"
+      ],
+      "nao_acionar": []
+    },
+    {
+      "id": "atualizar-2",
+      "pedido": "saiu versão nova? tô com a skill velha",
+      "acionar": [
+        "atualizar-skills"
+      ],
+      "nao_acionar": []
+    },
+    {
+      "id": "atualizar-3",
+      "pedido": "a promovix tá gerando a tabela errada, o preço do Guard não bate",
+      "acionar": [
+        "promovix"
+      ],
+      "nao_acionar": [
+        "atualizar-skills"
+      ],
+      "nota": "A descrição de atualizar-skills diz que também vale quando a skill 'se comporta diferente'. Aqui o erro é de dado, não de versão."
+    },
+    {
+      "id": "comunicado-1",
+      "pedido": "escreve um comunicado pro time comercial sobre a nova tabela",
+      "acionar": [
+        "comunicado-interno"
+      ],
+      "nao_acionar": []
+    },
+    {
+      "id": "comunicado-2",
+      "pedido": "avisa o time de produção que o prazo de entrega mudou",
+      "acionar": [
+        "comunicado-interno"
+      ],
+      "nao_acionar": []
+    },
+    {
+      "id": "comunicado-3",
+      "pedido": "escreve um e-mail para uma ótica cliente avisando do reajuste",
+      "acionar": [],
+      "nao_acionar": [
+        "comunicado-interno"
+      ],
+      "nota": "Comunicado interno é para o time; aviso a cliente é externo."
+    },
+    {
+      "id": "manual-1",
+      "pedido": "preciso de um manual de como a ótica faz pedidos no portal",
+      "acionar": [
+        "manual-cliente"
+      ],
+      "nao_acionar": []
+    },
+    {
+      "id": "manual-2",
+      "pedido": "documentação operacional para uma ótica cliente nova",
+      "acionar": [
+        "manual-cliente"
+      ],
+      "nao_acionar": []
+    },
+    {
+      "id": "manual-3",
+      "pedido": "reemitir o manual de marca da Ótica Native",
+      "acionar": [
+        "marca-propria"
+      ],
+      "nao_acionar": [
+        "manual-cliente"
+      ],
+      "nota": "Manual de marca de marca própria passa pelo gerador do projeto no Drive, não por manual-cliente."
+    },
+    {
+      "id": "proposta-1",
+      "pedido": "monta uma proposta para a Ótica Visão Clara, ela é independente",
+      "acionar": [
+        "proposta-comercial"
+      ],
+      "nao_acionar": []
+    },
+    {
+      "id": "proposta-2",
+      "pedido": "preciso de um pitch para fechar uma ótica nova",
+      "acionar": [
+        "proposta-comercial"
+      ],
+      "nao_acionar": []
+    },
+    {
+      "id": "proposta-3",
+      "pedido": "faz uma proposta de site para um cliente da Tríade",
+      "acionar": [],
+      "nao_acionar": [
+        "proposta-comercial"
+      ],
+      "nota": "A Tríade é a agência, com outro padrão. proposta-comercial é B2B de lentes para ótica."
+    },
+    {
+      "id": "proposta-4",
+      "pedido": "monta a tabela promocional do mês para as óticas",
+      "acionar": [
+        "promovix"
+      ],
+      "nao_acionar": [
+        "proposta-comercial"
+      ]
+    },
+    {
+      "id": "ds-1",
+      "pedido": "cria uma capa de relatório no padrão da marca",
+      "acionar": [
+        "vixlens-design-system"
+      ],
+      "nao_acionar": []
+    },
+    {
+      "id": "ds-2",
+      "pedido": "monta um deck sobre a linha Freevix",
+      "acionar": [
+        "vixlens-design-system"
+      ],
+      "nao_acionar": [
+        "vixlens-ui-architect"
+      ]
+    },
+    {
+      "id": "ds-3",
+      "pedido": "faz um relatório para um cliente da Tríade, com a identidade dele",
+      "acionar": [],
+      "nao_acionar": [
+        "vixlens-design-system"
+      ],
+      "nota": "A skill diz 'SEMPRE que for conteúdo Vixlens'. Material de cliente da Tríade não é Vixlens."
+    },
+    {
+      "id": "ds-4",
+      "pedido": "faz uma apresentação em PowerPoint para treinar os consultores",
+      "acionar": [
+        "vixlens-design-system"
+      ],
+      "nao_acionar": [
+        "promovix"
+      ]
+    },
+    {
+      "id": "mp-1",
+      "pedido": "cliente novo de marca própria, a Ótica Lume",
+      "acionar": [
+        "marca-propria"
+      ],
+      "nao_acionar": []
+    },
+    {
+      "id": "mp-2",
+      "pedido": "importação do ERP de marca própria da Ótica Lume",
+      "acionar": [
+        "marca-propria"
+      ],
+      "nao_acionar": []
+    },
+    {
+      "id": "mp-3",
+      "pedido": "gera a tabela de preço marca própria da Ótica Lume",
+      "acionar": [
+        "tabela-optica-figma"
+      ],
+      "nao_acionar": [],
+      "nota": "Sobreposição: 'tabela MP' está em marca-propria e 'tabela de preço marca própria' em tabela-optica-figma. Decidir se as duas entram (marca-propria leva ao projeto, tabela-optica-figma constrói) ou só uma.",
+      "decisao_pendente": true
+    },
+    {
+      "id": "promovix-1",
+      "pedido": "promovix de novembro",
+      "acionar": [
+        "promovix"
+      ],
+      "nao_acionar": []
+    },
+    {
+      "id": "promovix-2",
+      "pedido": "entrou um produto novo na promo, atualiza",
+      "acionar": [
+        "promovix"
+      ],
+      "nao_acionar": []
+    },
+    {
+      "id": "promovix-3",
+      "pedido": "tem combo na promo desse mês",
+      "acionar": [
+        "promovix"
+      ],
+      "nao_acionar": []
+    },
+    {
+      "id": "promovix-4",
+      "pedido": "gera o catálogo A4 da Ótica Native",
+      "acionar": [
+        "tabela-optica-figma"
+      ],
+      "nao_acionar": [
+        "promovix"
+      ]
+    },
+    {
+      "id": "tabela-1",
+      "pedido": "atualiza a tabela de preço da ótica com o CSV novo",
+      "acionar": [
+        "tabela-optica-figma"
+      ],
+      "nao_acionar": [
+        "promovix"
+      ]
+    },
+    {
+      "id": "tabela-2",
+      "pedido": "gera a tabela de custo da Vixlens para as óticas",
+      "acionar": [
+        "tabela-optica-figma"
+      ],
+      "nao_acionar": [
+        "promovix"
+      ]
+    },
+    {
+      "id": "tabela-3",
+      "pedido": "o texto da família tá cortando na coluna da tabela",
+      "acionar": [
+        "tabela-optica-figma"
+      ],
+      "nao_acionar": []
+    },
+    {
+      "id": "tabela-4",
+      "pedido": "quanto a ótica ganha de margem na lente 1.67?",
+      "acionar": [],
+      "nao_acionar": [
+        "tabela-optica-figma",
+        "promovix"
+      ],
+      "nota": "Pergunta de cálculo, não de montar tabela."
+    },
+    {
+      "id": "transitions-1",
+      "pedido": "Transitions de setembro",
+      "acionar": [
+        "transitionsvix"
+      ],
+      "nao_acionar": []
+    },
+    {
+      "id": "transitions-2",
+      "pedido": "quem comprou lente e não levou Transitions?",
+      "acionar": [
+        "transitionsvix"
+      ],
+      "nao_acionar": []
+    },
+    {
+      "id": "transitions-3",
+      "pedido": "qual o estoque de Transitions XTRActive?",
+      "acionar": [],
+      "nao_acionar": [
+        "transitionsvix"
+      ],
+      "nota": "A descrição exclui análise de preço, margem ou estoque."
+    },
+    {
+      "id": "pagina-1",
+      "pedido": "cria uma LP para a campanha do Segundo Par",
+      "acionar": [
+        "nova-pagina"
+      ],
+      "nao_acionar": []
+    },
+    {
+      "id": "pagina-2",
+      "pedido": "preciso de um subdomínio para a promoção de novembro",
+      "acionar": [
+        "nova-pagina"
+      ],
+      "nao_acionar": []
+    },
+    {
+      "id": "pagina-3",
+      "pedido": "cria uma landing page da Freevix",
+      "acionar": [
+        "nova-pagina",
+        "vixlens-ui-architect"
+      ],
+      "nao_acionar": [],
+      "nota": "Sobreposição: 'landing page' aparece em nova-pagina, vixlens-ui-architect e ui-boas-praticas. Definir quem entra primeiro e quem fecha.",
+      "decisao_pendente": true
+    },
+    {
+      "id": "ui-1",
+      "pedido": "revisa essa tela de login",
+      "acionar": [
+        "ui-boas-praticas"
+      ],
+      "nao_acionar": [
+        "vixlens-ui-architect"
+      ]
+    },
+    {
+      "id": "ui-2",
+      "pedido": "o contraste do botão tá ok?",
+      "acionar": [
+        "ui-boas-praticas"
+      ],
+      "nao_acionar": []
+    },
+    {
+      "id": "ui-3",
+      "pedido": "cria um componente de card de produto",
+      "acionar": [
+        "vixlens-ui-architect"
+      ],
+      "nao_acionar": [],
+      "nota": "ui-boas-praticas também diz 'criar'. O fluxo esperado é architect para construir e ui-boas-praticas para fechar.",
+      "decisao_pendente": true
+    },
+    {
+      "id": "ui-4",
+      "pedido": "codar a home da Vixlens com o hero novo",
+      "acionar": [
+        "vixlens-ui-architect"
+      ],
+      "nao_acionar": []
+    },
+    {
+      "id": "ui-5",
+      "pedido": "converte esse wireframe em código",
+      "acionar": [
+        "vixlens-ui-architect"
+      ],
+      "nao_acionar": []
+    },
+    {
+      "id": "nenhuma-1",
+      "pedido": "me explica o que é lente progressiva",
+      "acionar": [],
+      "nao_acionar": [
+        "atualizar-skills",
+        "comunicado-interno",
+        "manual-cliente",
+        "proposta-comercial",
+        "vixlens-design-system",
+        "marca-propria",
+        "promovix",
+        "tabela-optica-figma",
+        "transitionsvix",
+        "nova-pagina",
+        "ui-boas-praticas",
+        "vixlens-ui-architect"
+      ]
+    },
+    {
+      "id": "nenhuma-2",
+      "pedido": "escreve a legenda de um post de Instagram sobre a promoção",
+      "acionar": [],
+      "nao_acionar": [
+        "promovix"
+      ],
+      "nota": "Nenhuma skill cobre texto de rede social. vixlens-design-system tem 'voz', mas o texto vem do GPT.",
+      "decisao_pendente": true
+    }
+  ]
+}
