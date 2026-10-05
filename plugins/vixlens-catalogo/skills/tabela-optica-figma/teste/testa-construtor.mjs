@@ -91,7 +91,8 @@ const ESPERADO = {
 let falhas = 0;
 for (const [nome, src] of casos) {
   const r = await rodar(nome, src);
-  const { nome: _n, ...obtido } = r;
+  const obtido = { ...r };
+  delete obtido.nome;
   const esperado = ESPERADO[nome];
   const ok = !r.erro && JSON.stringify(obtido) === JSON.stringify(esperado);
   if (ok) {
