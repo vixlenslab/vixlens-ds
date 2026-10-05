@@ -113,6 +113,8 @@ Bloco `COMBO` em Páginas, sempre logo depois da `CAPA`. Estrutura (fechada com 
 - XTRActive: cinza-escuro #3A3A3C com texto branco (pedido do Otávio, 01/10).
 Não use `destaque FOTO` em linha Transitions: a pílula já identifica. FOTO fica para fotossensível de outra marca (Optview Sun+, Resina Foto).
 
+**"UV+" no nome do produto vira pílula, sozinho** (05/10/2026): azul-ciano claro `#E3F4FC` com contorno `#2B9BD6` e texto `#0A5E8F`, Bold. Vale em qualquer lugar do nome ("Resina [UV+]", "1.56 FastKôt [UV+] + Montagem"), nas tabelas e no combo. A cor é escolha deliberada: **não use violeta**, porque o roxo já é a bolinha de residual do combo e o balcão confunde; e o azul-claro liso é do chip BLUE UV da Essilor, que fica como está. "Blue UV" escrito no nome de produto Essilor continua texto.
+
 **Bloco compacto** (`compacta = S`): família curta e de pouco peso, como a Solar, sai sem o cabeçalho grande: chip com o nome, uma linha com o que é igual em todas as lentes (índice, curva/diâmetro) e os produtos em 2 colunas com código, nome, cor e preço. Só aceita 1 coluna de preço. O diâmetro da Solar fica (decisão da Mari, 02/10); o da Vix Total saiu.
 
 **Faixa "ÍNDICE" só onde ajuda.** Ela custa ~25 px por grupo. Fica ligada nas tabelas longas de marca própria (Vix Total, Freevix VS). Nas Kodak, Essilor e lentes prontas, o selo de índice da linha basta.

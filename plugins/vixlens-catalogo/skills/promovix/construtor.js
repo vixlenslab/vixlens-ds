@@ -85,19 +85,31 @@ const ponto = (parent, k) => {
   const d = figma.createFrame(); d.name = k ? 'ponto ' + k : 'ponto vazio'; d.resize(7, 7); d.cornerRadius = 100;
   d.fills = k ? fill(PONTO[k] || '#6C6C6C') : []; parent.appendChild(d);
 };
+// Pílula "UV+" no nome do produto (05/10/2026): azul-ciano com contorno. Não usar violeta (roxo = residual do combo)
+// nem o azul liso do chip BLUE UV da Essilor. O que vem antes e depois do UV+ fica em texto normal.
+const pilulaUV = (parent, grande) => {
+  const f = figma.createAutoLayout('HORIZONTAL', { name: 'pilula uv+' });
+  f.fills = fill('#E3F4FC'); f.strokes = fill('#2B9BD6'); f.strokeWeight = 0.75; f.strokeAlign = 'INSIDE'; f.strokesIncludedInLayout = false;
+  f.cornerRadius = 100; f.paddingTop = f.paddingBottom = grande ? 1.5 : 1; f.paddingLeft = f.paddingRight = grande ? 5 : 4; f.counterAxisAlignItems = 'CENTER';
+  parent.appendChild(f); T(f, 'UV+', 'Bold', grande ? 7.5 : 6.5, '#0A5E8F');
+};
+const textoUV = (pr, str, style, size, ls) => {
+  const partes = str.split('UV+');
+  partes.forEach((x, i) => { const t = x.trim(); if (t) T(pr, t, style, size, TINTA, ls); if (i < partes.length - 1) pilulaUV(pr, size > 8.5); });
+};
 // Nome do produto. "Transitions…" vira pílula; o que vem antes e depois fica em texto normal
 // ("Orma [Transitions Gen S] Cinza"). Substituiu o fundo de destaque nas linhas Transitions.
 const nomeProduto = (pr, n) => {
   const m = n.match(RX_TR);
-  if (!m) { T(pr, n, 'Regular', 8, TINTA, -4); return; }
+  if (!m) { textoUV(pr, n, 'Regular', 8, -4); return; }
   const antes = n.slice(0, m.index).trim(), depois = n.slice(m.index + m[0].length).trim();
   const xtr = /xtractive/i.test(m[0]);
-  if (antes) T(pr, antes, 'Regular', 8, TINTA, -4);
+  if (antes) textoUV(pr, antes, 'Regular', 8, -4);
   const p = figma.createAutoLayout('HORIZONTAL', { name: xtr ? 'pilula transitions xtractive' : 'pilula transitions' });
   p.cornerRadius = 100; p.paddingTop = 1.5; p.paddingBottom = 1.5; p.paddingLeft = 6; p.paddingRight = 6; p.counterAxisAlignItems = 'CENTER';
   p.fills = xtr ? fill(XTR) : GRAD_TR; pr.appendChild(p);
   T(p, m[0], 'Medium', 7.5, xtr ? '#FFFFFF' : '#1D1D1F');
-  if (depois) T(pr, depois, 'Regular', 8, TINTA, -4);
+  if (depois) textoUV(pr, depois, 'Regular', 8, -4);
 };
 //#sec montagem
 // Selo "MONTAGEM LENTE PRONTA R$15" no canto do cabeçalho da família (selo_montagem). Fora do padrão
@@ -515,7 +527,7 @@ function comboBloco(pai, B) {
       const cp = figma.createAutoLayout('HORIZONTAL', { name: 'chip ' + marca }); cp.cornerRadius = 20; cp.fills = fill(m.fundo);
       if (m.borda) { cp.strokes = fill(m.borda); cp.strokeWeight = 0.75; cp.strokeAlign = 'INSIDE'; }
       cp.paddingLeft = 7; cp.paddingRight = 7; cp.paddingTop = 2; cp.paddingBottom = 3; pr.appendChild(cp); T(cp, marca, 'Bold', 8, m.tinta);
-      T(pr, nome, 'Medium', 10, TINTA, 0);
+      textoUV(pr, nome, 'Medium', 10, 0);
       if (bol) ponto(pr, bol);
       pr.resize(319, pr.height); pr.layoutSizingHorizontal = 'FIXED';
     }
