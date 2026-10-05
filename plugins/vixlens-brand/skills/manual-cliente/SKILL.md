@@ -1,6 +1,7 @@
 ---
 name: manual-cliente
-description: Gera um manual operacional para clientes ópticos no padrão Vixlens. Use quando o usuário digitar /manual-cliente ou pedir "criar manual para cliente", "manual operacional Vixlens", "documentação para cliente óptico". Segue a mesma estrutura do Manual de Pedidos Marca Própria.
+description: >-
+  Gera um manual operacional para clientes ópticos no padrão Vixlens. Use quando o usuário digitar /manual-cliente ou pedir "criar manual para cliente", "manual operacional Vixlens", "documentação para cliente óptico". Segue a mesma estrutura do Manual de Pedidos Marca Própria. Não use para criar ou reemitir o manual de marca de uma ótica de marca própria (isso é a marca-propria).
 ---
 
 # Skill /manual-cliente
