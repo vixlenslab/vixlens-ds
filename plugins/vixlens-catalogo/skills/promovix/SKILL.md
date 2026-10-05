@@ -105,7 +105,7 @@ Bloco `COMBO` em Páginas, sempre logo depois da `CAPA`. Estrutura (fechada com 
   Tabela com adesivo ganha 10 px a mais de padding no topo, para os chips não ficarem colados no selo.
 - **Faixa de oferta** preta com o número grande em amarelo: Reflecta 50% (`FAIXA_50`). Pode repetir em mais de uma página; na Outubro abre as páginas 4 e 5.
 - **Selo "Combo disponível"** (`combo_selo`) nas linhas das tabelas normais que também estão no combo: pílula preta com o ícone de selo com check. Avisa que o preço da tabela é só da lente.
-- **Selo de montagem** (`selo_montagem = S`): pílula preta "MONTAGEM / LENTE PRONTA" + valor no canto do cabeçalho. Fora do padrão desde o combo (a montagem já vem incluída); continua disponível. A faixa `FAIXA_MONTAGEM` idem.
+- **Selo de montagem** (`selo_montagem = S`): pílula preta "MONTAGEM / LENTE PRONTA" + "R$15" em amarelo no canto superior direito do cabeçalho, ao lado do ícone. Fica **ligado nas duas lentes prontas** (Kodak e Essilor) no modelo com combo: voltou em 05/10/2026, porque a montagem de lente pronta a R$ 15 vale mesmo com o combo existindo (o combo é outro produto). O valor vem de `montagem_destaque` na aba Mês. A faixa `FAIXA_MONTAGEM` continua disponível.
 - **Preto com amarelo** reservado à Promovix. O catálogo não usa essa combinação.
 
 **Transitions no nome do produto vira pílula, sozinho.** O construtor acha "Transitions Gen S / XTRActive / Signature / Classic" no nome e troca pela pílula; o resto do nome fica em texto ("Orma [Transitions Gen S] Cinza"):
