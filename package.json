@@ -37,7 +37,8 @@
     "hooks:setup": "git config core.hooksPath .githooks",
     "test:construtor": "node plugins/vixlens-catalogo/skills/tabela-optica-figma/teste/testa-construtor.mjs",
     "test:montar": "python -m pytest plugins/vixlens-catalogo/skills/promovix/teste -q",
-    "test": "npm run test:construtor && npm run test:montar"
+    "test": "npm run test:construtor && npm run test:paridade && npm run test:montar",
+    "test:paridade": "node plugins/vixlens-catalogo/teste/paridade-construtores.mjs"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",
