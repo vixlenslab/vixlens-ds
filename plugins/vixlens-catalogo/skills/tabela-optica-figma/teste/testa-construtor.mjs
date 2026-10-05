@@ -77,7 +77,34 @@ const umBloco = `const BLOCOS = [
 ];`;
 casos.push(['agrupada com 1 bloco', preparar({}, umBloco)]);
 
+// Esperado conferido à mão contra os dados de PROD acima: 6 produtos (0733, 0734, 0745, o Poli
+// Transitions sem código, 0746, 0736), 1 linha de cores (a SUB), 4 índices (1.49, 1.56, 1.59, 1.67).
+// Linhas na tabela = produtos + linhas de cor. Página agrupada = um separador por bloco, 3 x 6 produtos.
+// Os números são a estrutura que o construtor tem de gerar; pixel só o Figma confirma.
+const ESPERADO = {
+  'familia unica': { produtos: 6, linhasDeCor: 1, separadores: 4, tiposDeSeparador: ['1.49', '1.56', '1.59', '1.67'], linhasNaTabela: 7, chipsComCor: 6 },
+  'sem separador de indice': { produtos: 6, linhasDeCor: 1, separadores: 0, tiposDeSeparador: [], linhasNaTabela: 7, chipsComCor: 6 },
+  'agrupada 3 blocos': { produtos: 18, linhasDeCor: 3, separadores: 3, tiposDeSeparador: ['FAM A', 'FAM B', 'FAM C'], linhasNaTabela: 19, chipsComCor: 18 },
+  'agrupada com 1 bloco': { produtos: 6, linhasDeCor: 1, separadores: 4, tiposDeSeparador: ['1.49', '1.56', '1.59', '1.67'], linhasNaTabela: 7, chipsComCor: 6 },
+};
+
+let falhas = 0;
 for (const [nome, src] of casos) {
   const r = await rodar(nome, src);
-  console.log(JSON.stringify(r));
+  const { nome: _n, ...obtido } = r;
+  const esperado = ESPERADO[nome];
+  const ok = !r.erro && JSON.stringify(obtido) === JSON.stringify(esperado);
+  if (ok) {
+    console.log(`ok     ${nome}`);
+  } else {
+    falhas++;
+    console.log(`FALHOU ${nome}`);
+    console.log('  esperado:', JSON.stringify(esperado));
+    console.log('  obtido:  ', JSON.stringify(r.erro ? { erro: r.erro } : obtido));
+  }
 }
+if (falhas) {
+  console.error(`\n${falhas} caso(s) com divergência.`);
+  process.exit(1);
+}
+console.log(`\nok: ${casos.length} casos`);
