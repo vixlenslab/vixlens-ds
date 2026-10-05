@@ -42,7 +42,7 @@ O resto está no Excel. Se o pedido trouxer mudanças de preço ou produto em te
 
 ## Entrada: o Excel modelo
 
-Os dois modelos vêm preenchidos com a Promovix Outubro 2026 (o com combo traz os ajustes finais de 02/10: vigência 05/10 a 08/11, lentes prontas Kodak reordenadas, FastKôt com circunflexo). Para um mês novo, parta do Excel do mês anterior. Ele foi desenhado para quem preenche (o comercial) não precisar desta skill: títulos em português, notas explicando cada coluna (passe o mouse no título), listas suspensas e colunas cinzas de conferência. Abas:
+Os dois modelos vêm preenchidos com a Promovix Outubro 2026 (o com combo traz os ajustes finais de 02/10: vigência 06/10 a 30/11, lentes prontas Kodak reordenadas, FastKôt com circunflexo). Para um mês novo, parta do Excel do mês anterior. Ele foi desenhado para quem preenche (o comercial) não precisar desta skill: títulos em português, notas explicando cada coluna (passe o mouse no título), listas suspensas e colunas cinzas de conferência. Abas:
 
 | Aba | O que tem |
 |---|---|
@@ -105,7 +105,7 @@ Bloco `COMBO` em Páginas, sempre logo depois da `CAPA`. Estrutura (fechada com 
   Tabela com adesivo ganha 10 px a mais de padding no topo, para os chips não ficarem colados no selo.
 - **Faixa de oferta** preta com o número grande em amarelo: Reflecta 50% (`FAIXA_50`). Pode repetir em mais de uma página; na Outubro abre as páginas 4 e 5.
 - **Selo "Combo disponível"** (`combo_selo`) nas linhas das tabelas normais que também estão no combo: pílula preta com o ícone de selo com check. Avisa que o preço da tabela é só da lente.
-- **Selo de montagem** (`selo_montagem = S`): pílula preta "MONTAGEM / LENTE PRONTA" + valor no canto do cabeçalho. Fora do padrão desde o combo (a montagem já vem incluída); continua disponível. A faixa `FAIXA_MONTAGEM` idem.
+- **Selo de montagem** (`selo_montagem = S`): pílula preta "MONTAGEM / LENTE PRONTA" + "R$15" em amarelo no canto superior direito do cabeçalho, ao lado do ícone. Fica **ligado nas duas lentes prontas** (Kodak e Essilor) e na Optview (lentes de visão simples acabadas, P08) no modelo com combo: voltou em 05/10/2026, porque a montagem de lente pronta a R$ 15 vale mesmo com o combo existindo (o combo é outro produto). O valor vem de `montagem_destaque` na aba Mês. A faixa `FAIXA_MONTAGEM` continua disponível.
 - **Preto com amarelo** reservado à Promovix. O catálogo não usa essa combinação.
 
 **Transitions no nome do produto vira pílula, sozinho.** O construtor acha "Transitions Gen S / XTRActive / Signature / Classic" no nome e troca pela pílula; o resto do nome fica em texto ("Orma [Transitions Gen S] Cinza"):
@@ -173,7 +173,7 @@ A Optview tem cor própria, pedido dele. Em família de cor clara, régua e bord
 
 - `montar.py`: leitura, validação e geração dos lotes
 - `construtor.js`: construtor das páginas (recebe `PAGINAS` do `montar.py`; seções opcionais marcadas com `//#sec` e `//#fim`)
-- `modelo/Promovix_modelo_com_combo.xlsx`: Excel modelo com combo, dados de outubro/2026 (05/10 a 08/11)
+- `modelo/Promovix_modelo_com_combo.xlsx`: Excel modelo com combo, dados de outubro/2026 (vigência 06/10 a 30/11)
 - `modelo/Promovix_modelo.xlsx`: Excel modelo sem combo (layout de sempre)
 - `modelo/vixclub.jpg`: foto do painel VixClub, já recortada
 - `modelo/svg/`: logo Vixlens negativo (capa), logo VixClub, ícone do selo de oferta, QR padrão da campanha (`qr-segundo-par-figma.svg`) e `icones.json` (Phosphor Bold, símbolos dos AR e ícones de marca do DS)
