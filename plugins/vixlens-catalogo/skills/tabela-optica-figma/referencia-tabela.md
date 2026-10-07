@@ -214,6 +214,9 @@ No modo `varia`, cada registro de `DADOS` precisa trazer a sua altura no 11º ca
 | VIX TOTAL | `#F7B200` | 18 mm | -4.00 | 1.00 a 3.50 |
 | FREEVIX ONE | `#EF7F02` | 18 mm | -6.00 | 0.50 a 5.00 |
 | FREEVIX PREMIUM | `#D94F2B` | 16 mm | -6.00 | 0.50 a 5.00 |
+
+
+> **Esférico das Transitions Gen S da Freevix Premium (corrigido em 07/10/2026, passado pelo atendimento):** 1.59 Poli = **+7.00 a −8.00**; 1.67 Resina = **+9.00 a −10.00**. As outras (1.49 +5/−6; 1.74 +6/−12) não mudaram. CSV gerado antes dessa data traz +6 nas duas linhas — se aparecer, está desatualizado: gere de novo no simulador.
 | FREEVIX FREEDOM | `#B5306B` | varia | -6.00 | 0.50 a 5.00 |
 | FREEVIX IA TECH | `#7A4BC4` | varia | -6.00 | 0.50 a 5.00 |
 | FREEVIX VISÃO SIMPLES | `#00497A` | null | **-4.00** | null |
