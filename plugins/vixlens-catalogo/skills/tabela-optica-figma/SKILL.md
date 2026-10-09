@@ -79,7 +79,7 @@ Quando a ótica tem marca própria, **peça o de-para antes de construir** — o
 
 ## Padrão de cabeçalho, banner, gráfico, Gen S e cor (0.13.0)
 
-Fechado em 09/10/2026 com a Mari no catálogo da Ótica do Toninho. **Leia `referencia-cabecalho-banner.md` antes de montar ou revisar qualquer página de família.** O resumo:
+Fechado em 09/10/2026 com a Mari no catálogo da Ótica do Toninho. **Esse catálogo é o modelo: a regra é reproduzir a tabela do Toninho**, não só as peças isoladas. **Leia `referencia-cabecalho-banner.md` antes de montar ou revisar qualquer página de família.** O resumo:
 
 1. **Cabeçalho em três linhas:** nome + chip do tipo da lente (branco, texto preto) / chips Alt., Cil., Add. (branco 16%, texto branco) / `Disponibilidade 1.49 | …` em Bold. Sem `// ÓTICA DO …` nem `LENTES … SURFAÇADAS //`.
 2. **Nome, tipo e disponibilidade vivem só no cabeçalho colorido.** O banner da foto não os repete: leva só o gráfico à esquerda e os tratamentos, com rótulos **"Distribuição da visão"** (Perto/Intermediário/Longe) ou **"Atributos"**, e **"Tratamentos"**.
@@ -88,7 +88,7 @@ Fechado em 09/10/2026 com a Mari no catálogo da Ótica do Toninho. **Leia `refe
 5. **Cor por família de lente** (nunca duas iguais): comanda cabeçalho, chips de índice e régua da tabela.
 6. **Destaque do Transitions Gen S** (pílula com degradê + faixa lateral de 3 px). Até a 0.12.x a skill não gerava isso.
 7. **Nomes na grafia do cliente** (`RELAX 0.50`, `OFFICE NEAR/MID/MAX`), nunca nomes Vixlens numa peça de marca própria.
-8. **Contracapa** com os contatos reais; placeholder vazio sai. **Texto legal** da capa e da contracapa é opcional por cliente (no Toninho foi retirado): pergunte se a nota entra.
+8. **Contracapa** com os contatos reais; placeholder vazio sai. **Sem texto legal** na capa e na contracapa (regra do modelo do Toninho).
 
 **Estado do código:** `construtor.js` ainda gera o cabeçalho antigo de duas linhas e não faz banner, gráfico nem Gen S. Hoje o padrão é aplicado **depois** da construção, página a página, e **sempre com cópia `ARQUIVO // pág NN …` antes**. Transformar isso em código do construtor é o próximo passo.
 
@@ -120,7 +120,7 @@ Fechado em 09/10/2026 com a Mari no catálogo da Ótica do Toninho. **Leia `refe
 
 Decide qual base de preço do CSV entra — e muda a nota legal da capa.
 
-| Resposta | Colunas | Para quem | Nota da capa |
+| Resposta | Colunas | Para quem | Nota da capa (comportamento até a 0.12.x; a 0.13.0 não gera nota, ver `referencia-cabecalho-banner.md`) |
 |---|---|---|---|
 | **Venda** | `Venda por par …` | balcão da ótica → consumidor final | valores são sugestão; o preço final é livre da ótica |
 | **Custo** | `Custo pago por par …` | Vixlens → ótica | condição comercial, com validade; o desconto da ótica aparece no cabeçalho |
