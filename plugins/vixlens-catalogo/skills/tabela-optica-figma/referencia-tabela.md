@@ -49,7 +49,7 @@ Se `cabeNoRodape` vier `false`, **quebre a família em duas páginas num limite 
 
 ## Cabeçalho da família
 
-> **Substituído na 0.13.0** pelo cabeçalho de três linhas de `referencia-cabecalho-banner.md` (chips de dados em branco 16% na linha 2, chip do tipo na linha 1, disponibilidade na linha 3). O texto abaixo descreve o que o `construtor.js` ainda gera.
+> **Substituído na 0.13.0** pelo cabeçalho de três linhas de `referencia-cabecalho-banner.md` (chips de dados em branco 16% na linha 2, chip do tipo na linha 1, disponibilidade na linha 3). O texto abaixo é o formato antigo (até a 0.13.x); desde a 0.14.0 o `construtor.js` gera o de três linhas.
 
 Auto-layout vertical, fill na cor da família, raio 20, padding 12/16, gap 2.
 

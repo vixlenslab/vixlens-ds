@@ -31,6 +31,18 @@ class No {
     this.parent = null;
   }
   resize(w, h) { this.width = w; this.height = h; this._subir(); }
+  // rescale escala o nó e os filhos (resize não). O construtor usa nos logos.
+  rescale(k) {
+    this.width *= k; this.height *= k;
+    for (const c of this.children) c.rescale(k);
+    this._subir();
+  }
+  clone() {
+    const n = this instanceof Texto ? new Texto() : new No(this.type, this.name);
+    n.width = this.width; n.height = this.height; n.layoutMode = this.layoutMode;
+    for (const c of this.children) { const k = c.clone(); k.parent = n; n.children.push(k); }
+    return n;
+  }
   set layoutSizingHorizontal(v) { this._sizingH = v; this._medir(); }
   get layoutSizingHorizontal() { return this._sizingH; }
   set layoutSizingVertical(v) { this._sizingV = v; this._medir(); }
@@ -96,7 +108,10 @@ class Texto extends No {
   get characters() { return this._chars; }
 }
 
-export function montarFigma(nomesDePagina) {
+// Logos mestres (larguras de uma versão antiga, maiores que o padrão, para provar o rescale).
+const MESTRES = { logo_uvplus: 27.2, logo_sunplus: 20.2, Camada_1: 59.8, logo_clear: 28.2, logo_shield: 32.5, logo_diamond: 43.3 };
+
+export function montarFigma(nomesDePagina, opcoes = {}) {
   const pagina = new No('PAGE', 'Page 1');
   for (const nome of nomesDePagina) {
     const f = new No('FRAME', nome);
@@ -104,10 +119,19 @@ export function montarFigma(nomesDePagina) {
     pagina.appendChild(f);
     f.height = 842; f.width = 595; // frame de página não é auto-layout
   }
+  if (opcoes.logos !== false) {
+    const m = new No('FRAME', 'LOGOS // mestres');
+    pagina.children.push(m); m.parent = pagina;
+    for (const [nome, w] of Object.entries(MESTRES)) {
+      const l = new No('FRAME', nome); l.width = w; l.height = w * 0.4;
+      l.parent = m; m.children.push(l);
+    }
+  }
   pagina._medir = () => {};
   return {
     currentPage: pagina,
     createFrame() { const n = new No('FRAME', ''); return n; },
+    createRectangle() { return new No('RECTANGLE', ''); },
     createText() { return new Texto(); },
     createAutoLayout(dir, o) {
       const n = new No('FRAME', (o && o.name) || '');

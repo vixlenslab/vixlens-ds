@@ -5,6 +5,13 @@
 //   produto: cod~indice~nome~diam~esfMais~esfMenos~p1~p2~p3~p4[~altura]
 //   cores:   SUB~codigo Cor | codigo Cor | ...
 //
+// PADRÃO 0.14 (modelo do Toninho): cabeçalho de 3 linhas, banner enxuto com gráfico e
+// tratamentos, destaque Transitions Gen S e cor por família. Detalhes em
+// referencia-cabecalho-banner.md. Os LOGOS de tratamento não são desenhados aqui:
+// copie para a página de destino o frame 'LOGOS // mestres' (com logo_uvplus,
+// logo_sunplus, Camada_1, logo_clear, logo_shield, logo_diamond); sem ele o banner
+// sai sem logos e o retorno avisa.
+//
 // O 11o campo, altura, é obrigatório quando CONFIG.altura === 'varia' e
 // ignorado nos outros casos. Ver "Altura" em referencia-tabela.md.
 // Campo de preço vazio vira travessão. Cod vazio vira seta quando houver linha
@@ -28,7 +35,10 @@ const CONFIG = {
   pagina: '06 OPTIMA PRO (1/2)',
   familia: 'OPTIMA PRO',
   titulo: null,             // título exibido; null usa familia. Use na continuação
-  tipo: 'LENTES MULTIFOCAIS SURFAÇADAS',
+  tag: 'MULTIFOCAL FREEFORM PREMIUM', // chip branco ao lado do título: o TIPO da lente
+                            // (MULTIFOCAL FREEFORM | VISÃO SIMPLES SURFAÇADA | OCUPACIONAL |
+                            // VISÃO SIMPLES ESPECIAL | BIFOCAL SURFAÇADA)
+  tipo: 'LENTES MULTIFOCAIS SURFAÇADAS', // legado: não é mais impresso; vira a tag se ela faltar
   cor: '#D94F2B',
   altura: '16 mm',          // 'NN mm' | 'varia' | null
   cilindro: '-6.00',        // vira pílula no cabeçalho
@@ -39,6 +49,13 @@ const CONFIG = {
   semSeparadorIndice: false,// tira os separadores de índice: ~21px cada, e é o
                             // que faz uma família de duas páginas caber em uma
   alturaImagem: 120,        // ponto de partida; o slot cresce até preencher a página
+                            // 0 = família sem banner (só cabeçalho + tabela)
+  graficoPadrao: null,      // chave de GRAFICOS ('essencial' | 'plus' | 'advanced' | 'premium' |
+                            // 'eliteia' | 'vs' | 'vshd' | 'relax050' | 'relax075' | 'relax10' |
+                            // 'office'); null = sem gráfico (Astera, Bifocais)
+  grafico: null,            // sobrescreve o padrão: { titulo, linhas: [[rotulo, fracao 0-1], ...] }
+  colunaGrafico: 25,        // 25 pt por coluna; 20 quando há rosto/olhos na foto
+  tratamentos: ['uv', 'sun', 'transitions', 'clear', 'shield', 'diamond'], // Office: sem sun/transitions
   simbolos: true,           // padrao da casa; false volta para "Diâm." e "Alt."
   centavos: false           // preços sem casas decimais
 };
@@ -77,13 +94,12 @@ const razao = (a, b) => {
   return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05);
 };
 const contraste = bg => (razao('#FFFFFF', bg) >= razao('#000000', bg) ? '#FFFFFF' : '#000000');
-// 20% da cor sobre branco. O chip de índice tem 6.5pt, e os 4.5:1 do WCAG foram
-// calibrados para 14pt: com preenchimento na cor cheia, seis das doze famílias
-// ficam entre 4.82:1 (OFFICE NEAR) e 6.78:1, e o número some no balcão.
-// Tintado, as doze ficam entre 9.83:1 e 12.14:1.
-const tinta20 = h => {
+// 18% da cor sobre branco (padrão do Toninho; era 20%). O chip de índice tem 6.5pt, e
+// os 4.5:1 do WCAG foram calibrados para 14pt: com preenchimento na cor cheia, o número
+// some no balcão. Tintado, o texto #2F2F2F fica acima de 9:1 em qualquer cor escura.
+const tinta18 = h => {
   const c = canais(h);
-  const v = x => ('0' + Math.round(0.20 * x + 0.80 * 255).toString(16)).slice(-2);
+  const v = x => ('0' + Math.round(0.18 * x + 0.82 * 255).toString(16)).slice(-2);
   return ('#' + v(c[0]) + v(c[1]) + v(c[2])).toUpperCase();
 };
 
@@ -135,8 +151,50 @@ for (const c of page.children.slice()) {
   if (c.type === 'FRAME' && (c.name === 'Header' || c.name.indexOf('Tabela ') === 0 || c.name.indexOf('IMG // ') === 0)) c.remove();
 }
 
+const GRADIENTE_GENS = [[0, '#fcbe95'], [0.33, '#ff766e'], [0.67, '#cb81c0'], [1, '#96ccdc']];
+const paradas = lista => lista.map(p => ({ position: p[0], color: Object.assign(rgb(p[1]), { a: 1 }) }));
+const IMG_Y = 124;          // banner sempre em y=124; o cabeçalho (96) sobe para y=20
+
+// Valores do gráfico: PADRÃO DE CADA FAMÍLIA, iguais para qualquer cliente. Não vêm do CSV.
+// Fração da largura da barra (n/7 no gráfico mestre; a VS HD usa 5 passos).
+const PERTO = ['Perto', 'Intermediário', 'Longe'];
+const ATRIB = ['Liberdade de armações', 'Conforto visual', 'Uso constante de telas', 'Refinamento Estético'];
+const F80_NA = 'Até 80% de redução na fadiga ocular', F80_DA = 'Até 80% de redução da fadiga ocular';
+const sete = (...n) => n.map(x => x / 7);
+const dist = v => ({ titulo: 'Distribuição da visão', linhas: PERTO.map((r, i) => [r, v[i]]) });
+const atr = (rotulos, v) => ({ titulo: 'Atributos', linhas: rotulos.map((r, i) => [r, v[i]]) });
+const GRAFICOS = {
+  essencial: dist(sete(2, 2, 2)),
+  plus: dist(sete(3, 2, 3)),
+  advanced: dist(sete(4, 4, 3)),
+  premium: dist(sete(5, 5, 4)),
+  eliteia: dist(sete(7, 7, 7)),
+  vs: atr(ATRIB, sete(3, 3, 0.4, 0.4)),
+  vshd: atr(ATRIB.concat([F80_DA]), [0.8, 0.8, 0.8, 0.6, 0.6]),
+  relax050: atr(ATRIB.concat([F80_NA]), sete(4, 5, 5, 5).concat([0.6])),
+  relax075: atr(ATRIB, sete(4, 5, 5, 5)),
+  relax10: atr(ATRIB, sete(4, 5, 5, 5)),
+  office: atr(['Liberdade de armações', 'Facilidade de adaptação', 'Conforto visual',
+               'Amplitude no campo de perto', 'Refinamento Estético'], sete(4, 4, 4, 4, 3))
+};
+const GRAFICO = CONFIG.grafico || (CONFIG.graficoPadrao ? GRAFICOS[CONFIG.graficoPadrao] : null);
+if (CONFIG.graficoPadrao && !GRAFICO) throw new Error('graficoPadrao desconhecido: ' + CONFIG.graficoPadrao);
+
+// Logos de tratamento: um tamanho só em TODAS as páginas (largura em pt).
+const LOGOS = { uv: ['logo_uvplus', 23.1], sun: ['logo_sunplus', 17.2], transitions: ['Camada_1', 50.8],
+                clear: ['logo_clear', 23.9], shield: ['logo_shield', 27.6], diamond: ['logo_diamond', 36.8] };
+
+// Índices de refração que a família tem: saem do próprio CSV e viram a linha de disponibilidade.
+const INDICES = [];
+for (const b of blocos) {
+  for (const l of b.dados.trim().split('\n')) {
+    const d = l.split('~');
+    if (d[0] !== 'SUB' && d[1] && INDICES.indexOf(d[1]) < 0) INDICES.push(d[1]);
+  }
+}
+
 const SOBRE_COR = contraste(CONFIG.cor);
-const FUNDO_CHIP = tinta20(CONFIG.cor);
+const FUNDO_CHIP = tinta18(CONFIG.cor);
 
 const texto = (parent, chars, style, size, cor) => {
   const t = figma.createText();
@@ -146,33 +204,40 @@ const texto = (parent, chars, style, size, cor) => {
   return t;
 };
 
+// Cabeçalho em TRÊS linhas (padrão do Toninho): 1) nome + chip do tipo; 2) chips de dados;
+// 3) disponibilidade. Altura final 96, por isso sobe para y=20 e o banner fica em y=124.
+// Nada de wrap: as pílulas de dados descem para a linha 2, que é o que impede nome longo
+// com três pílulas de estourar os 523px úteis.
 const hdr = figma.createAutoLayout('VERTICAL', { name: 'Header' });
 hdr.fills = fill(CONFIG.cor); hdr.cornerRadius = 20;
-hdr.paddingTop = 12; hdr.paddingBottom = 12; hdr.paddingLeft = 16; hdr.paddingRight = 16; hdr.itemSpacing = 2;
+hdr.paddingTop = 12; hdr.paddingBottom = 12; hdr.paddingLeft = 16; hdr.paddingRight = 16; hdr.itemSpacing = 6;
 page.appendChild(hdr);
-hdr.x = 20; hdr.y = 44; hdr.resize(555, hdr.height); hdr.layoutSizingHorizontal = 'FIXED';
+hdr.x = 20; hdr.y = 20; hdr.resize(555, hdr.height); hdr.layoutSizingHorizontal = 'FIXED';
 
-// A linha de título QUEBRA. Nome longo com três ou quatro pílulas não cabe nos
-// 523px úteis do cabeçalho, e auto-layout que não quebra também não trunca:
-// ele transborda calado, por cima da borda do bloco colorido. Com WRAP as
-// pílulas excedentes descem, o cabeçalho cresce, e o slot de imagem reabsorve
-// a altura no fim do script.
 const linhaTitulo = figma.createAutoLayout('HORIZONTAL', { name: 'titulo' });
 linhaTitulo.itemSpacing = 10; linhaTitulo.counterAxisAlignItems = 'CENTER'; linhaTitulo.fills = [];
 hdr.appendChild(linhaTitulo);
-linhaTitulo.layoutSizingHorizontal = 'FILL';
-linhaTitulo.layoutWrap = 'WRAP';
-linhaTitulo.counterAxisSpacing = 6;
 texto(linhaTitulo, CONFIG.titulo || CONFIG.familia, 'ExtraBold', 22, SOBRE_COR);
 
-// As constantes da família viram pílulas: repetir cilindro e adição em toda
-// linha gastava 23% da largura da tabela para dizer sempre a mesma coisa.
+// Chip do tipo: branco sólido, texto escuro. Cabeçalho claro (texto preto) inverte para não sumir.
+const CLARO = SOBRE_COR === '#000000';
+const tag = figma.createAutoLayout('HORIZONTAL', { name: 'Tag' });
+tag.fills = fill(CLARO ? '#000000' : '#FFFFFF'); tag.cornerRadius = 100;
+tag.paddingTop = 3.5; tag.paddingBottom = 3.5; tag.paddingLeft = 9; tag.paddingRight = 9;
+linhaTitulo.appendChild(tag);
+texto(tag, CONFIG.tag || String(CONFIG.tipo || '').replace(/^LENTES( DE)? /, '').replace(/ SURFAÇADAS?$/, ''), 'Bold', 7, CLARO ? '#FFFFFF' : '#000000');
+
+// Chips de dados: branco a 16% com texto branco (preto a 16% com texto preto em cabeçalho
+// claro). As constantes da família ficam aqui, não na linha: repetir cilindro e adição em
+// toda linha gastava 23% da largura da tabela para dizer sempre a mesma coisa.
+const linhaDados = figma.createAutoLayout('HORIZONTAL', { name: 'dados' });
+linhaDados.itemSpacing = 10; linhaDados.counterAxisAlignItems = 'CENTER'; linhaDados.fills = [];
 const pilula = rotulo => {
   const f = figma.createAutoLayout('HORIZONTAL', { name: 'pilula' });
-  f.fills = fill('#000000'); f.cornerRadius = 100;
+  f.fills = [{ type: 'SOLID', color: rgb(CLARO ? '#000000' : '#FFFFFF'), opacity: 0.16 }]; f.cornerRadius = 100;
   f.paddingTop = 4; f.paddingBottom = 4; f.paddingLeft = 10; f.paddingRight = 10;
-  linhaTitulo.appendChild(f);
-  texto(f, rotulo, 'Bold', 9, '#FFFFFF');
+  linhaDados.appendChild(f);
+  texto(f, rotulo, 'Bold', 9, SOBRE_COR);
 };
 if (CONFIG.altura) pilula(CONFIG.altura === 'varia' ? 'Alt. mín. varia por lente' : 'Alt. mín. ' + CONFIG.altura);
 if (CONFIG.cilindro) pilula('Cil. até ' + CONFIG.cilindro);
@@ -180,20 +245,131 @@ if (CONFIG.adicao) pilula('Add. ' + CONFIG.adicao);
 // A coluna sumiu: a pílula é o que impede o balconista de achar que o preço
 // do AR de entrada foi esquecido.
 if (SEM_EXPRESS) pilula('Sem ' + AR + ' Express');
+if (linhaDados.children.length) hdr.appendChild(linhaDados);
 
-texto(hdr, CONFIG.tipo + '  //  ' + (CONFIG.selo || 'LINHA VIXLENS'), 'Medium', 8, SOBRE_COR);
+// Linha 3: Bold 8, sem chip. Os índices saem do CSV. Linha Vixlens prefixa o selo.
+const prefixoLinha = CONFIG.selo === 'LINHA VIXLENS' ? 'LINHA VIXLENS' : '';
+const disp = INDICES.length ? 'Disponibilidade ' + INDICES.join(' | ') : '';
+const linhaDisp = (prefixoLinha && disp) ? prefixoLinha + ' // ' + disp : (prefixoLinha || disp);
+if (linhaDisp) texto(hdr, linhaDisp, 'Bold', 8, SOBRE_COR);
 
-// O slot de imagem é elástico: nasce com alturaImagem e cresce no fim para
-// consumir a sobra. Sem isso sobravam ~190px mortos no pé de cada página.
-let img = null, legendaImg = null;
+// BANNER ENXUTO. O nome, o tipo e a disponibilidade vivem só no cabeçalho colorido: o
+// banner traz apenas o gráfico (à esquerda) e os tratamentos, cada um com seu rótulo.
+// O slot é elástico: nasce com alturaImagem e cresce no fim para consumir a sobra. A foto
+// entra como fill do frame 'IMG // …'; o Overlay escurece a esquerda para o texto ler.
+let img = null, legendaImg = null, overlay = null;
+const avisos = [];
+const rotulo = txt => {
+  const t = figma.createText();
+  t.fontName = { family: 'Host Grotesk', style: 'Bold' };
+  t.characters = txt; t.fontSize = 8; t.lineHeight = { unit: 'PIXELS', value: 10 };
+  t.fills = [{ type: 'SOLID', color: rgb('#FFFFFF'), opacity: 0.7 }]; t.name = txt;
+  return t;
+};
+const grupo = nome => {
+  const g = figma.createAutoLayout('VERTICAL', { name: nome });
+  g.itemSpacing = 5; g.fills = [];   // createAutoLayout nasce com fill BRANCO: sempre zerar
+  return g;
+};
+
+// Gráfico: linhas de 11pt, barra de 5 colunas, linhas de 0,3 mm (0,85pt) a 30% de branco.
+const LINHA_FINA = 0.3 / 25.4 * 72;
+const montarGrafico = g => {
+  const RH = 11, COL = CONFIG.colunaGrafico || 25, BAR = COL * 5;
+  const maxCh = Math.max.apply(null, g.linhas.map(l => l[0].length));
+  const LABEL = Math.max(72, Math.round(3.6 * maxCh + 4));
+  const col = figma.createAutoLayout('VERTICAL', { name: 'Características' });
+  col.itemSpacing = 0; col.fills = [];
+  for (const l of g.linhas) {
+    const row = figma.createAutoLayout('HORIZONTAL', { name: l[0] });
+    row.itemSpacing = 0; row.fills = []; row.counterAxisAlignItems = 'CENTER';
+    col.appendChild(row);
+    const t = figma.createText();
+    t.fontName = { family: 'Host Grotesk', style: 'Regular' };
+    t.fontSize = 7; t.characters = l[0]; t.fills = fill('#FFFFFF');
+    row.appendChild(t);
+    t.textAutoResize = 'NONE'; t.resize(LABEL, RH); t.textAlignVertical = 'CENTER';
+    const barra = figma.createFrame();
+    barra.name = 'Barra'; barra.fills = []; barra.resize(BAR, RH);
+    row.appendChild(barra);
+    const trilho = figma.createRectangle();
+    trilho.name = 'Trilho'; trilho.resize(BAR, 7); trilho.y = 2.5; trilho.x = 0;
+    trilho.fills = [{ type: 'SOLID', color: rgb('#FFFFFF'), opacity: 0.07 }];
+    barra.appendChild(trilho);
+    const valor = figma.createRectangle();
+    valor.name = 'Valor'; valor.resize(Math.max(1, l[1] * BAR), 7); valor.y = 2.5; valor.x = 0;
+    valor.fills = [{ type: 'GRADIENT_LINEAR', gradientTransform: [[1, 0, 0], [0, 1, 0]], gradientStops: [
+      { position: 0, color: { r: 0.75, g: 0.78, b: 0.85, a: 0.18 } },
+      { position: 0.55, color: { r: 0.4745098, g: 0.7803922, b: 0.6431373, a: 1 } },
+      { position: 1, color: { r: 0.05098039, g: 0.29803922, b: 0.26666668, a: 1 } }] }];
+    barra.appendChild(valor);
+    for (let k = 1; k <= 5; k++) {   // 5 divisórias; a do início (k=0) é suprimida
+      const d = figma.createRectangle();
+      d.name = 'Divisória'; d.resize(LINHA_FINA, RH); d.y = 0;
+      d.x = Math.min(k * COL, BAR - LINHA_FINA);
+      d.fills = [{ type: 'SOLID', color: rgb('#FFFFFF'), opacity: 0.3 }];
+      barra.appendChild(d);
+    }
+    const sep = figma.createRectangle();   // linha separadora sob o rótulo, absoluta na row
+    sep.name = 'Linha separadora'; sep.resize(LABEL, LINHA_FINA);
+    sep.fills = [{ type: 'SOLID', color: rgb('#FFFFFF'), opacity: 0.3 }];
+    row.appendChild(sep); sep.layoutPositioning = 'ABSOLUTE'; sep.x = 0; sep.y = RH - LINHA_FINA;
+  }
+  return col;
+};
+
+// Tratamentos: clona os logos do frame 'LOGOS // mestres' e usa um tamanho só.
+const montarTratamentos = vertical => {
+  const mestre = figma.currentPage.children.find(n => n.type === 'FRAME' && n.name === 'LOGOS // mestres');
+  if (!mestre) { avisos.push('SEM LOGOS: copie o frame "LOGOS // mestres" para a pagina de destino.'); return null; }
+  const fila = figma.createAutoLayout(vertical ? 'VERTICAL' : 'HORIZONTAL', { name: 'Tratamentos' });
+  fila.itemSpacing = vertical ? 12 : 10; fila.fills = []; fila.counterAxisAlignItems = vertical ? 'MIN' : 'CENTER';
+  for (const chave of (CONFIG.tratamentos || ['uv', 'sun', 'transitions', 'clear', 'shield', 'diamond'])) {
+    const par = LOGOS[chave];
+    const origem = par && mestre.children.find(n => n.name === par[0]);
+    if (!origem) { avisos.push('logo ausente no mestre: ' + chave); continue; }
+    const c = origem.clone();
+    fila.appendChild(c);
+    if (Math.abs(par[1] / c.width - 1) > 0.005) c.rescale(par[1] / c.width);   // rescale, nunca resize
+  }
+  return fila;
+};
+
 if (CONFIG.alturaImagem > 0) {
   img = figma.createFrame();
   img.name = 'IMG // ' + CONFIG.familia;
   img.resize(555, CONFIG.alturaImagem);
-  img.fills = fill('#F0F0F0'); img.strokes = fill('#6C6C6C'); img.strokeWeight = 1;
-  img.dashPattern = [4, 4]; img.cornerRadius = 12;
-  page.appendChild(img); img.x = 20; img.y = hdr.y + hdr.height + 14;
-  legendaImg = texto(img, '[ IMAGEM FAMÍLIA ]', 'Bold', 9, '#6C6C6C');
+  img.fills = fill('#1B2233'); img.strokes = fill('#FFFFFF'); img.strokeWeight = 1;
+  img.dashPattern = [4, 4]; img.cornerRadius = 12; img.clipsContent = true;
+  page.appendChild(img); img.x = 20; img.y = IMG_Y;
+  overlay = figma.createRectangle();
+  overlay.name = 'Overlay'; overlay.resize(555, CONFIG.alturaImagem);
+  const azul = a => ({ r: 0.03, g: 0.05, b: 0.16, a: a });
+  overlay.fills = [{ type: 'GRADIENT_LINEAR', gradientTransform: [[1, 0, 0], [0, 1, 0]], gradientStops: [
+    { position: 0, color: azul(0.96) }, { position: 0.28, color: azul(0.93) }, { position: 0.45, color: azul(0.70) },
+    { position: 0.62, color: azul(0.38) }, { position: 1, color: azul(0.20) }] }];
+  img.appendChild(overlay);
+  legendaImg = texto(img, '[ IMAGEM FAMÍLIA ]', 'Bold', 9, '#FFFFFF');
+
+  const alto = CONFIG.alturaImagem >= 300;   // banner de 340: tratamentos em coluna
+  const cont = figma.createAutoLayout('VERTICAL', { name: 'Conteúdo' });
+  cont.fills = []; cont.clipsContent = false;
+  cont.paddingLeft = 16; cont.paddingTop = alto ? 24 : (CONFIG.alturaImagem >= 160 ? 18 : 10);
+  cont.itemSpacing = CONFIG.alturaImagem >= 160 ? 14 : 12;
+  img.appendChild(cont); cont.x = 0; cont.y = 0;
+  if (GRAFICO) {
+    const gA = grupo(GRAFICO.titulo);
+    cont.appendChild(gA);
+    gA.appendChild(rotulo(GRAFICO.titulo));
+    gA.appendChild(montarGrafico(GRAFICO));
+  }
+  const fila = montarTratamentos(alto);
+  if (fila) {
+    const gT = grupo('Tratamentos (grupo)');
+    cont.appendChild(gT);
+    gT.appendChild(rotulo('Tratamentos'));
+    gT.appendChild(fila);
+  }
 }
 
 const tbl = figma.createAutoLayout('VERTICAL', { name: 'Tabela ' + CONFIG.familia });
@@ -203,7 +379,7 @@ tbl.cornerRadius = 20;
 tbl.paddingTop = 8; tbl.paddingBottom = 6; tbl.paddingLeft = 10; tbl.paddingRight = 10; tbl.itemSpacing = 0;
 page.appendChild(tbl);
 tbl.x = 20;
-tbl.y = img ? img.y + img.height + 14 : hdr.y + hdr.height + 16;
+tbl.y = img ? img.y + img.height + 14 : hdr.y + hdr.height + 10;
 tbl.resize(555, tbl.height); tbl.layoutSizingHorizontal = 'FIXED';
 
 const celula = (parent, chars, w, o) => {
@@ -269,7 +445,7 @@ const chipIndice = (parent, ind, cor) => {
   c.resize(26, 13); c.cornerRadius = 4;
   parent.appendChild(c);
   if (!ind) { c.fills = []; c.strokes = []; return; }
-  c.fills = fill(tinta20(cor));
+  c.fills = fill(tinta18(cor));
   c.strokes = fill(cor); c.strokeWeight = 1;
   const t = texto(c, ind, 'Bold', 6.5, TINTA);
   t.letterSpacing = { unit: 'PERCENT', value: -2 };
@@ -342,6 +518,8 @@ const separadorFamilia = (nome, cor, pilulas) => {
   }
 };
 
+const genS = [];            // linhas Transitions Gen S: { row, sub } para a faixa lateral
+let ultimoGenS = null;
 let ultimoProduto = null, ultimaCelulaCod = null;
 let indiceAtual = null, produtos = 0, linhasCor = 0, inline = 0, seps = 0;
 let corDoBloco = CONFIG.cor;
@@ -373,6 +551,7 @@ registros.forEach(d => {
     // do branco para agrupar as duas, sem virar zebra.
     const r = linha('#FAFAFA', 4);
     r.name = 'subrow';
+    if (ultimoGenS) ultimoGenS.sub = r;
     const esp = itens.some(m => ESPELHADO.indexOf(m[2]) > -1);
     const wrap = figma.createAutoLayout('HORIZONTAL', { name: 'cores' });
     wrap.itemSpacing = esp ? 10 : 6; wrap.counterAxisAlignItems = 'CENTER'; wrap.fills = [];
@@ -397,8 +576,23 @@ registros.forEach(d => {
   prod.itemSpacing = 5; prod.counterAxisAlignItems = 'CENTER'; prod.fills = [];
   r.appendChild(prod);
   prod.resize(W[2], prod.height); prod.layoutSizingHorizontal = 'FIXED';
-  const nome = texto(prod, d[2], 'Regular', 8, TINTA);
+  // DESTAQUE TRANSITIONS GEN S (padrão de toda tabela): o texto perde o sufixo
+  // ("Resina Transitions Gen S" -> "Resina"), entra a pílula com degradê ao lado do nome e,
+  // no fim, a faixa lateral de 3px cobrindo a linha e a subrow de cores.
+  const ehGenS = /Transitions Gen S/.test(d[2]);
+  const nomeLimpo = ehGenS ? d[2].replace(/\s*Transitions Gen S\s*/, ' ').trim() : d[2];
+  const nome = texto(prod, nomeLimpo || d[2], 'Regular', 8, TINTA);
   nome.letterSpacing = { unit: 'PERCENT', value: -4 };
+  ultimoGenS = null;
+  if (ehGenS) {
+    const pg = figma.createAutoLayout('HORIZONTAL', { name: 'pilula Gen S' });
+    pg.paddingLeft = 5; pg.paddingRight = 5; pg.paddingTop = 1; pg.paddingBottom = 1; pg.cornerRadius = 100;
+    pg.fills = [{ type: 'GRADIENT_LINEAR', gradientTransform: [[1, 0, 0], [0, 1, 0]], gradientStops: paradas(GRADIENTE_GENS) }];
+    prod.appendChild(pg);
+    texto(pg, 'Transitions Gen S', 'Bold', 6, TINTA);
+    ultimoGenS = { row: r, sub: null };
+    genS.push(ultimoGenS);
+  }
   ultimoProduto = prod;
 
   // Só o que varia por lente fica na linha. Cilindro e adição estão nas pílulas.
@@ -419,13 +613,31 @@ registros.forEach(d => {
 });
 }
 
+// Faixas Gen S: retângulo de 3px, degradê vertical, ABSOLUTE em x=4 na tabela. Posição pelo
+// y da row (padding + alturas anteriores). Absoluta: se as linhas mudarem de lugar, a
+// faixa NÃO acompanha — refaça pelo y da row.
+const yRelativo = no => {
+  let y = tbl.paddingTop;
+  for (const c of tbl.children) { if (c === no) return y; y += c.height + tbl.itemSpacing; }
+  return null;
+};
+for (const g of genS) {
+  const y0 = yRelativo(g.row);
+  const fim = g.sub ? yRelativo(g.sub) + g.sub.height : y0 + g.row.height;
+  const st = figma.createRectangle();
+  st.name = 'faixa Gen S'; st.resize(3, fim - y0); st.cornerRadius = 1.5;
+  st.fills = [{ type: 'GRADIENT_LINEAR', gradientTransform: [[0, 1, 0], [-1, 0, 1]], gradientStops: paradas(GRADIENTE_GENS) }];
+  tbl.appendChild(st); st.layoutPositioning = 'ABSOLUTE'; st.x = 4; st.y = y0;
+}
+
 // A imagem cresce para consumir a sobra; se não houver sobra, encolhe até o piso.
 if (img) {
   const sobra = LIMITE - (tbl.y + tbl.height);
   const nova = Math.min(TETO_IMAGEM, Math.max(PISO_IMAGEM, Math.round(img.height + sobra)));
   img.resize(555, nova);
+  if (overlay) overlay.resize(555, nova);
   tbl.y = img.y + nova + 14;
-  legendaImg.x = (555 - legendaImg.width) / 2;
+  legendaImg.x = 555 - 16 - legendaImg.width;     // legenda à direita: a esquerda é do gráfico
   legendaImg.y = (nova - legendaImg.height) / 2;
 }
 
@@ -442,6 +654,10 @@ return {
   alturaImagem: img ? Math.round(img.height) : 0,
   contrasteCabecalho: Math.round(razao(SOBRE_COR, CONFIG.cor) * 100) / 100,
   contrasteChip: Math.round(razao(TINTA, FUNDO_CHIP) * 100) / 100,
+  linhasGenS: genS.length,
+  grafico: GRAFICO ? GRAFICO.titulo + ' (' + GRAFICO.linhas.length + ' linhas)' : null,
+  indicesDisponiveis: INDICES,
+  avisosBanner: avisos,
   fimDaTabela: Math.round(fim),
   cabeNoRodape: fim <= LIMITE,
   aviso: fim > LIMITE ? 'ESTOUROU o rodapé. Quebrar a família em duas páginas num limite de índice.' : null

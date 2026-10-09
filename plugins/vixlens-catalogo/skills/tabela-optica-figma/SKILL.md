@@ -92,7 +92,7 @@ Fechado em 09/10/2026 com a Mari no catálogo da Ótica do Toninho. **Esse catá
 
 Também documentados na referência: **300 dpi nas fotos** (como medir, ponto vermelho, ampliação com Real-ESRGAN), **fatos de produto** (Astera sem Reflecta Express) e o que ainda está **em aberto** (bolinhas de seção, `Resina Freevix Colors`).
 
-**Estado do código:** `construtor.js` ainda gera o cabeçalho antigo de duas linhas e não faz banner, gráfico nem Gen S. Hoje o padrão é aplicado **depois** da construção, página a página, e **sempre com cópia `ARQUIVO // pág NN …` antes**. Transformar isso em código do construtor é o próximo passo.
+**Estado do código (0.14.0):** `construtor.js` gera o padrão: cabeçalho de três linhas (y=20), banner enxuto em y=124 (gráfico pela tabela de valores da família + tratamentos), destaque do Transitions Gen S, chips de índice a 18% e régua na cor da família. O que **ainda é manual**: a foto (fill do frame `IMG // …`), o logo e a capa, o índice, a contracapa, a cor da família (`CONFIG.cor`, vinda da paleta aprovada) e a conferência de dpi. Pré-requisito novo: copiar para a página o frame **`LOGOS // mestres`** (`logo_uvplus`, `logo_sunplus`, `Camada_1`, `logo_clear`, `logo_shield`, `logo_diamond`); sem ele o banner sai sem logos e o retorno avisa em `avisosBanner`. Novos campos de `CONFIG`: `tag`, `graficoPadrao`, `grafico`, `colunaGrafico`, `tratamentos`. Banner de 340 pt = `alturaImagem: 340` (tratamentos em coluna).
 
 ## Pré-requisitos
 
