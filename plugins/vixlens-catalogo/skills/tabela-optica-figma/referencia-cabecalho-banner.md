@@ -108,7 +108,34 @@ Preencha com os contatos **reais** que o cliente mandou (WhatsApp, Instagram, at
 
 **Texto legal (nota da capa e da contracapa): não entra.** No modelo do Toninho a Mari **retirou** a nota legal da capa e da contracapa (09/10/2026), e esse modelo é a regra. Não gere o bloco `nota-legal` da contracapa nem a nota da capa, e não deixe frame vazio: reabra o espaço no layout. A pergunta "custo ou venda" continua valendo para decidir **quais preços** entram; só o texto impresso saiu. A tabela "Nota da capa" na pergunta 1 descreve o comportamento antigo (até a 0.12.x).
 
-## 9. Armadilhas desta etapa
+## 9. Imagens: 300 dpi no mínimo
+
+Toda foto do banner e da capa precisa de **300 dpi efetivos** no tamanho em que aparece na página (frames em pt: 595 × 842 = A4 a 72 pt/pol).
+
+**Como medir** (`use_figma`, por frame com fill de imagem): `getImageByHash(hash).getSizeAsync()` dá `iw × ih`; pontos exibidos por pixel `s` = `max(w/iw, h/ih)` em `FILL`, `min(...)` em `FIT`, `w ÷ (imageTransform[0][0] × iw)` em `CROP`; **dpi = 72 ÷ s**. Ponha um **ponto vermelho visível** (círculo 18 pt, borda branca, no canto) em toda imagem abaixo de 300 e **apague quando corrigir**. O ponto é marcador de revisão, não vai para a impressão.
+
+**Como corrigir quando não há original maior** (foi o caso da foto da Essencial, 1366 px → 177 dpi, e da VS HD, 322 dpi):
+1. Pergunte primeiro se existe a foto original em alta. É o único jeito de ter resolução de verdade.
+2. Sem original: **Real-ESRGAN x4plus** em ambiente isolado (venv com `realesrgan` e `basicsr`; o `basicsr` quebra com torchvision novo — troque `torchvision.transforms.functional_tensor` por `torchvision.transforms.functional` só na cópia do venv; pesos `RealESRGAN_x4plus.pth`, ~67 MB, do repositório `xinntao/Real-ESRGAN`). CPU leva ~2 min a 1366 px e ~10 min a 4096 px. `outscale` ≈ 1,5–1,8. Avise a Mari de que é detalhe sintetizado: interpolação simples (Lanczos) chega ao número, mas não ganha detalhe.
+3. **Tirar a imagem do Figma:** o `use_figma` não tem `fetch` e o retorno passa de 1 MB. Crie um retângulo temporário com o tamanho em pixels da imagem, fill `FILL`, e use `get_screenshot` com `maxDimension` = a largura em pixels (o screenshot do frame original é capado no tamanho do frame).
+4. **Devolver:** `upload_assets` (POST do JPEG na URL devolvida) com `nodeIds` do frame e `scaleMode: FILL`; se o fill era `CROP`, **reaplique o `imageTransform` original** com o novo `imageHash` (a proporção é a mesma, a transformação é normalizada).
+5. Guarde o retângulo com a imagem antiga como `ARQUIVO // … original NNNN px (antes do upscale)`, fora da área de trabalho.
+
+## 10. Em aberto neste padrão
+
+Não decidido com a Mari em 09/10/2026; **não aplique sem perguntar**:
+
+- **Bolinhas dos títulos de seção** da tabela (ex.: `● EYETECH OFFICE NEAR`): ainda nas cores antigas. Falta decidir se acompanham a cor da família.
+- **`Resina Freevix Colors`**: nome Vixlens dentro da tabela de uma marca própria (páginas 04, 05, 07, 09, 12 no Toninho).
+- **Família sem correspondente na lista do cliente**: no Toninho, `EYETECH VS` (página 11) não está na lista de equivalências.
+- **Linha extra no cabeçalho dos Bifocais** (`Desenhos disponíveis: ULTEX / KRIPTOK`): foi colocada pela Mari; não é padrão para as outras famílias.
+
+## 11. Fatos de produto que mudam a página
+
+- **Freevix Astera não tem Reflecta Express**: a revisão oficial da tabela de valores retirou o AR Express dela. Use `CONFIG.semExpress: true` e o chip `Sem Reflecta Express`; só Par, Reflecta Guard e Reflecta Blue Protect. Nunca derive o Express de Par + 50.
+- **Altura mínima da Astera é 18 mm**, exceção à regra de que visão simples não leva altura.
+
+## 12. Armadilhas desta etapa
 
 | Sintoma | Causa | Correção |
 |---|---|---|

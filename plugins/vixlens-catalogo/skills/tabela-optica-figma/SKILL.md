@@ -90,6 +90,8 @@ Fechado em 09/10/2026 com a Mari no catálogo da Ótica do Toninho. **Esse catá
 7. **Nomes na grafia do cliente** (`RELAX 0.50`, `OFFICE NEAR/MID/MAX`), nunca nomes Vixlens numa peça de marca própria.
 8. **Contracapa** com os contatos reais; placeholder vazio sai. **Sem texto legal** na capa e na contracapa (regra do modelo do Toninho).
 
+Também documentados na referência: **300 dpi nas fotos** (como medir, ponto vermelho, ampliação com Real-ESRGAN), **fatos de produto** (Astera sem Reflecta Express) e o que ainda está **em aberto** (bolinhas de seção, `Resina Freevix Colors`).
+
 **Estado do código:** `construtor.js` ainda gera o cabeçalho antigo de duas linhas e não faz banner, gráfico nem Gen S. Hoje o padrão é aplicado **depois** da construção, página a página, e **sempre com cópia `ARQUIVO // pág NN …` antes**. Transformar isso em código do construtor é o próximo passo.
 
 ## Pré-requisitos
@@ -197,7 +199,7 @@ Uma matriz de quais antirreflexos cada família aceita **não** substitui isso: 
 
 ## Validação (não pule)
 
-Rode as quatro antes de dizer que terminou:
+Rode **todas** antes de dizer que terminou:
 
 | Checagem | Como | Critério |
 |---|---|---|
@@ -206,6 +208,10 @@ Rode as quatro antes de dizer que terminou:
 | Tabela não invade o rodapé | `fimDaTabela` que o construtor devolve | `<= 796` |
 | Nenhum dado perdido | Contar linhas de produto e códigos de cor contra o CSV | contagens idênticas |
 | Contraste | Razão WCAG de **todo** texto sobre cor | ≥ 4,5:1; ≥ 7:1 no que estiver abaixo de 8pt |
+| **Espessura das linhas** (gráfico do banner) | Largura de todo traço e retângulo-linha | ≥ **0,3 mm = 0,85 pt** (mínimo para sair na impressão) |
+| **Chips de dados a 16%** | Razão WCAG do texto branco sobre a cor **composta** (cabeçalho + branco a 16%) | ≥ 4,5:1; cabeçalho claro (menta) reprova — escureça o fundo |
+| **Resolução das imagens** | dpi efetivo de cada foto (ver `referencia-cabecalho-banner.md`, seção 9) | ≥ **300 dpi**; ponto vermelho nas que falharem |
+| Nomes do cliente | Buscar `Deskview`, `VS Relax`, `Freevix` em texto de marca própria | nenhum fora da linha Vixlens (Astera, Bifocais) |
 
 **Truncamento e transbordo são coisas diferentes, e a checagem de um não pega o outro.** Célula de largura fixa com `textTruncation` trunca e aparece no primeiro teste. Auto-layout em HUG não faz nem uma coisa nem outra: ele cresce além do pai e desenha por cima da borda, sem erro nenhum. Foi assim que 8 cabeçalhos de 24 saíram com as pílulas atravessando o bloco colorido, passando por uma validação que só olhava truncamento. Meça **todo** filho contra a largura útil do pai, não só o que você espera que seja apertado.
 
