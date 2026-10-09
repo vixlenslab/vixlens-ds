@@ -25,6 +25,15 @@ jobs:
       - name: Validar skills dos plugins (frontmatter + versoes)
         run: npm run skills:check
         
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Testes (construtor da tabela e montar.py da Promovix)
+        run: |
+          pip install -r plugins/vixlens-catalogo/skills/promovix/teste/requirements.txt
+          npm test
+
       - name: Lint
         run: npm run lint
 
