@@ -2,7 +2,7 @@
 
 Padrão fechado com a Mari em 09/10/2026 no catálogo da Ótica do Toninho (Figma `nriDdl7KbLjlgBEmkJjeFv`, 20 páginas). **Substitui** o cabeçalho de duas linhas descrito em `referencia-tabela.md` e acrescenta o banner enxuto, o destaque do Transitions Gen S e a cor por família.
 
-> **Estado do código:** `construtor.js` ainda gera o cabeçalho antigo (duas linhas, pílulas pretas na linha do título). O padrão abaixo é aplicado **depois** da construção, página a página, até o construtor ser atualizado. Antes de mexer em qualquer página, clone-a para fora da área de trabalho como `ARQUIVO // pág NN antes de …`.
+> **Estado do código (0.14.0):** `construtor.js` já gera tudo desta referência numa página de família: cabeçalho de três linhas, banner com gráfico e tratamentos, Gen S, chips e régua na cor da família. Ficam manuais: foto, logo, capa, índice, contracapa, a cor da família (`CONFIG.cor`) e a conferência de dpi. O construtor precisa do frame `LOGOS // mestres` na página (ver `SKILL.md`). Para revisar uma página já construída, **clone-a antes** como `ARQUIVO // pág NN antes de …`.
 
 ## 1. Cabeçalho em três linhas
 

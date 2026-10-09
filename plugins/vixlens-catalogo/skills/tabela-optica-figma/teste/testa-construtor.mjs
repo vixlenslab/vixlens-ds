@@ -20,6 +20,7 @@ function preparar(cfgExtra, blocosLiteral, dados) {
   let src = fonte;
   const cfg = `const CONFIG = ${JSON.stringify({
     pagina: 'P', familia: 'FAMILIA TESTE', titulo: null,
+    tag: 'MULTIFOCAL FREEFORM PREMIUM', graficoPadrao: 'advanced',
     tipo: 'LENTES', cor: '#0E8A5F', altura: '16 mm', cilindro: '-6.00',
     adicao: '0.75 a 3.50', selo: 'OTICA', antirreflexo: 'Lumina',
     semExpress: false, semSeparadorIndice: false,
@@ -31,18 +32,36 @@ function preparar(cfgExtra, blocosLiteral, dados) {
   return src;
 }
 
-async function rodar(nome, src) {
-  const figma = montarFigma(['P']);
+async function rodar(nome, src, opcoes) {
+  const figma = montarFigma(['P'], opcoes);
   const fn = new Function('figma', `return (async () => {${src}})();`);
   let r;
   try { r = await fn(figma); }
   catch (e) { return { nome, erro: e.message }; }
   const page = figma.currentPage.children[0];
   const tbl = page.children.find(c => c.name.startsWith('Tabela '));
+  const hdr = page.children.find(c => c.name === 'Header');
+  const banner = page.children.find(c => c.name.startsWith('IMG // '));
+  const cont = banner && banner.children.find(c => c.name === 'Conteúdo');
+  const ach = (n, f, acc = []) => { if (f(n)) acc.push(n); for (const c of n.children || []) ach(c, f, acc); return acc; };
+  const logos = banner ? ach(banner, n => /^(logo_|Camada_1)/.test(n.name) && n.parent && n.parent.name === 'Tratamentos') : [];
   const seps = tbl.children.filter(c => c.name.startsWith('sep '));
   return {
     nome,
     produtos: r.produtos,
+    cabecalho: hdr.children.map(c => c.name),
+    tituloFilhos: hdr.children[0].children.map(c => c.name),
+    pilulasDados: ach(hdr, n => n.name === 'pilula').length,
+    gruposBanner: cont ? cont.children.map(c => c.name) : [],
+    linhasGrafico: banner ? ach(banner, n => n.name === 'Barra').length : 0,
+    divisoriasPorBarra: banner && ach(banner, n => n.name === 'Barra')[0] ? ach(banner, n => n.name === 'Barra')[0].children.filter(c => c.name === 'Divisória').length : 0,
+    logos: logos.map(l => l.name + ':' + Math.round(l.width * 10) / 10),
+    linhasGenS: r.linhasGenS,
+    pilulasGenS: ach(tbl, n => n.name === 'pilula Gen S').length,
+    faixasGenS: ach(tbl, n => n.name === 'faixa Gen S').length,
+    nomeNaLinhaGenS: ach(tbl, n => n.name === 'produto').map(p => p.children[0].characters).filter(x => /^(Resina|Poli)$/.test(x)).length,
+    indicesDisponiveis: r.indicesDisponiveis,
+    avisosBanner: r.avisosBanner,
     linhasDeCor: r.linhasDeCor,
     separadores: r.separadores,
     tiposDeSeparador: seps.map(s => s.name.replace('sep ', '')),
@@ -77,7 +96,37 @@ const umBloco = `const BLOCOS = [
 ];`;
 casos.push(['agrupada com 1 bloco', preparar({}, umBloco)]);
 
-for (const [nome, src] of casos) {
-  const r = await rodar(nome, src);
+// 5. Sem os logos mestres: banner sai sem logos e o retorno AVISA.
+casos.push(['sem logos mestres', preparar({}, null), { logos: false }]);
+
+// 6. Família sem gráfico (Astera/Bifocais) e linha Vixlens.
+casos.push(['sem grafico, linha vixlens', preparar({ graficoPadrao: null, selo: 'LINHA VIXLENS', tag: 'VISÃO SIMPLES ESPECIAL' }, null)]);
+
+// 7. Sem banner (alturaImagem 0).
+casos.push(['sem banner', preparar({ alturaImagem: 0 }, null)]);
+
+let falhas = 0;
+const exige = (cond, msg) => { if (!cond) { falhas++; console.log('FALHOU: ' + msg); } };
+const res = {};
+
+for (const [nome, src, opcoes] of casos) {
+  const r = await rodar(nome, src, opcoes);
+  res[nome] = r;
   console.log(JSON.stringify(r));
+  if (r.erro) { falhas++; console.log('FALHOU: ' + nome + ' lançou ' + r.erro); continue; }
+  // padrão 0.14: cabeçalho de 3 linhas, chip do tipo, Gen S
+  exige(r.cabecalho.length === 3 && r.cabecalho[0] === 'titulo' && r.cabecalho[1] === 'dados', nome + ': cabecalho de 3 linhas');
+  exige(r.tituloFilhos.length === 2 && r.tituloFilhos[1] === 'Tag', nome + ': titulo + chip Tag na linha 1');
+  exige(r.pilulasDados === 3, nome + ': 3 pilulas de dados (Alt, Cil, Add)');
+  exige(r.linhasGenS >= 1 && r.linhasGenS === r.pilulasGenS && r.linhasGenS === r.faixasGenS, nome + ': cada linha Gen S = 1 pilula + 1 faixa');
+  exige(r.nomeNaLinhaGenS >= 1, nome + ': texto da linha Gen S perdeu o sufixo');
+  exige(nome.startsWith('agrupada') || r.indicesDisponiveis.join(',') === '1.49,1.56,1.59,1.67', nome + ': indices do CSV');
 }
+exige(res['familia unica'].gruposBanner.join('|') === 'Distribuição da visão|Tratamentos (grupo)', 'banner: grupos de gráfico e tratamentos');
+exige(res['familia unica'].linhasGrafico === 3 && res['familia unica'].divisoriasPorBarra === 5, 'grafico advanced: 3 linhas, 5 divisorias');
+exige(res['familia unica'].logos.length === 6 && res['familia unica'].logos.every(l => /:(23\.1|17\.2|50\.8|23\.9|27\.6|36\.8)$/.test(l)), 'logos no tamanho unico depois do rescale: ' + res['familia unica'].logos.join(' '));
+exige(res['sem logos mestres'].avisosBanner.length > 0 && res['sem logos mestres'].logos.length === 0, 'sem mestre: avisa e nao inventa logos');
+exige(res['sem grafico, linha vixlens'].gruposBanner.join('|') === 'Tratamentos (grupo)', 'sem grafico: so tratamentos');
+exige(res['sem banner'].gruposBanner.length === 0, 'sem banner: nenhum grupo');
+console.log(falhas ? 'FALHAS: ' + falhas : 'TUDO OK');
+process.exitCode = falhas ? 1 : 0;
