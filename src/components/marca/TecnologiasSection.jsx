@@ -32,11 +32,26 @@ const LENTES = [
   { id: 'astera', nome: 'Astera', familia: 'Controle de miopia' },
 ]
 
+// Legenda do comparativo AR Reflecta (vixlens.com.br/ar-reflecta), na ordem do site.
+const ICONES_AR = [
+  { f: '01-performance', nome: 'Performance' },
+  { f: '02-resistencia', nome: 'Resistência' },
+  { f: '03-antirreflexo', nome: 'Antirreflexo' },
+  { f: '04-hidrorrepelente', nome: 'Hidrorrepelente' },
+  { f: '05-liporrepelente', nome: 'Liporrepelente' },
+  { f: '06-antiestatico', nome: 'Antiestático' },
+  { f: '07-camadas', nome: 'Camadas' },
+  { f: '08-residual', nome: 'Residual' },
+  { f: '09-protecao-uv', nome: 'Proteção UV do AR' },
+  { f: '10-garantia', nome: 'Garantia' },
+]
+
 // Data em que os arquivos de cada bloco entraram ou foram trocados no DS.
-const ATUALIZADO = { tecnologias: '24/09/2026', lentes: '24/09/2026' }
+const ATUALIZADO = { tecnologias: '24/09/2026', lentes: '24/09/2026', ar: '29/09/2026' }
 
 const TEC = '/assets/marca/tecnologias'
 const DES = '/assets/marca/desenhos-lentes'
+const AR = '/assets/marca/ar-reflecta'
 
 function Baixar({ href, label, primary }) {
   return (
@@ -80,7 +95,7 @@ export default function TecnologiasSection() {
       id="tecnologias"
       eyebrow="02.5 — Marca"
       title="Tecnologias & lentes"
-      desc="Ícones das tecnologias Vixlens e o desenho de cada lente do portfólio, em SVG. Os arquivos são transparentes; o fundo é só pra visualização."
+      desc="Ícones das tecnologias Vixlens, o desenho de cada lente do portfólio e os ícones do comparativo AR Reflecta, em SVG. Os arquivos são transparentes; o fundo é só pra visualização."
     >
       <SubTitle>Ícones de tecnologia</SubTitle>
       <p className="-mt-1 mb-5 max-w-2xl text-[13px] leading-relaxed text-gray-600">
@@ -136,6 +151,39 @@ export default function TecnologiasSection() {
         desc={`${LENTES.length} desenhos em SVG num único .zip.`}
         href={`${DES}/desenhos-lentes-vixlens-svg.zip`}
         atualizado={ATUALIZADO.lentes}
+      />
+
+      <SubTitle className="mt-14">Ícones do comparativo AR Reflecta</SubTitle>
+      <p className="-mt-1 mb-5 max-w-2xl text-[13px] leading-relaxed text-gray-600">
+        As 10 categorias da comparação entre os antirreflexos Reflecta. Versão preta (#1D1D1F) para fundo
+        claro e branca para fundo escuro, em SVG 256×256 (Phosphor Regular).
+      </p>
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+        {ICONES_AR.map((i) => (
+          <figure key={i.f} className="m-0 flex flex-col overflow-hidden rounded-vix-input border border-gray-200 bg-white">
+            <div className="grid h-[88px] grid-cols-2">
+              <div className="flex items-center justify-center bg-vix-cinza-card">
+                <img src={`${AR}/preto/${i.f}.svg`} alt={i.nome} loading="lazy" className="h-8 w-8" />
+              </div>
+              <div className="flex items-center justify-center bg-vix-preto">
+                <img src={`${AR}/branco/${i.f}.svg`} alt="" loading="lazy" className="h-8 w-8" />
+              </div>
+            </div>
+            <figcaption className="border-t border-gray-200 p-3">
+              <div className="mb-2 text-xs font-bold text-vix-preto">{i.nome}</div>
+              <div className="flex flex-wrap gap-1.5">
+                <Baixar href={`${AR}/preto/${i.f}.svg`} label="Preto" primary />
+                <Baixar href={`${AR}/branco/${i.f}.svg`} label="Branco" />
+              </div>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+      <Kit
+        titulo="Kit — Ícones do comparativo AR"
+        desc={`${ICONES_AR.length} ícones em preto e branco (SVG) + prancha com todos (SVG e PNG), num único .zip.`}
+        href={`${AR}/icones-ar-reflecta-svg.zip`}
+        atualizado={ATUALIZADO.ar}
       />
     </Section>
   )

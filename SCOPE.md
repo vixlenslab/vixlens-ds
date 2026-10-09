@@ -190,6 +190,21 @@ e entram no DS como padrão oficial.
   - 2 títulos com `md:leading-*` explícito (no v4 o `leading-*` vence o tamanho responsivo) e o `space-y` do Playground com o seletor do v3 (label inline perdia 6px).
 - Os **componentes** passam a usar classes do v4. Nenhuma tela importa componente hoje (briefing e funil só declaram a dependência), então nada quebra; README e Comece aqui explicam os dois caminhos.
 
+## Adendo 2026-09-29 — Ícones do comparativo AR Reflecta (v0.14.0)
+**Status:** concluído
+- Novo bloco em **Marca → Tecnologias & lentes**: "Ícones do comparativo AR
+  Reflecta", os 10 ícones da legenda do comparativo do site
+  (vixlens.com.br/ar-reflecta): Performance, Resistência, Antirreflexo,
+  Hidrorrepelente, Liporrepelente, Antiestático, Camadas, Residual, Proteção UV
+  do AR, Garantia.
+- Cada card mostra o ícone em fundo claro (versão preta #1D1D1F) e escuro
+  (versão branca), com download dos dois SVGs. Kit .zip com as duas pastas e a
+  prancha com todos (SVG + PNG). "Atualizado em 29/09/2026".
+- Fonte: `C:\Vixlens\outputs\icones-ar-reflecta\` (Phosphor Regular, MIT).
+  Arquivos no DS: `assets/marca/ar-reflecta/{preto,branco}/NN-nome.svg`.
+- Seção nova no DS = minor: v0.13.0 → v0.14.0, com entrada no Changelog.
+- Entrega por branch `feat/icones-ar-reflecta` + PR; merge pelo Otávio.
+
 ## Fora do escopo
 - Tabela interativa no site (busca/filtro).
 - Compressão dos PDFs.
