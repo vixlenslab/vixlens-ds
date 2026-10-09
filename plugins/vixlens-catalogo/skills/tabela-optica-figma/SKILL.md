@@ -1,6 +1,6 @@
 ---
 name: tabela-optica-figma
-description: Use when building or updating a Vixlens lens price table in Figma from a CSV — catálogo A4, tabela de preço marca própria, tabela por ótica, página de família de lente, atualização mensal de preços. Also use when a table page overflows the footer, when columns truncate text, when a lens family no longer fits one page, or when text on a family colour is hard to read.
+description: Use when building or updating a Vixlens lens price table in Figma from a CSV — catálogo A4, tabela de preço marca própria, tabela por ótica, página de família de lente, atualização mensal de preços. Also use when a table page overflows the footer, when columns truncate text, when a lens family no longer fits one page, or when text on a family colour is hard to read. Also use for the coloured header (type chip, data chips, availability line), the photo banner and its attribute chart, the Transitions Gen S highlight, the colour of each lens family and the client spelling of lens names.
 ---
 
 # Tabela de lentes em Figma
@@ -76,6 +76,21 @@ As famílias se dividem em dois grupos, e isso aparece na peça:
 Astera, Bifocais Convencionais e Bifocais Freeform Invisível são revendidas sem marca própria. Escrever "MARCA PRÓPRIA VIXLENS" no selo delas é erro que sai impresso.
 
 Quando a ótica tem marca própria, **peça o de-para antes de construir** — o CSV traz sempre o nome canônico Vixlens. Se ela batizou só parte das famílias, o padrão que funcionou foi prefixar as demais: `EYETECH VS HD`, `EYETECH DESKVIEW ATÉ 2M`.
+
+## Padrão de cabeçalho, banner, gráfico, Gen S e cor (0.13.0)
+
+Fechado em 09/10/2026 com a Mari no catálogo da Ótica do Toninho. **Leia `referencia-cabecalho-banner.md` antes de montar ou revisar qualquer página de família.** O resumo:
+
+1. **Cabeçalho em três linhas:** nome + chip do tipo da lente (branco, texto preto) / chips Alt., Cil., Add. (branco 16%, texto branco) / `Disponibilidade 1.49 | …` em Bold. Sem `// ÓTICA DO …` nem `LENTES … SURFAÇADAS //`.
+2. **Nome, tipo e disponibilidade vivem só no cabeçalho colorido.** O banner da foto não os repete: leva só o gráfico à esquerda e os tratamentos, com rótulos **"Distribuição da visão"** (Perto/Intermediário/Longe) ou **"Atributos"**, e **"Tratamentos"**.
+3. **Gráfico:** 5 colunas, linhas de **0,3 mm (0,85 pt)** para sair na impressão, valores originais preservados em proporção.
+4. **Logos de tratamento num tamanho só** em todas as páginas, com o traço do Transitions.
+5. **Cor por família de lente** (nunca duas iguais): comanda cabeçalho, chips de índice e régua da tabela.
+6. **Destaque do Transitions Gen S** (pílula com degradê + faixa lateral de 3 px). Até a 0.12.x a skill não gerava isso.
+7. **Nomes na grafia do cliente** (`RELAX 0.50`, `OFFICE NEAR/MID/MAX`), nunca nomes Vixlens numa peça de marca própria.
+8. **Contracapa** com os contatos reais; placeholder vazio sai.
+
+**Estado do código:** `construtor.js` ainda gera o cabeçalho antigo de duas linhas e não faz banner, gráfico nem Gen S. Hoje o padrão é aplicado **depois** da construção, página a página, e **sempre com cópia `ARQUIVO // pág NN …` antes**. Transformar isso em código do construtor é o próximo passo.
 
 ## Pré-requisitos
 
@@ -232,4 +247,5 @@ Cobre os quatro caminhos: família única, família única sem separador de índ
 ## Referências
 
 - `referencia-tabela.md` — grid, contraste, paleta das 12 famílias, regras de formatação, capa/índice/contracapa
+- `referencia-cabecalho-banner.md` — padrão 0.13.0: cabeçalho em 3 linhas, banner enxuto, gráfico, logos, Gen S, cor por família, nomes do cliente
 - `construtor.js` — código da Plugin API pronto para `use_figma`
