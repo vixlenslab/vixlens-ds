@@ -116,7 +116,7 @@ Também documentados na referência: **300 dpi nas fotos** (como medir, ponto ve
 
 ## Perguntas antes de rodar
 
-**Faça as três de uma vez, numa rodada só.** Espalhá-las pelo processo confunde quem está pedindo a tabela.
+**Faça todas de uma vez, numa rodada só.** Espalhá-las pelo processo confunde quem está pedindo a tabela. As três primeiras valem para toda tabela; a quarta, para **cliente novo** (marca própria que ainda não tem catálogo).
 
 ### 1. A tabela é de custo ou de venda
 
@@ -142,6 +142,20 @@ Arquivo novo ou link de um existente. Não dá para inferir — pergunte sempre.
 ### 3. Centavos
 
 `R$ 2.826` ou `R$ 2.826,40`. `CONFIG.centavos`, padrão `false` (corta por truncamento, não arredonda).
+
+### 4. Identidade do cliente (só cliente novo)
+
+O padrão do Toninho (cabeçalho, banner, gráfico, Gen S) é de toda tabela, mas **cor, imagem e contato são do cliente** e não vêm do CSV. Peça tudo numa lista só:
+
+| O que pedir | Para quê | Se não vier |
+|---|---|---|
+| **Cores da marca** (capa ou logo anteriores, hexadecimais se tiver) | paleta por família: cabeçalho, chips de índice, régua | gere pela capa do cliente (`referencia-cabecalho-banner.md`, seção 5) e **mostre o quadro antes de aplicar** |
+| **Logo** em vetor ou PNG grande | capa | slot tracejado `LOGO …`; não use imagem de baixa resolução |
+| **Fotos** (capa e uma por banner) em alta | banners e capa, ≥ 300 dpi | slots tracejados; avise que a peça não está pronta para impressão |
+| **Contatos da contracapa**: WhatsApp, Instagram, atendimento, endereço (e e-mail/site se existirem) | contracapa | o campo sem dado sai do layout; nunca imprima `[ telefone ]` |
+| **Grafia dos nomes das lentes** | só se a coluna 29 do CSV vier vazia | veja "Pergunte só quando o dado exigir" |
+
+Dois números que divergem entre capa e contracapa (ex.: telefone e WhatsApp) **não se resolvem sozinhos**: pergunte qual é qual.
 
 ## Pergunte só quando o dado exigir
 

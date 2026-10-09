@@ -100,6 +100,15 @@ Paleta "Raiz Contemporânea" (Ótica do Toninho; é do cliente, **não** o padr�
 | VS | `#256178` | Bifocais | `#7A402F` |
 | VS HD | `#205178` | | |
 
+### Como gerar a paleta de um cliente novo
+
+1. **Colha 4 a 6 cores da marca dele** (capa, logo, site): amostre os pixels de fundo e dos blocos de cor, não as de fotos. Anote o hexadecimal de cada uma.
+2. **Escureça** o que for claro: misture com preto (`c × 0,55 … 0,8`) até o **branco sobre a cor** bater ≥ 4,5:1 (razão WCAG, `razao()` do construtor), com o texto dos chips a 16% também ≥ 4,5:1 sobre a cor **composta** (cor + branco a 16%). Cores claras da marca (menta, turquesa, verde vivo) viram tons escuros da mesma matiz.
+3. **Distribua pelas 13 famílias** com progressão: multifocais do nível de entrada ao topo (Essencial → Elite IA) em gradação clara, a linha visão simples numa matiz própria, Office/Relax/Astera/Bifocais cada um reconhecível.
+4. **Teste de distinção:** nenhuma família repete cor; Astera ≠ Bifocais; duas famílias vizinhas no índice devem diferir em matiz **ou** em luminosidade de forma visível lado a lado.
+5. **Mostre o quadro antes de aplicar:** um frame fora da área de trabalho com as cores da marca e as 13 propostas (mini-cabeçalho com chip a 16% em cada). **Só aplique com aprovação.** Se o cliente já escolheu uma paleta (por exemplo, gerada com apoio externo), use os hexadecimais dele e só confira os contrastes.
+6. **Conversão para CMYK não é feita aqui:** informe que os hexadecimais dependem do perfil da gráfica e de prova no papel.
+
 Cores de apoio da mesma proposta: `#81C6A3` (detalhes claros) e `#F4F0E8` (fundo neutro quente), só onde o layout pedir. Cores da capa do cliente (origem): `#297a53 #81c6a3 #214b21 #57a63f #262f64 #41b9c3`.
 
 ## 6. Destaque do Transitions Gen S
