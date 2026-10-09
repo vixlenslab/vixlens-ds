@@ -1,6 +1,6 @@
 ---
 name: tabela-optica-figma
-description: Use when building or updating a Vixlens lens price table in Figma from a CSV — catálogo A4, tabela de preço marca própria, tabela por ótica, página de família de lente, atualização mensal de preços. Also use when a table page overflows the footer, when columns truncate text, when a lens family no longer fits one page, or when text on a family colour is hard to read.
+description: Use when building or updating a Vixlens lens price table in Figma from a CSV — catálogo A4, tabela de preço marca própria, tabela por ótica, página de família de lente, atualização mensal de preços. Also use when a table page overflows the footer, when columns truncate text, when a lens family no longer fits one page, or when text on a family colour is hard to read. Also use for the coloured header (type chip, data chips, availability line), the photo banner and its attribute chart, the Transitions Gen S highlight, the colour of each lens family and the client spelling of lens names.
 ---
 
 # Tabela de lentes em Figma
@@ -77,6 +77,23 @@ Astera, Bifocais Convencionais e Bifocais Freeform Invisível são revendidas se
 
 Quando a ótica tem marca própria, **peça o de-para antes de construir** — o CSV traz sempre o nome canônico Vixlens. Se ela batizou só parte das famílias, o padrão que funcionou foi prefixar as demais: `EYETECH VS HD`, `EYETECH DESKVIEW ATÉ 2M`.
 
+## Padrão de cabeçalho, banner, gráfico, Gen S e cor (0.13.0)
+
+Fechado em 09/10/2026 com a Mari no catálogo da Ótica do Toninho. **Esse catálogo é o modelo: a regra é reproduzir a tabela do Toninho**, não só as peças isoladas. **Leia `referencia-cabecalho-banner.md` antes de montar ou revisar qualquer página de família.** O resumo:
+
+1. **Cabeçalho em três linhas:** nome + chip do tipo da lente (branco, texto preto) / chips Alt., Cil., Add. (branco 16%, texto branco) / `Disponibilidade 1.49 | …` em Bold. Sem `// ÓTICA DO …` nem `LENTES … SURFAÇADAS //`.
+2. **Nome, tipo e disponibilidade vivem só no cabeçalho colorido.** O banner da foto não os repete: leva só o gráfico à esquerda e os tratamentos, com rótulos **"Distribuição da visão"** (Perto/Intermediário/Longe) ou **"Atributos"**, e **"Tratamentos"**.
+3. **Gráfico:** 5 colunas, linhas de **0,3 mm (0,85 pt)** para sair na impressão. **Os valores são padrão de cada família e iguais para todo cliente** (tabela em `referencia-cabecalho-banner.md`, seção 3); não saem do CSV.
+4. **Logos de tratamento num tamanho só** em todas as páginas, com o traço do Transitions.
+5. **Cor por família de lente** (nunca duas iguais): comanda cabeçalho, chips de índice e régua da tabela.
+6. **Destaque do Transitions Gen S** (pílula com degradê + faixa lateral de 3 px): **padrão de toda tabela, para qualquer cliente**, junto com os valores do gráfico. Até a 0.12.x a skill não gerava isso.
+7. **Nomes na grafia do cliente** (`RELAX 0.50`, `OFFICE NEAR/MID/MAX`), nunca nomes Vixlens numa peça de marca própria.
+8. **Contracapa** com os contatos reais; placeholder vazio sai. **Sem texto legal** na capa e na contracapa (regra do modelo do Toninho).
+
+Também documentados na referência: **300 dpi nas fotos** (como medir, ponto vermelho, ampliação com Real-ESRGAN), **fatos de produto** (Astera sem Reflecta Express) e o que ainda está **em aberto** (bolinhas de seção, `Resina Freevix Colors`).
+
+**Estado do código:** `construtor.js` ainda gera o cabeçalho antigo de duas linhas e não faz banner, gráfico nem Gen S. Hoje o padrão é aplicado **depois** da construção, página a página, e **sempre com cópia `ARQUIVO // pág NN …` antes**. Transformar isso em código do construtor é o próximo passo.
+
 ## Pré-requisitos
 
 - **MCP do Figma conectado** e autenticado numa conta com permissão de **edição** no arquivo de destino. Conta só com acesso de visualização falha na primeira chamada de escrita.
@@ -105,7 +122,7 @@ Quando a ótica tem marca própria, **peça o de-para antes de construir** — o
 
 Decide qual base de preço do CSV entra — e muda a nota legal da capa.
 
-| Resposta | Colunas | Para quem | Nota da capa |
+| Resposta | Colunas | Para quem | Nota da capa (comportamento até a 0.12.x; a 0.13.0 não gera nota, ver `referencia-cabecalho-banner.md`) |
 |---|---|---|---|
 | **Venda** | `Venda por par …` | balcão da ótica → consumidor final | valores são sugestão; o preço final é livre da ótica |
 | **Custo** | `Custo pago por par …` | Vixlens → ótica | condição comercial, com validade; o desconto da ótica aparece no cabeçalho |
@@ -182,7 +199,7 @@ Uma matriz de quais antirreflexos cada família aceita **não** substitui isso: 
 
 ## Validação (não pule)
 
-Rode as quatro antes de dizer que terminou:
+Rode **todas** antes de dizer que terminou:
 
 | Checagem | Como | Critério |
 |---|---|---|
@@ -191,6 +208,10 @@ Rode as quatro antes de dizer que terminou:
 | Tabela não invade o rodapé | `fimDaTabela` que o construtor devolve | `<= 796` |
 | Nenhum dado perdido | Contar linhas de produto e códigos de cor contra o CSV | contagens idênticas |
 | Contraste | Razão WCAG de **todo** texto sobre cor | ≥ 4,5:1; ≥ 7:1 no que estiver abaixo de 8pt |
+| **Espessura das linhas** (gráfico do banner) | Largura de todo traço e retângulo-linha | ≥ **0,3 mm = 0,85 pt** (mínimo para sair na impressão) |
+| **Chips de dados a 16%** | Razão WCAG do texto branco sobre a cor **composta** (cabeçalho + branco a 16%) | ≥ 4,5:1; cabeçalho claro (menta) reprova — escureça o fundo |
+| **Resolução das imagens** | dpi efetivo de cada foto (ver `referencia-cabecalho-banner.md`, seção 9) | ≥ **300 dpi**; ponto vermelho nas que falharem |
+| Nomes do cliente | Buscar `Deskview`, `VS Relax`, `Freevix` em texto de marca própria | nenhum fora da linha Vixlens (Astera, Bifocais) |
 
 **Truncamento e transbordo são coisas diferentes, e a checagem de um não pega o outro.** Célula de largura fixa com `textTruncation` trunca e aparece no primeiro teste. Auto-layout em HUG não faz nem uma coisa nem outra: ele cresce além do pai e desenha por cima da borda, sem erro nenhum. Foi assim que 8 cabeçalhos de 24 saíram com as pílulas atravessando o bloco colorido, passando por uma validação que só olhava truncamento. Meça **todo** filho contra a largura útil do pai, não só o que você espera que seja apertado.
 
@@ -232,4 +253,5 @@ Cobre os quatro caminhos: família única, família única sem separador de índ
 ## Referências
 
 - `referencia-tabela.md` — grid, contraste, paleta das 12 famílias, regras de formatação, capa/índice/contracapa
+- `referencia-cabecalho-banner.md` — padrão 0.13.0: cabeçalho em 3 linhas, banner enxuto, gráfico, logos, Gen S, cor por família, nomes do cliente
 - `construtor.js` — código da Plugin API pronto para `use_figma`

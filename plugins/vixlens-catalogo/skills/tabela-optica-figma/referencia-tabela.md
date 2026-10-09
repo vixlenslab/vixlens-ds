@@ -49,6 +49,8 @@ Se `cabeNoRodape` vier `false`, **quebre a família em duas páginas num limite 
 
 ## Cabeçalho da família
 
+> **Substituído na 0.13.0** pelo cabeçalho de três linhas de `referencia-cabecalho-banner.md` (chips de dados em branco 16% na linha 2, chip do tipo na linha 1, disponibilidade na linha 3). O texto abaixo descreve o que o `construtor.js` ainda gera.
+
 Auto-layout vertical, fill na cor da família, raio 20, padding 12/16, gap 2.
 
 - Linha 1: nome da família em Host Grotesk ExtraBold 22, seguido das **pílulas de constante** — pretas, raio 100, Bold 9 branco:
@@ -185,6 +187,8 @@ Lentes com menos cores usam a **subsequência**, sem reordenar: `Marrom · Verde
 ### Nome do produto quando o preço varia por cor
 
 Se as cores de uma mesma lente têm preços diferentes, cada faixa vira linha própria. O nome precisa dizer de quais cores fala:
+
+> **Desde a 0.13.0** a linha de **Transitions Gen S** perde o sufixo no texto (`Resina`, `Poli`) e ganha a pílula `Transitions Gen S` + a faixa lateral — ver `referencia-cabecalho-banner.md`, seção 6. Os formatos abaixo valem para as demais Transitions (XTRActive etc.) e para tabelas antigas.
 
 - **1 cor:** `Resina Transitions Gen S Cinza`
 - **2 ou mais:** `Resina Transitions Gen S (5 cores)` — a linha de bolinhas logo abaixo lista quais
