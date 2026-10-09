@@ -188,6 +188,8 @@ Lentes com menos cores usam a **subsequência**, sem reordenar: `Marrom · Verde
 
 Se as cores de uma mesma lente têm preços diferentes, cada faixa vira linha própria. O nome precisa dizer de quais cores fala:
 
+> **Desde a 0.13.0** a linha de **Transitions Gen S** perde o sufixo no texto (`Resina`, `Poli`) e ganha a pílula `Transitions Gen S` + a faixa lateral — ver `referencia-cabecalho-banner.md`, seção 6. Os formatos abaixo valem para as demais Transitions (XTRActive etc.) e para tabelas antigas.
+
 - **1 cor:** `Resina Transitions Gen S Cinza`
 - **2 ou mais:** `Resina Transitions Gen S (5 cores)` — a linha de bolinhas logo abaixo lista quais
 

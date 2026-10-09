@@ -104,7 +104,7 @@ Cores de apoio da mesma proposta: `#81C6A3` (detalhes claros) e `#F4F0E8` (fundo
 
 ## 6. Destaque do Transitions Gen S
 
-Toda linha de **Transitions Gen S** ganha (spec lida da Native, página "Impressao CMYK (gabarito)"):
+**Padrão de toda tabela, para qualquer cliente** — não é escolha de um cliente nem de uma ótica. Toda linha de **Transitions Gen S** ganha (spec lida da Native, página "Impressao CMYK (gabarito)"):
 
 - **Texto do produto sem o sufixo:** `Resina Transitions Gen S` → `Resina` (idem `Poli`). A célula `produto` é horizontal, gap 5, centrada.
 - **Pílula `pilula Gen S`** ao lado do nome: auto-layout horizontal, padding 5/1, raio 100, texto `Transitions Gen S` Host Grotesk **Bold 6**, `#2F2F2F`. Fundo: degradê **horizontal** `#fcbe95` (0) → `#ff766e` (.33) → `#cb81c0` (.67) → `#96ccdc` (1).

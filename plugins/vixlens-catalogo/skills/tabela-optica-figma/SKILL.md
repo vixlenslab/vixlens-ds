@@ -86,7 +86,7 @@ Fechado em 09/10/2026 com a Mari no catálogo da Ótica do Toninho. **Esse catá
 3. **Gráfico:** 5 colunas, linhas de **0,3 mm (0,85 pt)** para sair na impressão. **Os valores são padrão de cada família e iguais para todo cliente** (tabela em `referencia-cabecalho-banner.md`, seção 3); não saem do CSV.
 4. **Logos de tratamento num tamanho só** em todas as páginas, com o traço do Transitions.
 5. **Cor por família de lente** (nunca duas iguais): comanda cabeçalho, chips de índice e régua da tabela.
-6. **Destaque do Transitions Gen S** (pílula com degradê + faixa lateral de 3 px). Até a 0.12.x a skill não gerava isso.
+6. **Destaque do Transitions Gen S** (pílula com degradê + faixa lateral de 3 px): **padrão de toda tabela, para qualquer cliente**, junto com os valores do gráfico. Até a 0.12.x a skill não gerava isso.
 7. **Nomes na grafia do cliente** (`RELAX 0.50`, `OFFICE NEAR/MID/MAX`), nunca nomes Vixlens numa peça de marca própria.
 8. **Contracapa** com os contatos reais; placeholder vazio sai. **Sem texto legal** na capa e na contracapa (regra do modelo do Toninho).
 
