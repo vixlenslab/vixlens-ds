@@ -109,11 +109,29 @@ let falhas = 0;
 const exige = (cond, msg) => { if (!cond) { falhas++; console.log('FALHOU: ' + msg); } };
 const res = {};
 
+// Esperado conferido à mão contra os dados de PROD acima: 6 produtos (0733, 0734, 0745, o Poli
+// Transitions sem código, 0746, 0736), 1 linha de cores (a SUB), 4 índices (1.49, 1.56, 1.59, 1.67).
+// Linhas na tabela = produtos + linhas de cor. Página agrupada = um separador por bloco, 3 x 6 produtos.
+// Os números são a estrutura que o construtor tem de gerar; pixel só o Figma confirma.
+const ESPERADO = {
+  'familia unica': { produtos: 6, linhasDeCor: 1, separadores: 4, tiposDeSeparador: ['1.49', '1.56', '1.59', '1.67'], linhasNaTabela: 7, chipsComCor: 6 },
+  'sem separador de indice': { produtos: 6, linhasDeCor: 1, separadores: 0, tiposDeSeparador: [], linhasNaTabela: 7, chipsComCor: 6 },
+  'agrupada 3 blocos': { produtos: 18, linhasDeCor: 3, separadores: 3, tiposDeSeparador: ['FAM A', 'FAM B', 'FAM C'], linhasNaTabela: 19, chipsComCor: 18 },
+  'agrupada com 1 bloco': { produtos: 6, linhasDeCor: 1, separadores: 4, tiposDeSeparador: ['1.49', '1.56', '1.59', '1.67'], linhasNaTabela: 7, chipsComCor: 6 },
+};
+
 for (const [nome, src, opcoes] of casos) {
   const r = await rodar(nome, src, opcoes);
   res[nome] = r;
   console.log(JSON.stringify(r));
   if (r.erro) { falhas++; console.log('FALHOU: ' + nome + ' lançou ' + r.erro); continue; }
+  // Estrutura das tabelas (contagens) contra o esperado conferido à mão.
+  const esperado = ESPERADO[nome];
+  if (esperado) {
+    for (const k of Object.keys(esperado)) {
+      exige(JSON.stringify(r[k]) === JSON.stringify(esperado[k]), nome + ': ' + k + ' esperado ' + JSON.stringify(esperado[k]) + ' obtido ' + JSON.stringify(r[k]));
+    }
+  }
   // padrão 0.14: cabeçalho de 3 linhas, chip do tipo, Gen S
   exige(r.cabecalho.length === 3 && r.cabecalho[0] === 'titulo' && r.cabecalho[1] === 'dados', nome + ': cabecalho de 3 linhas');
   exige(r.tituloFilhos.length === 2 && r.tituloFilhos[1] === 'Tag', nome + ': titulo + chip Tag na linha 1');
