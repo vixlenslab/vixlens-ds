@@ -106,6 +106,8 @@ A faixa é absoluta: se as linhas mudarem de lugar ela **não acompanha**. Repos
 
 Preencha com os contatos **reais** que o cliente mandou (WhatsApp, Instagram, atendimento, endereço). Campo sem dado (e-mail, site) sai do layout — placeholder `[ e-mail ]` impresso é erro. Se dois números divergirem (capa x contracapa), pergunte qual é qual antes de trocar.
 
+**Texto legal (nota da capa e da contracapa):** no catálogo do Toninho a Mari **retirou** a nota legal da capa e da contracapa (09/10/2026). Trate como **decisão por cliente**: ao montar uma tabela nova, pergunte se a nota entra. Se sair, remova também o bloco `nota-legal` da contracapa (não deixe o frame vazio) e reabra o espaço no layout. A pergunta "custo ou venda" continua valendo para decidir quais preços entram; só o texto impresso é opcional. Se isso virar padrão da Vixlens, alinhar com o Otávio antes.
+
 ## 9. Armadilhas desta etapa
 
 | Sintoma | Causa | Correção |

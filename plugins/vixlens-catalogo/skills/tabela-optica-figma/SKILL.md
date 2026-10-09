@@ -88,7 +88,7 @@ Fechado em 09/10/2026 com a Mari no catálogo da Ótica do Toninho. **Leia `refe
 5. **Cor por família de lente** (nunca duas iguais): comanda cabeçalho, chips de índice e régua da tabela.
 6. **Destaque do Transitions Gen S** (pílula com degradê + faixa lateral de 3 px). Até a 0.12.x a skill não gerava isso.
 7. **Nomes na grafia do cliente** (`RELAX 0.50`, `OFFICE NEAR/MID/MAX`), nunca nomes Vixlens numa peça de marca própria.
-8. **Contracapa** com os contatos reais; placeholder vazio sai.
+8. **Contracapa** com os contatos reais; placeholder vazio sai. **Texto legal** da capa e da contracapa é opcional por cliente (no Toninho foi retirado): pergunte se a nota entra.
 
 **Estado do código:** `construtor.js` ainda gera o cabeçalho antigo de duas linhas e não faz banner, gráfico nem Gen S. Hoje o padrão é aplicado **depois** da construção, página a página, e **sempre com cópia `ARQUIVO // pág NN …` antes**. Transformar isso em código do construtor é o próximo passo.
 
