@@ -83,7 +83,7 @@ Fechado em 09/10/2026 com a Mari no catálogo da Ótica do Toninho. **Esse catá
 
 1. **Cabeçalho em três linhas:** nome + chip do tipo da lente (branco, texto preto) / chips Alt., Cil., Add. (branco 16%, texto branco) / `Disponibilidade 1.49 | …` em Bold. Sem `// ÓTICA DO …` nem `LENTES … SURFAÇADAS //`.
 2. **Nome, tipo e disponibilidade vivem só no cabeçalho colorido.** O banner da foto não os repete: leva só o gráfico à esquerda e os tratamentos, com rótulos **"Distribuição da visão"** (Perto/Intermediário/Longe) ou **"Atributos"**, e **"Tratamentos"**.
-3. **Gráfico:** 5 colunas, linhas de **0,3 mm (0,85 pt)** para sair na impressão, valores originais preservados em proporção.
+3. **Gráfico:** 5 colunas, linhas de **0,3 mm (0,85 pt)** para sair na impressão. **Os valores são padrão de cada família e iguais para todo cliente** (tabela em `referencia-cabecalho-banner.md`, seção 3); não saem do CSV.
 4. **Logos de tratamento num tamanho só** em todas as páginas, com o traço do Transitions.
 5. **Cor por família de lente** (nunca duas iguais): comanda cabeçalho, chips de índice e régua da tabela.
 6. **Destaque do Transitions Gen S** (pílula com degradê + faixa lateral de 3 px). Até a 0.12.x a skill não gerava isso.

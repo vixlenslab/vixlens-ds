@@ -51,7 +51,24 @@ Linhas de 11 pt de altura, texto Host Grotesk Regular 7 centralizado na vertical
 | Largura do rótulo | 72 (3 linhas), 88–112 (4–5 linhas); **127 se houver "Até 80% de redução…"** |
 
 - **Espessura de todas as linhas: 0,3 mm = 0,85 pt, branco 30%.** É o mínimo para sair na impressão. Em prova, se sumir, suba a opacidade (45–50%), nunca a espessura.
-- **Valor = proporção original.** `largura do Valor ÷ largura da barra` é preservada ao trocar de escala; **nunca** "arredonde" para colunas inteiras nem copie valores de outra página.
+- **Valor = a proporção da tabela acima.** `largura do Valor ÷ largura da barra` é preservada ao trocar de escala; **nunca** "arredonde" para colunas inteiras nem copie valores de outra família.
+**Os valores do gráfico são padrão de cada família, iguais para qualquer cliente** — não vêm do CSV nem mudam por ótica. A tabela abaixo é a fonte (fração da largura da barra; o gráfico mestre usa 7 passos, e a VS HD usa 5):
+
+| Família | Linhas (na ordem) | Valores | Fração da barra |
+|---|---|---|---|
+| Essencial (Day) | Perto, Intermediário, Longe | 2 / 2 / 2 de 7 | .286 / .286 / .286 |
+| Plus (Max) | Perto, Intermediário, Longe | 3 / 2 / 3 de 7 | .428 / .286 / .428 |
+| Advanced (Pro) | Perto, Intermediário, Longe | 4 / 4 / 3 de 7 | .572 / .572 / .428 |
+| Premium (Elite) | Perto, Intermediário, Longe | 5 / 5 / 4 de 7 | .714 / .714 / .572 |
+| Elite IA (Signature) | Perto, Intermediário, Longe | 7 / 7 / 7 de 7 | 1 / 1 / 1 |
+| VS | Liberdade de armações, Conforto visual, Uso constante de telas, Refinamento Estético | 3 / 3 / 0,4 / 0,4 de 7 | .428 / .428 / .058 / .058 |
+| VS HD | as quatro acima + Até 80% de redução da fadiga ocular | 4 / 4 / 4 / 3 / 3 de 5 | .8 / .8 / .8 / .6 / .6 |
+| Relax 0.50 | as quatro acima + Até 80% de redução na fadiga ocular | 4 / 5 / 5 / 5 de 7; frase 3 de 5 | .572 / .714 / .714 / .714 / .6 |
+| Relax 0.75 e 1.0 | as quatro acima (sem a frase dos 80%) | 4 / 5 / 5 / 5 de 7 | .572 / .714 / .714 / .714 |
+| Office (Ocupacionais) | Liberdade de armações, Facilidade de adaptação, Conforto visual, Amplitude no campo de perto, Refinamento Estético | 4 / 4 / 4 / 4 / 3 de 7 | .572 / .572 / .572 / .572 / .428 |
+
+Astera e Bifocais **não têm gráfico**. Ao montar o gráfico pela fração, use `largura do Valor = fração × largura da barra`; o número de colunas do desenho (5) não muda a conta.
+
 - A frase "Até 80% de redução…" vira quinta linha com barra de 3 colunas (como VS HD e Relax).
 - **Posição:** o gráfico é filho do auto-layout `Conteúdo`, não um frame solto. Linhas e trilho com constraint MIN/MIN — com SCALE, redimensionar o pai desloca as barras.
 
