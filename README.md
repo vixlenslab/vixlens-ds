@@ -133,12 +133,14 @@ claude plugin marketplace update vixlens-marketplace
 Pacote guarda-chuva. Instala os quatro plugins de uma vez.
 
 #### `vixlens-brand`
-Marca, documentos e comunicação B2B. 4 skills:
+Marca, documentos e comunicação B2B. 6 skills:
 
 - **vixlens-design-system** — a mestre: paleta, tipografia, tokens, componentes, voz e vocabulário canônico. Os três abaixo carregam ela antes de escrever
 - **comunicado-interno** — comunicados para o time no padrão institucional
 - **manual-cliente** — manuais operacionais para clientes ópticos B2B
 - **proposta-comercial** — propostas comerciais para varejistas ópticos independentes
+- **atualizar-skills** — atualiza as skills da Vixlens de uma vez (`/atualizar-skills`)
+- **instagram** — triagem das DMs e dos comentários do Instagram da Vixlens (`/instagram`): lê o inbox no Chrome, rascunha respostas a partir do banco de respostas da equipe (Google Doc "Banco de respostas: Instagram Vixlens") e só envia com aprovação. Precisa do Chrome logado na conta @vixlens e do conector do Google Drive
 
 > A skill `vixlens-brand` foi fundida na `vixlens-design-system` na 0.4.0. Duplicavam 84% das cores e todos os termos canônicos, e já tinham divergido entre si. Se você digitava `vixlens-brand`, passe a usar `vixlens-design-system`.
 
