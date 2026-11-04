@@ -45,7 +45,7 @@
       "name": "vixlens-ui",
       "source": "./plugins/vixlens-ui",
       "description": "Skills de interface Vixlens — arquitetura de UI em React + Tailwind fiel ao Design System, auditoria de 80 boas práticas de UI e criação de páginas e landing pages no site vixlens.com.br (caminho ou subdomínio)",
-      "version": "0.5.1",
+      "version": "0.6.0",
       "author": {
         "name": "Otávio Torres"
       },
